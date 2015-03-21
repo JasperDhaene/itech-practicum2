@@ -2,21 +2,13 @@ package be.thalarion.eventman;
 
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,13 +33,6 @@ public class PeopleFragment extends android.support.v4.app.Fragment
         swipeLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         swipeLayout.setOnRefreshListener(this);
 
-        // Simply calling setRefreshing does not work properly
-        swipeLayout.post(new Runnable() {
-            @Override public void run() {
-                swipeLayout.setRefreshing(true);
-            }
-        });
-
         // People list
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.activity_people_list_view);
         recyclerView.setHasFixedSize(false);
@@ -55,7 +40,7 @@ public class PeopleFragment extends android.support.v4.app.Fragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        PeopleAdapter adapter = new PeopleAdapter();
+        PeopleAdapter adapter = new PeopleAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
         return rootView;

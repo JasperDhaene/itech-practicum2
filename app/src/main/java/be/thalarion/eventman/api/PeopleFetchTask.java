@@ -8,24 +8,21 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import be.thalarion.eventman.PeopleAdapter;
 import be.thalarion.eventman.R;
+import fr.tkeunebr.gravatar.Gravatar;
 
 public class PeopleFetchTask extends AsyncTask<URI, Void, List<Person>> {
 
@@ -55,25 +52,31 @@ public class PeopleFetchTask extends AsyncTask<URI, Void, List<Person>> {
                 HttpGet requestPerson = new HttpGet(person.getString("url"));
                 requestPerson.setHeader("Accept", "application/json");
 
-                    // Fetch specific person
+                    // Fetch person
                     HttpResponse responsePerson = client.execute(requestPerson);
                     JSONObject jsonPerson = new JSONObject(EntityUtils.toString(responsePerson.getEntity()));
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                     try {
+                        String gravatarURL = Gravatar.init()
+                                .with(jsonPerson.getString("email"))
+                                .size(256)
+                                .build();
+
                         Person p = new Person(
                                 jsonPerson.getString("name"),
                                 jsonPerson.getString("email"),
-                                format.parse(jsonPerson.getString("birth_date"))
+                                format.parse(jsonPerson.getString("birth_date")),
+                                gravatarURL
                         );
                         list.add(p);
                     } catch (ParseException err){
+                        Toast.makeText(activity, R.string.error_parse, Toast.LENGTH_SHORT);
                         err.printStackTrace();
                     }
             }
-
         } catch (Exception e) {
-            Toast.makeText(activity, R.string.error_fetch_people, Toast.LENGTH_SHORT);
+            Toast.makeText(activity, R.string.error_fetch, Toast.LENGTH_SHORT);
             e.printStackTrace();
         }
         return list;

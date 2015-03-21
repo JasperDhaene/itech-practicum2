@@ -1,26 +1,32 @@
 package be.thalarion.eventman;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import be.thalarion.eventman.api.Person;
+import fr.tkeunebr.gravatar.Gravatar;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
 
     private List<Person> dataSet;
+    private Context context;
 
     public PeopleAdapter(List<Person> dataSet) {
         this.dataSet = dataSet;
     }
 
-    public PeopleAdapter() {
+    public PeopleAdapter(Context context) {
+        this.context = context;
         this.dataSet = new ArrayList<>();
     }
 
@@ -34,11 +40,15 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
+        public TextView name;
+        public TextView email;
+        public ImageView avatar;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.textView = ((TextView) itemView.findViewById(R.id.person_list_view_text));
+            this.name = ((TextView) itemView.findViewById(R.id.person_list_view_name));
+            this.email = ((TextView) itemView.findViewById(R.id.person_list_view_email));
+            this.avatar = ((ImageView) itemView.findViewById(R.id.person_list_view_avatar));
         }
     }
 
@@ -55,7 +65,14 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(dataSet.get(position).name);
+        holder.name.setText(dataSet.get(position).name);
+        holder.email.setText(dataSet.get(position).email);
+
+        // Avatar
+        // TODO: find out if/how Picasso handles memory management on a large number of files
+        Picasso.with(this.context)
+                .load(dataSet.get(position).avatarURL)
+                .into(holder.avatar);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
