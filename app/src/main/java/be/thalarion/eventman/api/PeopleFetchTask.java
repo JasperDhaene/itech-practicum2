@@ -18,6 +18,7 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import be.thalarion.eventman.PeopleAdapter;
@@ -34,56 +35,14 @@ public class PeopleFetchTask extends AsyncTask<URI, Void, List<Person>> {
 
     @Override
     protected List<Person> doInBackground(URI... params) {
-        List<Person> list = new ArrayList<>();
-
-        DefaultHttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(params[0]);
-        request.setHeader("Accept", "application/json");
-
-        try {
-            // Fetch list of people
-            HttpResponse response = client.execute(request);
-            JSONObject json = new JSONObject(EntityUtils.toString(response.getEntity()));
-
-            JSONArray people = (JSONArray) json.get("people");
-
-            for(int i = 0; i < people.length(); i++){
-                JSONObject person = people.getJSONObject(i);
-                HttpGet requestPerson = new HttpGet(person.getString("url"));
-                requestPerson.setHeader("Accept", "application/json");
-
-                    // Fetch person
-                    HttpResponse responsePerson = client.execute(requestPerson);
-                    JSONObject jsonPerson = new JSONObject(EntityUtils.toString(responsePerson.getEntity()));
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-                    try {
-                        String gravatarURL = Gravatar.init()
-                                .with(jsonPerson.getString("email"))
-                                .size(256)
-                                .build();
-
-                        Person p = new Person(
-                                jsonPerson.getString("name"),
-                                jsonPerson.getString("email"),
-                                format.parse(jsonPerson.getString("birth_date")),
-                                gravatarURL
-                        );
-                        list.add(p);
-                    } catch (ParseException err){
-                        Toast.makeText(activity, R.string.error_parse, Toast.LENGTH_SHORT);
-                        err.printStackTrace();
-                    }
-            }
-        } catch (Exception e) {
-            Toast.makeText(activity, R.string.error_fetch, Toast.LENGTH_SHORT);
-            e.printStackTrace();
-        }
-        return list;
+        return Person.findAll();
     }
 
     @Override
     protected void onPostExecute(List<Person> people) {
+        if(people == null)
+            Toast.makeText(activity, R.string.error_fetch, Toast.LENGTH_SHORT);
+
         ((PeopleAdapter) ((RecyclerView) activity.findViewById(R.id.activity_people_list_view)).getAdapter()).setDataSet(people);
         ((SwipeRefreshLayout) activity.findViewById(R.id.activity_people_swipe_container)).setRefreshing(false);
     }

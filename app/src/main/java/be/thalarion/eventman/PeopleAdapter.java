@@ -65,13 +65,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.name.setText(dataSet.get(position).name);
-        holder.email.setText(dataSet.get(position).email);
+        holder.name.setText(dataSet.get(position).getName());
+        holder.email.setText(dataSet.get(position).getEmail());
 
         // Avatar
         // TODO: find out if/how Picasso handles memory management on a large number of files
         Picasso.with(this.context)
-                .load(dataSet.get(position).avatarURL)
+                .load(dataSet.get(position).getAvatar())
                 .into(holder.avatar);
     }
 
