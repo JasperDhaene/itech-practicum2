@@ -1,4 +1,4 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.controllers;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +13,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.thalarion.eventman.api.Person;
-import fr.tkeunebr.gravatar.Gravatar;
+import be.thalarion.eventman.R;
+import be.thalarion.eventman.models.Person;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
 
@@ -68,7 +68,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         holder.name.setText(dataSet.get(position).getName());
         holder.email.setText(dataSet.get(position).getEmail());
 
-        // Avatar
         // TODO: find out if/how Picasso handles memory management on a large number of files
         Picasso.with(this.context)
                 .load(dataSet.get(position).getAvatar())

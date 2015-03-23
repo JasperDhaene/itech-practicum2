@@ -1,4 +1,4 @@
-package be.thalarion.eventman.api;
+package be.thalarion.eventman.models;
 
 import java.util.Date;
 

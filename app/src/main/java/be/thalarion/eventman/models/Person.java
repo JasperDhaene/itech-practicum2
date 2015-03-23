@@ -1,9 +1,10 @@
-package be.thalarion.eventman.api;
+package be.thalarion.eventman.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -15,8 +16,8 @@ import java.util.List;
 import fr.tkeunebr.gravatar.Gravatar;
 
 /**
- * WARNING: this class contains ONLY synchronous methods. Interactions with this class
- * should be contained within a separate thread!
+ * WARNING: this class contains a lot of synchronous networked methods.
+ * Updating the model should run in a separate thread.
  */
 public class Person {
 
@@ -24,8 +25,9 @@ public class Person {
      * Data fields
      *
      */
-    private String name, email, avatar, resource;
+    private String name, email, avatar;
     private Date birthDate;
+    private URL resource;
 
     private Person(String name, String email, Date birthDate) {
         this.name = name;
@@ -40,7 +42,11 @@ public class Person {
             this.name = json.getString("name");
             this.email = json.getString("email");
             this.avatar = getGravatar(this.email);
-            this.resource = json.getString("url");
+            try {
+                this.resource = new URL(json.getString("url"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -60,7 +66,7 @@ public class Person {
      *
      */
 
-    public static List<Person> findAll() {
+    public static List<Person> findAll() throws IOException, APIException {
         List<Person> people = new ArrayList<>();
 
         URL resourceRoot = null;
@@ -82,8 +88,8 @@ public class Person {
                         ));
                 people.add(new Person(jsonPerson));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (JSONException e) {
+            throw new APIException(e);
         }
 
         return people;
@@ -95,32 +101,48 @@ public class Person {
 
     // Getters
     public String getName() {
-        return name;
+        return this.name;
     }
     public String getEmail() {
-        return email;
+        return this.email;
     }
     public Date getBirthDate() {
-        return birthDate;
+        return this.birthDate;
     }
 
     public String getAvatar() {
         return avatar;
     }
 
+    public void updateFields() throws IOException, APIException {
+        this.name = fetchField("name");
+        this.email = fetchField("email");
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.birthDate = format.parse(fetchField("birth_date"));
+        } catch (ParseException e) {
+            throw new APIException(e);
+        }
+    }
+
     // Setters
-    public void setName(String name) {
+    public void setName(String name) throws IOException, APIException {
         this.name = name;
+        updateField("name", this.name);
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws IOException, APIException {
         this.email = email;
+        updateField("email", this.email);
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Date birthDate) throws IOException, APIException {
         this.birthDate = birthDate;
+        JSONObject data = new JSONObject();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        updateField("birth_date", format.format(this.birthDate));
     }
-
 
     /**
      * Internal methods
@@ -130,5 +152,22 @@ public class Person {
                 .with(email)
                 .size(256)
                 .build();
+    }
+
+    private String fetchField(String field) throws IOException, APIException {
+        try {
+            return API.getInstance().fetch(resource).getString(field);
+        } catch (JSONException e) {
+            throw new APIException(e);
+        }
+    }
+
+    private void updateField(String field, String value) throws IOException, APIException {
+        JSONObject data = new JSONObject();
+        try {
+            data.put(field, value);
+            // Exception is thrown when the key is null, but constants are never null.
+        } catch (JSONException e) { }
+        API.getInstance().update(resource, data.toString());
     }
 }
