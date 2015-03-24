@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 
@@ -159,5 +160,44 @@ public class Event extends Model {
             this.startDate = format.parse(fetchField("start"));
             this.startDate = format.parse(fetchField("end"));
         } catch (ParseException e) { }
+    }
+
+    /**
+     * hash - Get icon-presentable hashcode (one or two characters)
+     * @param key
+     * @return
+     */
+    public static String hash(String key) {
+        String[] split = key.split(" ");
+        if(split.length >= 2) {
+            return split[0].substring(0, 1).toUpperCase() + split[1].substring(0, 1).toLowerCase();
+        } else return split[0].substring(0, 1).toUpperCase();
+    }
+
+    private static int[] colors = {
+            R.color.md_red,
+            R.color.md_pink,
+            R.color.md_purple,
+            R.color.md_indigo,
+            R.color.md_blue,
+            R.color.md_green,
+            R.color.md_lime,
+            R.color.md_yellow,
+            R.color.md_amber,
+            R.color.md_deep_orange
+    };
+
+    /**
+     * colorFromString - Synthesize a color from a string
+     * @param key
+     * @return Color resource ID
+     */
+    public static int colorFromString(String key) {
+        int code = key.charAt(0);
+        if(key.length() >= 2)
+            code += key.charAt(1);
+
+        code = code % colors.length;
+        return colors[code];
     }
 }

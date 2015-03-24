@@ -1,6 +1,8 @@
 package be.thalarion.eventman.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.thalarion.eventman.R;
+import be.thalarion.eventman.ShowEventActivity;
 import be.thalarion.eventman.models.Event;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
@@ -34,7 +37,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView title;
         public TextView description;
@@ -45,6 +48,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             this.title = ((TextView) itemView.findViewById(R.id.event_list_view_title));
             this.description = ((TextView) itemView.findViewById(R.id.event_list_view_description));
             this.avatar = ((ImageView) itemView.findViewById(R.id.event_list_view_avatar));
+
+            ((CardView) itemView.findViewById(R.id.card)).setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(v.getContext(), ShowEventActivity.class);
+            v.getContext().startActivity(intent);
         }
     }
 
@@ -66,12 +77,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             holder.title.setTextAppearance(context, R.style.CardTitle);
             holder.title.setText(dataSet.get(position).getTitle());
 
-            color = stringHash(dataSet.get(position).getTitle());
+            color = Event.hash(dataSet.get(position).getTitle());
         } else {
             holder.title.setTextAppearance(context, R.style.CardTitleMissing);
             holder.title.setText(R.string.error_text_notitle);
 
-            color = stringHash("Ev");
+            color = Event.hash("Ev");
         }
         if(dataSet.get(position).getDescription() != null) {
             holder.description.setTextAppearance(context, R.style.CardSubTitle);
@@ -83,7 +94,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         TextDrawable drawable = TextDrawable.builder().buildRect(
                 color,
-                context.getResources().getColor(colorHash(color))
+                context.getResources().getColor(Event.colorFromString(color))
         );
         holder.avatar.setImageDrawable(drawable);
     }
@@ -93,35 +104,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     public int getItemCount() {
         if(dataSet == null) return 0;
         return dataSet.size();
-    }
-
-    private String stringHash(String key) {
-        String[] split = key.split(" ");
-        if(split.length >= 2) {
-            return split[0].substring(0, 1).toUpperCase() + split[1].substring(0, 1).toLowerCase();
-        } else return split[0].substring(0, 1).toUpperCase();
-    }
-
-    private static int[] colors = {
-        R.color.md_red,
-        R.color.md_pink,
-        R.color.md_purple,
-        R.color.md_indigo,
-        R.color.md_blue,
-        R.color.md_green,
-        R.color.md_lime,
-        R.color.md_yellow,
-        R.color.md_amber,
-        R.color.md_deep_orange
-    };
-
-    private int colorHash(String key) {
-        int code = key.charAt(0);
-        if(key.length() >= 2)
-            code += key.charAt(1);
-
-        code = code % colors.length;
-        return colors[code];
     }
 
 }
