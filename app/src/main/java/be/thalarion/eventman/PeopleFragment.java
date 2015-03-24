@@ -2,19 +2,25 @@ package be.thalarion.eventman;
 
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.util.List;
 
-import be.thalarion.eventman.controllers.PeopleAdapter;
-import be.thalarion.eventman.controllers.RefreshPeopleTask;
+import be.thalarion.eventman.adapters.PeopleAdapter;
+import be.thalarion.eventman.models.APIException;
+import be.thalarion.eventman.models.Person;
 
 
 /**
@@ -26,16 +32,16 @@ public class PeopleFragment extends android.support.v4.app.Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_people, container, false);
+        View rootView = inflater.inflate(R.layout.swipe_list, container, false);
         setHasOptionsMenu(true);
 
         // Swipe to refresh
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_people_swipe_container);
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container);
         swipeLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         swipeLayout.setOnRefreshListener(this);
 
         // People list
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.activity_people_list_view);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.swipe_list_view);
         recyclerView.setHasFixedSize(false);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -48,12 +54,47 @@ public class PeopleFragment extends android.support.v4.app.Fragment
     }
 
     @Override
-    public void onRefresh() {
-        try {
-            URI uri = new URI("http://events.restdesc.org/people");
-            new RefreshPeopleTask(getActivity()).execute(uri);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.events, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_add_event:
+                Toast.makeText(getActivity(), "Add event", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                return false;
         }
+        return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        new AsyncTask<Void, Exception, List<Person>>() {
+            @Override
+            protected List<Person> doInBackground(Void... params) {
+                try {
+                    return Person.findAll();
+                } catch (IOException | APIException e) {
+                    e.printStackTrace();
+                    publishProgress(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(Exception... values) {
+                // Use progress updates to report errors instead
+                // On production, replace message by 'R.string.error_fetch'
+                Toast.makeText(getActivity(), values[0].getMessage(), Toast.LENGTH_LONG).show();
+            }
+            @Override
+            protected void onPostExecute(List<Person> people) {
+                ((PeopleAdapter) ((RecyclerView) getActivity().findViewById(R.id.swipe_list_view)).getAdapter()).setDataSet(people);
+                ((SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_list_container)).setRefreshing(false);
+            }
+        }.execute();
     }
 }

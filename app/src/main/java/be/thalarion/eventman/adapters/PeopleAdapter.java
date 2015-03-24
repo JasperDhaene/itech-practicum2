@@ -1,4 +1,4 @@
-package be.thalarion.eventman.controllers;
+package be.thalarion.eventman.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -20,10 +20,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
     private List<Person> dataSet;
     private Context context;
-
-    public PeopleAdapter(List<Person> dataSet) {
-        this.dataSet = dataSet;
-    }
 
     public PeopleAdapter(Context context) {
         this.context = context;
@@ -57,7 +53,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public PeopleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.person_list_view, parent, false);
+                .inflate(R.layout.person_card, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -77,6 +73,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if(dataSet == null) return 0;
         return dataSet.size();
     }
 

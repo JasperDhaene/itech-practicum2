@@ -122,9 +122,10 @@ public class API {
      * create - POST a resource
      * @param url
      * @param data
+     * @return JSONObject
      * @throws IOException, APIException
      */
-    public void create(URL url, String data) throws IOException, APIException {
+    public JSONObject create(URL url, String data) throws IOException, APIException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("POST");
@@ -138,16 +139,29 @@ public class API {
         if(conn.getResponseCode() >= 400)
             throw new APIException(conn.getResponseMessage());
 
-        conn.disconnect();
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while((line = br.readLine()) != null){
+            sb.append(line);
+        }
+        br.close();
+
+        try {
+            return new JSONObject(sb.toString());
+        } catch (JSONException e) {
+            throw new APIException(e);
+        } finally {
+            conn.disconnect();
+        }
     }
 
     /**
      * delete - DELETE a resource
      * @param url
-     * @param data
      * @throws IOException, APIException
      */
-    public void delete(URL url, String data) throws IOException, APIException {
+    public void delete(URL url) throws IOException, APIException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("DELETE");
