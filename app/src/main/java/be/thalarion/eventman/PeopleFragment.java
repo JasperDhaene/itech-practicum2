@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +50,15 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
         PeopleAdapter adapter = new PeopleAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+
+        swipeLayout.post(new Runnable(){
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(true);
+                // The refresh listener does not get called for some obscure reason
+                onRefresh();
+            }
+        });
 
         return rootView;
     }

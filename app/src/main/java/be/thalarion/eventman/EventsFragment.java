@@ -47,6 +47,16 @@ public class EventsFragment extends android.support.v4.app.Fragment
         EventsAdapter adapter = new EventsAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
+
+        swipeLayout.post(new Runnable(){
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(true);
+                // The refresh listener does not get called for some obscure reason
+                onRefresh();
+            }
+        });
+
         return rootView;
     }
 
