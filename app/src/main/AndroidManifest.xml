@@ -19,16 +19,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PersonActivity"
-            android:label="@string/title_activity_person" >
+            android:name=".ShowPersonActivity"
+            android:label="@string/title_activity_show_person" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.thalarion.eventman.MainActivity" />
         </activity>
+
         <activity
             android:name=".ShowEventActivity"
             android:label="@string/title_activity_show_event"
             android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="be.thalarion.eventman.MainActivity" />
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="be.thalarion.eventman.MainActivity" />
+
+
+
         </activity>
     </application>
 

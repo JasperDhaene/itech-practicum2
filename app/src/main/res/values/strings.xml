@@ -22,5 +22,7 @@
     <string name="error_fetch">Error fetching data</string>
     <string name="title_activity_person">PersonActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_show_event">ShowEventActivity</string>
+    <string name="title_activity_show_event">Event</string>
+    <string name="title_activity_show_person">Person</string>
+
 </resources>

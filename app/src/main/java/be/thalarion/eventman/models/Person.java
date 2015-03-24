@@ -1,5 +1,8 @@
 package be.thalarion.eventman.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +24,13 @@ import fr.tkeunebr.gravatar.Gravatar;
  * WARNING: this class contains a lot of synchronous networked methods.
  * Updating the model should run in a separate thread.
  */
-public class Person extends Model {
+public class Person extends Model implements Parcelable {
 
-    private String name, email, avatar;
+    private String name, email;
     private Date birthDate;
+
+    public int AVATAR_SIZE_LARGE = 256;
+    public int AVATAR_SIZE_SMALL = 56;
 
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -40,7 +46,7 @@ public class Person extends Model {
         this.name = name;
         this.email = email;
         this.birthDate = birthDate;
-        this.avatar = getGravatar(this.email);
+
 
         JSONObject p = new JSONObject();
         try {
@@ -62,7 +68,7 @@ public class Person extends Model {
         try {
             if(!json.isNull("name")) this.name = json.getString("name");
             if(!json.isNull("email")) this.email = json.getString("email");
-            this.avatar = getGravatar(this.email);
+
             this.resource = new URL(json.getString("url"));
 
             try {
@@ -119,8 +125,11 @@ public class Person extends Model {
     public Date getBirthDate() {
         return this.birthDate;
     }
-    public String getAvatar() {
-        return this.avatar;
+    public String getAvatar(int size) {
+        return Gravatar.init()
+                .with(email)
+                .size(size)
+                .build();
     }
 
     // Setters
@@ -153,14 +162,42 @@ public class Person extends Model {
         } catch (ParseException e) { }
     }
 
-
     /**
-     * Internal methods
+     * Parcelling part
      */
-    private String getGravatar(String email) {
-        return Gravatar.init()
-                .with(email)
-                .size(256)
-                .build();
+    public Person(Parcel in){
+        String[] data = new String[2];
+        Date birthdate;
+
+        in.readStringArray(data);
+        birthdate = new Date(in.readLong());
+        this.name = data[0];
+        this.email= data[1];
+
+        this.birthDate = birthdate;
     }
+
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {this.name,
+                this.email});
+        dest.writeLong(this.birthDate.getTime());
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Person createFromParcel(Parcel in) {
+            return new Person(in);
+        }
+
+        public Person[] newArray(int size) {
+            return new Person[size];
+        }
+    };
+
+
+
+
 }
