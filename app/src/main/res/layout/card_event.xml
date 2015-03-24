@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView android:id="@+id/person_list_view_avatar"
+            <ImageView android:id="@+id/event_list_view_avatar"
                 android:transitionName="avatar"
                 android:layout_margin="8dp"
                 android:layout_width="56dp"
@@ -29,7 +29,8 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/person_list_view_name"
+                    style="@style/CardTitle"
+                    android:id="@+id/event_list_view_title"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginStart="10dp"
@@ -38,13 +39,11 @@
                     android:layout_marginBottom="2dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:maxLines="1"
-                    android:textColor="@color/text"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/person_list_view_email"
+                    style="@style/CardSubTitle"
+                    android:id="@+id/event_list_view_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -52,10 +51,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    android:textColor="@color/secondary"/>
+                    android:layout_marginRight="8dp"/>
 
             </LinearLayout>
 

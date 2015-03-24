@@ -1,4 +1,4 @@
-package be.thalarion.eventman.models;
+package be.thalarion.eventman.api;
 
 /**
  * APIException - API error response

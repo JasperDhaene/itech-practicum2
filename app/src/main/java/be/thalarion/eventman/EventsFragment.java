@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 import be.thalarion.eventman.adapters.EventsAdapter;
-import be.thalarion.eventman.models.APIException;
+import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Event;
 
 /**

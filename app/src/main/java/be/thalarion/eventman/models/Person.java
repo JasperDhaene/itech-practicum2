@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import be.thalarion.eventman.api.API;
+import be.thalarion.eventman.api.APIException;
 import fr.tkeunebr.gravatar.Gravatar;
 
 /**
@@ -32,7 +34,7 @@ public class Person extends Model {
      * @param email
      * @param birthDate
      * @throws IOException
-     * @throws APIException
+     * @throws be.thalarion.eventman.api.APIException
      */
     public Person(String name, String email, Date birthDate) throws IOException, APIException {
         this.name = name;
@@ -58,14 +60,16 @@ public class Person extends Model {
 
     private Person(JSONObject json) throws APIException {
         try {
-            this.name = json.getString("name");
-            this.email = json.getString("email");
+            if(!json.isNull("name")) this.name = json.getString("name");
+            if(!json.isNull("email")) this.email = json.getString("email");
             this.avatar = getGravatar(this.email);
             this.resource = new URL(json.getString("url"));
 
             try {
                 this.birthDate = format.parse(json.getString("birth_date"));
-            } catch (ParseException e) { }
+            } catch (ParseException e) {
+                // Thrown if birth_date is null
+            }
         } catch (JSONException | MalformedURLException e) {
             throw new APIException(e);
         }

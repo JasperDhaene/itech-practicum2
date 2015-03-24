@@ -5,4 +5,30 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="CardTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="CardTitleMissing" parent="CardTitle">
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="CardSubTitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="CardSubTitleMissing" parent="CardSubTitle">
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

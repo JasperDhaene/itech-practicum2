@@ -1,4 +1,4 @@
-package be.thalarion.eventman.models;
+package be.thalarion.eventman.api;
 
 import org.json.JSONException;
 import org.json.JSONObject;

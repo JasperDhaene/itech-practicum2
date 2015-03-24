@@ -6,6 +6,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
+import be.thalarion.eventman.api.API;
+import be.thalarion.eventman.api.APIException;
+
 public abstract class Model {
 
     protected URL resource;
@@ -18,7 +21,10 @@ public abstract class Model {
 
     protected String fetchField(String field) throws IOException, APIException {
         try {
-            return API.getInstance().fetch(resource).getString(field);
+            JSONObject json = API.getInstance().fetch(resource);
+            if(json.isNull(field)) {
+                return null;
+            } else return json.getString(field);
         } catch (JSONException e) {
             throw new APIException(e);
         }

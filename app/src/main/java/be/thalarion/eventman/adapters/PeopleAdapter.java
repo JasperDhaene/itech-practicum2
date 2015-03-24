@@ -53,7 +53,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public PeopleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.person_card, parent, false);
+                .inflate(R.layout.card_person, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -61,8 +61,20 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.name.setText(dataSet.get(position).getName());
-        holder.email.setText(dataSet.get(position).getEmail());
+        if(dataSet.get(position).getName() != null) {
+            holder.name.setTextAppearance(context, R.style.CardTitle);
+            holder.name.setText(dataSet.get(position).getName());
+        } else {
+            holder.name.setTextAppearance(context, R.style.CardTitleMissing);
+            holder.name.setText(R.string.error_text_noname);
+        }
+        if(dataSet.get(position).getEmail() != null) {
+            holder.email.setTextAppearance(context, R.style.CardSubTitle);
+            holder.email.setText(dataSet.get(position).getEmail());
+        } else {
+            holder.email.setTextAppearance(context, R.style.CardSubTitleMissing);
+            holder.email.setText(R.string.error_text_noemail);
+        }
 
         // TODO: find out if/how Picasso handles memory management on a large number of files
         Picasso.with(this.context)

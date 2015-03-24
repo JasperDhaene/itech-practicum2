@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import be.thalarion.eventman.api.API;
+import be.thalarion.eventman.api.APIException;
+
 /**
  * WARNING: this class contains a lot of synchronous networked methods.
  * Updating the model should run in a separate thread.
@@ -32,9 +35,9 @@ public class Event extends Model {
      * @param startDate
      * @param endDate
      * @throws IOException
-     * @throws APIException
+     * @throws be.thalarion.eventman.api.APIException
      */
-    public Event(String title, String description, Date startDate, Date endDate) throws IOException, APIException{
+    public Event(String title, String description, Date startDate, Date endDate) throws IOException, APIException {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -59,14 +62,16 @@ public class Event extends Model {
 
     private Event(JSONObject json) throws APIException {
         try {
-            this.title = json.getString("title");
-            this.description = json.getString("description");
+            if(!json.isNull("title")) this.title = json.getString("title");
+            if(!json.isNull("description")) this.description = json.getString("description");
             this.resource = new URL(json.getString("url"));
 
             try {
                 this.startDate = format.parse(json.getString("start"));
                 this.endDate = format.parse(json.getString("end"));
-            } catch (ParseException e) { }
+            } catch (ParseException e) {
+                // Thrown if either date is null
+            }
         } catch (JSONException | MalformedURLException e) {
             throw new APIException(e);
         }

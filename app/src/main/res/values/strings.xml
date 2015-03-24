@@ -11,8 +11,16 @@
     <string name="action_add_event">Add event</string>
     <string name="action_add_person">Add person</string>
     <string name="action_settings">Settings</string>
+    <string name="action_delete">Delete</string>
+
+    <string name="error_text_noname">No name available</string>
+    <string name="error_text_noemail">No email available</string>
+
+    <string name="error_text_notitle">No title available</string>
+    <string name="error_text_nodescription">No description available</string>
 
     <string name="error_fetch">Error fetching data</string>
     <string name="title_activity_person">PersonActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_show_event">ShowEventActivity</string>
 </resources>

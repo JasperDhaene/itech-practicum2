@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import be.thalarion.eventman.adapters.PeopleAdapter;
-import be.thalarion.eventman.models.APIException;
+import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Person;
 
 

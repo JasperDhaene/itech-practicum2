@@ -53,7 +53,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.event_card, parent, false);
+                .inflate(R.layout.card_event, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -61,10 +61,30 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(dataSet.get(position).getTitle());
-        holder.description.setText(dataSet.get(position).getDescription());
-        String color = stringHash(dataSet.get(position).getTitle());
-        TextDrawable drawable = TextDrawable.builder().buildRect(color, context.getResources().getColor(colorHash(color)));
+        String color;
+        if(dataSet.get(position).getTitle() != null) {
+            holder.title.setTextAppearance(context, R.style.CardTitle);
+            holder.title.setText(dataSet.get(position).getTitle());
+
+            color = stringHash(dataSet.get(position).getTitle());
+        } else {
+            holder.title.setTextAppearance(context, R.style.CardTitleMissing);
+            holder.title.setText(R.string.error_text_notitle);
+
+            color = stringHash("Ev");
+        }
+        if(dataSet.get(position).getDescription() != null) {
+            holder.description.setTextAppearance(context, R.style.CardSubTitle);
+            holder.description.setText(dataSet.get(position).getDescription());
+        } else {
+            holder.description.setTextAppearance(context, R.style.CardSubTitleMissing);
+            holder.description.setText(R.string.error_text_nodescription);
+        }
+
+        TextDrawable drawable = TextDrawable.builder().buildRect(
+                color,
+                context.getResources().getColor(colorHash(color))
+        );
         holder.avatar.setImageDrawable(drawable);
     }
 
