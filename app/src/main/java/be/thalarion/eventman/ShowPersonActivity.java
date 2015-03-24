@@ -6,13 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import be.thalarion.eventman.R;
 import be.thalarion.eventman.models.Person;
-import fr.tkeunebr.gravatar.Gravatar;
 
 public class ShowPersonActivity extends ActionBarActivity {
 
@@ -50,7 +47,7 @@ public class ShowPersonActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_show_person, menu);
+        getMenuInflater().inflate(R.menu.person, menu);
         return true;
     }
 
@@ -60,11 +57,6 @@ public class ShowPersonActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
