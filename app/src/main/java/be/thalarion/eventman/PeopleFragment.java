@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import be.thalarion.eventman.api.PeopleFetchTask;
+import be.thalarion.eventman.controllers.PeopleAdapter;
+import be.thalarion.eventman.controllers.RefreshPeopleTask;
 
 
 /**
@@ -50,7 +51,7 @@ public class PeopleFragment extends android.support.v4.app.Fragment
     public void onRefresh() {
         try {
             URI uri = new URI("http://events.restdesc.org/people");
-            new PeopleFetchTask(getActivity()).execute(uri);
+            new RefreshPeopleTask(getActivity()).execute(uri);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
