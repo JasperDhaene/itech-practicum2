@@ -2,6 +2,7 @@ package be.thalarion.eventman;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -70,6 +71,10 @@ public class EditPersonActivity extends ActionBarActivity {
                 }
                 }
             }).start();
+
+                //TODO: load the peopleFragment here
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
     }
