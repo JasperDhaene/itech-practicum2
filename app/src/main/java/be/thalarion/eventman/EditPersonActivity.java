@@ -100,7 +100,7 @@ public class EditPersonActivity extends ActionBarActivity {
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        if (id == 666) {
+        if (id == 666) {// as seen on http://www.tutorialspoint.com/android/android_datepicker_control.htm
             return new DatePickerDialog(this, myDateListener, year, month, day);
         }
         return null;

@@ -59,6 +59,7 @@ public class Person extends Model implements Parcelable {
                     p.toString()
             );
             this.resource = new URL(response.getString("url"));
+            System.out.println("TODO");
         } catch (JSONException e) {
             throw new APIException(e);
         }

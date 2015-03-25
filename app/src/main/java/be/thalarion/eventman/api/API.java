@@ -162,16 +162,22 @@ public class API {
      * @throws IOException, APIException
      */
     public void delete(URL url) throws IOException, APIException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        if(url==null){
+            System.out.println("potvolkoffie");
+        }else{
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            conn.setDoOutput(true);
+            conn.addRequestProperty("Content-Type", "application/json");
+            conn.connect();
 
-        conn.setRequestMethod("DELETE");
-        conn.setDoOutput(true);
-        conn.addRequestProperty("Content-Type", "application/json");
-        conn.connect();
+            if(conn.getResponseCode() >= 400)
+                throw new APIException(conn.getResponseMessage());
 
-        if(conn.getResponseCode() >= 400)
-            throw new APIException(conn.getResponseMessage());
+            conn.disconnect();
+        }
 
-        conn.disconnect();
+
+
     }
 }
