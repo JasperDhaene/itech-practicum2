@@ -22,7 +22,7 @@ public class API {
     private static API instance;
 
     public static API getInstance() {
-        if(instance == null) init(API_ROOT_URL);
+        if (instance == null) init(API_ROOT_URL);
         return instance;
     }
 
@@ -46,6 +46,7 @@ public class API {
 
     /**
      * resolve - Resolve a resource to a URL
+     *
      * @param resource
      * @return URL
      * @throws IOException, APIException
@@ -62,6 +63,7 @@ public class API {
 
     /**
      * fetch - GET a resource
+     *
      * @param url
      * @return JSONObject
      * @throws IOException, APIException
@@ -74,14 +76,14 @@ public class API {
         conn.addRequestProperty("Accept-Charset", "utf-8");
 
         conn.connect();
-        if(conn.getResponseCode() >= 400)
+        if (conn.getResponseCode() >= 400)
             throw new APIException(conn.getResponseMessage());
 
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder sb = new StringBuilder();
         String line;
         // I ain't been learning Java just to write C, did I?
-        while((line = br.readLine()) != null){
+        while ((line = br.readLine()) != null) {
             sb.append(line);
         }
         br.close();
@@ -97,6 +99,7 @@ public class API {
 
     /**
      * update - PUT/PATCH a resource
+     *
      * @param url
      * @param data
      * @throws IOException, APIException
@@ -112,7 +115,7 @@ public class API {
         bw.write(data);
         bw.close();
 
-        if(conn.getResponseCode() >= 400)
+        if (conn.getResponseCode() >= 400)
             throw new APIException(conn.getResponseMessage());
 
         conn.disconnect();
@@ -120,6 +123,7 @@ public class API {
 
     /**
      * create - POST a resource
+     *
      * @param url
      * @param data
      * @return JSONObject
@@ -136,13 +140,13 @@ public class API {
         bw.write(data);
         bw.close();
 
-        if(conn.getResponseCode() >= 400)
+        if (conn.getResponseCode() >= 400)
             throw new APIException(conn.getResponseMessage());
 
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder sb = new StringBuilder();
         String line;
-        while((line = br.readLine()) != null){
+        while ((line = br.readLine()) != null) {
             sb.append(line);
         }
         br.close();
@@ -158,25 +162,21 @@ public class API {
 
     /**
      * delete - DELETE a resource
+     *
      * @param url
      * @throws IOException, APIException
      */
     public void delete(URL url) throws IOException, APIException {
-        if(url==null){
-            System.out.println("potvolkoffie");
-        }else{
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("DELETE");
-            conn.setDoOutput(true);
-            conn.addRequestProperty("Content-Type", "application/json");
-            conn.connect();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("DELETE");
+        conn.setDoOutput(true);
+        conn.addRequestProperty("Content-Type", "application/json");
+        conn.connect();
 
-            if(conn.getResponseCode() >= 400)
-                throw new APIException(conn.getResponseMessage());
+        if (conn.getResponseCode() >= 400)
+            throw new APIException(conn.getResponseMessage());
 
-            conn.disconnect();
-        }
-
+        conn.disconnect();
 
 
     }

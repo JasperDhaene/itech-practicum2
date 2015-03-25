@@ -29,6 +29,7 @@ public class Person extends Model implements Parcelable {
     private String name, email;
     private Date birthDate;
 
+    //TODO: delete if not used in future versions
     public int AVATAR_SIZE_LARGE = 256;
     public int AVATAR_SIZE_SMALL = 56;
 
@@ -167,15 +168,21 @@ public class Person extends Model implements Parcelable {
      * Parcelling part
      */
     public Person(Parcel in){
-        String[] data = new String[2];
+        String[] data = new String[3];
         Date birthdate;
 
         in.readStringArray(data);
         birthdate = new Date(in.readLong());
         this.name = data[0];
         this.email= data[1];
+        try {
+            this.resource = new URL(data[2]);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         this.birthDate = birthdate;
+
     }
 
     public int describeContents(){
@@ -184,8 +191,7 @@ public class Person extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.name,
-                this.email});
+        dest.writeStringArray(new String[] {this.name, this.email,this.resource.toString()});
         dest.writeLong(this.birthDate.getTime());
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

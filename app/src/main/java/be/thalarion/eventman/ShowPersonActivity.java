@@ -78,7 +78,6 @@ public class ShowPersonActivity extends ActionBarActivity {
                 new Thread(new Runnable() {
                     public void run() {
                         try {
-                            System.out.println("trala");
                             ((Model) person).destroy();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -88,12 +87,9 @@ public class ShowPersonActivity extends ActionBarActivity {
                     }
                 }).start();
 
-                //TODO first: load the peopleFragment here
+                //TODO: load the peopleFragment here
                 intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
-
-
-
 
                 break;
             default:
