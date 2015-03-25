@@ -1,9 +1,11 @@
 package be.thalarion.eventman;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,7 +73,10 @@ public class PeopleFragment extends android.support.v4.app.Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_add_event:
-                Toast.makeText(getActivity(), "Add event", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(this.getActivity(),EditPersonActivity.class);
+                startActivity(intent);
+
                 break;
             default:
                 return false;

@@ -24,5 +24,17 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_show_event">Event</string>
     <string name="title_activity_show_person">Person</string>
+    <string name="title_activity_edit_person">EditPersonActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="lbl_name">Name</string>
+    <string name="hint_name">John Doe</string>
+    <string name="lbl_email">Email</string>
+    <string name="hint_email">john.doe@example.com</string>
+    <string name="lbl_birthdate">Birthdate</string>
+    <string name="hint_birthdate">Select your birthdate</string>
+    <string name="btn_save">Save</string>
+
+
 
 </resources>
