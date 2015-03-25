@@ -30,6 +30,9 @@ public abstract class Model {
         }
     }
 
+    //TODO: dit zal een request doen per veld dat aangepast word. Eerst dacht ik dat update() hiervoor was, maar deze wordt nooit gebruikt.
+    // Misschien nog veranderen zodat je een persoon in 1 keer kunt updaten
+
     protected void updateField(String field, String value) throws IOException, APIException {
         JSONObject data = new JSONObject();
         try {

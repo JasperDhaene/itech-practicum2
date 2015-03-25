@@ -25,7 +25,6 @@ import be.thalarion.eventman.models.Person;
 
 public class EditPersonActivity extends ActionBarActivity {
 
-    private DatePicker datePicker;
     private Calendar calendar;
     private TextView dateView;
     private int year, month, day;
@@ -41,6 +40,16 @@ public class EditPersonActivity extends ActionBarActivity {
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month+1, day);
+
+        Bundle data = getIntent().getExtras();
+        if(data.getString("action").equals("edit")){
+            Person person = (Person) data.getParcelable("person");
+
+
+            ((EditText) findViewById(R.id.fld_name)).setText(person.getName());
+            ((EditText) findViewById(R.id.fld_email)).setText(person.getEmail());
+            ((EditText) findViewById(R.id.fld_birthdate)).setText(person.getBirthDate().toString());
+        }
 
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +70,18 @@ public class EditPersonActivity extends ActionBarActivity {
                         date = new Date();
                     }
 
-                    if(name!=null) {
-                        Person person = new Person(name, email, date);
+                    Bundle data = getIntent().getExtras();
+                    if(data!=null) {
+                        if(data.getString("action").equals("edit")){
+                            Person person = (Person) data.getParcelable("person");
+                            person.setBirthDate(date);
+                            person.setEmail(email);
+                            person.setName(name);
+                        }else{
+                            if(name!=null) {
+                                new Person(name, email, date);
+                            }
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

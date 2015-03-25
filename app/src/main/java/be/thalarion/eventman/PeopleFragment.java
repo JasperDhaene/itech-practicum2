@@ -66,15 +66,16 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events, menu);
+        inflater.inflate(R.menu.people, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
-            case R.id.action_add_event:
+            case R.id.action_add_person:
 
                 Intent intent = new Intent(this.getActivity(),EditPersonActivity.class);
+                intent.putExtra("action","new");
                 startActivity(intent);
 
                 break;
