@@ -7,10 +7,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.models.Person;
 
 
 public class EditPersonActivity extends ActionBarActivity {
@@ -19,6 +28,7 @@ public class EditPersonActivity extends ActionBarActivity {
     private Calendar calendar;
     private TextView dateView;
     private int year, month, day;
+    private Button btn_save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,38 @@ public class EditPersonActivity extends ActionBarActivity {
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month+1, day);
+
+        btn_save = (Button) findViewById(R.id.btn_save);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //TODO: gemakkelijk dan een AsyncTask, right?
+            new Thread(new Runnable() {
+                        public void run() {
+                try {
+                    String name = ((EditText) findViewById(R.id.fld_name)).getText().toString();
+                    String email = ((EditText) findViewById(R.id.fld_email)).getText().toString();
+                    String birthdate = ((EditText) findViewById(R.id.fld_birthdate)).getText().toString();
+                    SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+                    Date date;
+                    try {
+                        date = format.parse(birthdate);
+                    } catch (ParseException e) {
+                        date = new Date();
+                    }
+
+                    if(name!=null) {
+                        Person person = new Person(name, email, date);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (APIException e) {
+                    e.printStackTrace();
+                }
+                }
+            }).start();
+            }
+        });
     }
 
 
