@@ -42,6 +42,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         public TextView title;
         public TextView description;
         public ImageView avatar;
+        public Event event;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -55,6 +56,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), ShowEventActivity.class);
+            intent.putExtra("event",this.event );
             v.getContext().startActivity(intent);
         }
     }
@@ -97,6 +99,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                 context.getResources().getColor(Event.colorFromString(color))
         );
         holder.avatar.setImageDrawable(drawable);
+
+        holder.event = dataSet.get(position);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

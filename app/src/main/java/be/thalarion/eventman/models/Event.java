@@ -1,5 +1,8 @@
 package be.thalarion.eventman.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +24,7 @@ import be.thalarion.eventman.api.APIException;
  * WARNING: this class contains a lot of synchronous networked methods.
  * Updating the model should run in a separate thread.
  */
-public class Event extends Model {
+public class Event extends Model implements Parcelable {
 
     private String title, description;
     private Date startDate, endDate;
@@ -200,4 +203,47 @@ public class Event extends Model {
         code = code % colors.length;
         return colors[code];
     }
+
+    /**
+     * Parcelling part
+     */
+    public Event(Parcel in){
+        String[] data = new String[3];
+        Date startdate, enddate;
+
+        in.readStringArray(data);
+        startdate = new Date(in.readLong());
+        enddate = new Date(in.readLong());
+        this.title = data[0];
+        this.description= data[1];
+        try {
+            this.resource = new URL(data[2]);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        this.startDate = startdate;
+        this.endDate = enddate;
+
+    }
+
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {this.title, this.description,this.resource.toString()});
+        dest.writeLong(this.startDate.getTime());
+        dest.writeLong(this.endDate.getTime());
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

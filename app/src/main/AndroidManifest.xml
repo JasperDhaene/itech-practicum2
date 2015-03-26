@@ -26,16 +26,16 @@
                 android:value="be.thalarion.eventman.MainActivity" />
         </activity>
         <activity
+            android:name=".EditPersonActivity"
+            android:label="@string/title_activity_edit_person" >
+        </activity>
+        <activity
             android:name=".ShowEventActivity"
             android:label="@string/title_activity_show_event"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.thalarion.eventman.MainActivity" />
-        </activity>
-        <activity
-            android:name=".EditPersonActivity"
-            android:label="@string/title_activity_edit_person" >
         </activity>
     </application>
 

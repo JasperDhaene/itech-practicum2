@@ -1,68 +1,64 @@
 package be.thalarion.eventman;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.amulyakhare.textdrawable.TextDrawable;
+import android.widget.TextView;
 
 import be.thalarion.eventman.models.Event;
 
+
 public class ShowEventActivity extends ActionBarActivity {
+
+    public TextView title;
+    public TextView description;
+    public TextView startDate;
+    public TextView endDate;
+    public ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
+    public Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_event);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ShowEventFragment())
-                    .commit();
-        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Bundle data = getIntent().getExtras();
+        this.event = (Event) data.getParcelable("event");
+
+        this.title = ((TextView) this.findViewById(R.id.event_title));
+        this.description = ((TextView) this.findViewById(R.id.event_description));
+        this.startDate = ((TextView) this.findViewById(R.id.event_startdate));
+        this.endDate = ((TextView) this.findViewById(R.id.event_enddate));
+        //TODO: banner invullen
+
+        this.title.setText(event.getTitle());
+        this.description.setText(event.getDescription());
+        this.startDate.setText(event.getStartDate().toString());
+        this.endDate.setText(event.getEndDate().toString());
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.event, menu);
+        getMenuInflater().inflate(R.menu.menu_show_event, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case android.R.id.home:
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-                break;
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class ShowEventFragment extends Fragment {
-
-        public ShowEventFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_show_event, container, false);
-
-            TextDrawable drawable = TextDrawable.builder().buildRect("String", getResources().getColor(Event.colorFromString("String")));
-            ((ImageView) rootView.findViewById(R.id.event_show_view_banner)).setImageDrawable(drawable);
-            return rootView;
-        }
     }
 }
