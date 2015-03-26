@@ -234,8 +234,13 @@ public class Event extends Model implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[] {this.title, this.description,this.resource.toString()});
-        dest.writeLong(this.startDate.getTime());
-        dest.writeLong(this.endDate.getTime());
+
+        //TODO: eigenlijk zou dit toch niet mogelijk moeten zijn? Je kunt toch geen event posten zonder begin/einddatum?
+        if(this.startDate!=null) dest.writeLong(this.startDate.getTime());
+        else dest.writeLong(new Date().getTime());
+
+        if(this.endDate!=null) dest.writeLong(this.endDate.getTime());
+        else dest.writeLong(new Date().getTime());
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Event createFromParcel(Parcel in) {
