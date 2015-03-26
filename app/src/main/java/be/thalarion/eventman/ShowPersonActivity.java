@@ -68,7 +68,6 @@ public class ShowPersonActivity extends ActionBarActivity {
         Intent intent;
         switch(item.getItemId()){
             case R.id.action_edit_person:
-                //TODO:change this so that it goes to 'edit' instead of 'new' person
                 intent = new Intent(this,EditPersonActivity.class);
                 intent.putExtra("person",this.person );
                 intent.putExtra("action","edit");

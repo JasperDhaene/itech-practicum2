@@ -1,5 +1,6 @@
 package be.thalarion.eventman;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -69,7 +70,9 @@ public class EventsFragment extends android.support.v4.app.Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_add_event:
-                Toast.makeText(getActivity(), "Add event", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this.getActivity(),EditEventActivity.class);
+                intent.putExtra("action","new");
+                startActivity(intent);
                 break;
             default:
                 return false;

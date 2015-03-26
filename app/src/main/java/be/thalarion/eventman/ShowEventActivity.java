@@ -37,6 +37,7 @@ public class ShowEventActivity extends ActionBarActivity {
         this.startDate = ((TextView) this.findViewById(R.id.event_startdate));
         this.endDate = ((TextView) this.findViewById(R.id.event_enddate));
         //TODO: banner invullen
+        //TODO first: crasht als je een event wilt openen die geen discription heeft.
 
         this.title.setText(event.getTitle());
         this.description.setText(event.getDescription());
@@ -57,7 +58,6 @@ public class ShowEventActivity extends ActionBarActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_edit_event:
-                //TODO:change this so that it goes to 'edit' instead of 'new' person
                 intent = new Intent(this, EditEventActivity.class);
                 intent.putExtra("event", this.event);
                 intent.putExtra("action", "edit");
