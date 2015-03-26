@@ -34,6 +34,7 @@
     <string name="lbl_birthdate">Birthdate</string>
     <string name="hint_birthdate">Select your birthdate</string>
     <string name="btn_save">Save</string>
+    <string name="title_activity_edit_event">EditEventActivity</string>
 
 
 
