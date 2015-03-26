@@ -20,11 +20,10 @@
     <string name="error_text_nodescription">No description available</string>
 
     <string name="error_fetch">Error fetching data</string>
-    <string name="title_activity_person">PersonActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_show_event">Event</string>
     <string name="title_activity_show_person">Person</string>
-    <string name="title_activity_edit_person">EditPersonActivity</string>
+    <string name="title_activity_edit_person">Edit Person</string>
     <string name="action_settings">Settings</string>
 
     <string name="lbl_name">Name</string>
@@ -34,7 +33,16 @@
     <string name="lbl_birthdate">Birthdate</string>
     <string name="hint_birthdate">Select your birthdate</string>
     <string name="btn_save">Save</string>
-    <string name="title_activity_edit_event">EditEventActivity</string>
+
+    <string name="lbl_title">Title</string>
+    <string name="hint_title">party</string>
+    <string name="lbl_description">Description</string>
+    <string name="hint_description">super duper party!</string>
+    <string name="lbl_startdate">Start date</string>
+    <string name="hint_startdate">Select the start date</string>
+    <string name="lbl_enddate">End date</string>
+    <string name="hint_enddate">Select the start date</string>
+    <string name="title_activity_edit_event">Edit Event</string>
 
 
 

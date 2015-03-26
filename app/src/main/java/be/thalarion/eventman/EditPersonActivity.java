@@ -55,14 +55,14 @@ public class EditPersonActivity extends ActionBarActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //TODO: gemakkelijk dan een AsyncTask, right?
+            //TODO: gemakkelijker dan een AsyncTask, right?
             new Thread(new Runnable() {
                         public void run() {
                 try {
                     String name = ((EditText) findViewById(R.id.fld_name)).getText().toString();
                     String email = ((EditText) findViewById(R.id.fld_email)).getText().toString();
                     String birthdate = ((EditText) findViewById(R.id.fld_birthdate)).getText().toString();
-                    SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                     Date date;
                     try {
                         date = format.parse(birthdate);
