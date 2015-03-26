@@ -16,13 +16,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_name"
+                android:id="@+id/label_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lbl_name"/>
+                android:text="@string/name"/>
 
             <EditText
-                android:id="@+id/fld_name"
+                android:id="@+id/field_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_name"/>
@@ -34,13 +34,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_email"
+                android:id="@+id/label_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lbl_email"/>
+                android:text="@string/email"/>
 
             <EditText
-                android:id="@+id/fld_email"
+                android:id="@+id/field_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"/>
@@ -52,26 +52,26 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_birthdate"
+                android:id="@+id/label_birth_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lbl_birthdate"/>
+                android:text="@string/birth_date"/>
 
             <EditText
-                android:id="@+id/fld_birthdate"
+                android:id="@+id/field_birth_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_birthdate"
+                android:hint="@string/hint_birth_date"
                 android:onClick="setDate"
                 android:focusable="false"/>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_save"
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_save"/>
+            android:text="@string/save"/>
 
     </LinearLayout>
 

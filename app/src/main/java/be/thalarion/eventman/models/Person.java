@@ -1,11 +1,10 @@
 package be.thalarion.eventman.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,16 +23,19 @@ import fr.tkeunebr.gravatar.Gravatar;
  * WARNING: this class contains a lot of synchronous networked methods.
  * Updating the model should run in a separate thread.
  */
-public class Person extends Model implements Parcelable {
 
-    private String name, email;
-    private Date birthDate;
+@Parcel
+public class Person extends Model {
 
-    //TODO: delete if not used in future versions
-    public int AVATAR_SIZE_LARGE = 256;
-    public int AVATAR_SIZE_SMALL = 56;
+    // Keep public modifier for parcelling library
+    public String name, email;
+    public Date birthDate;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    @Transient
+    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+    // Empty constructor required for parcelling library
+    public Person() { }
 
     /**
      * Person - create a new person
@@ -127,6 +129,8 @@ public class Person extends Model implements Parcelable {
         return this.birthDate;
     }
     public String getAvatar(int size) {
+        String email = "dummy@email.be";
+        if(this.email != null) email = this.email;
         return Gravatar.init()
                 .with(email)
                 .size(size)
@@ -162,48 +166,5 @@ public class Person extends Model implements Parcelable {
             this.birthDate = format.parse(fetchField("birth_date"));
         } catch (ParseException e) { }
     }
-
-    /**
-     * Parcelling part
-     */
-    public Person(Parcel in){
-        String[] data = new String[3];
-        Date birthdate;
-
-        in.readStringArray(data);
-        birthdate = new Date(in.readLong());
-        this.name = data[0];
-        this.email= data[1];
-        try {
-            this.resource = new URL(data[2]);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        this.birthDate = birthdate;
-
-    }
-
-    public int describeContents(){
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.name, this.email,this.resource.toString()});
-        dest.writeLong(this.birthDate.getTime());
-    }
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Person createFromParcel(Parcel in) {
-            return new Person(in);
-        }
-
-        public Person[] newArray(int size) {
-            return new Person[size];
-        }
-    };
-
-
-
 
 }

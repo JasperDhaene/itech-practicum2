@@ -22,6 +22,7 @@ import java.util.List;
 
 import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
 
@@ -74,8 +75,8 @@ public class PeopleFragment extends android.support.v4.app.Fragment
         switch(item.getItemId()){
             case R.id.action_add_person:
 
-                Intent intent = new Intent(this.getActivity(),EditPersonActivity.class);
-                intent.putExtra("action","new");
+                Intent intent = new Intent(this.getActivity(), EditPersonActivity.class);
+                intent.putExtra("action", Model.ACTION.NEW);
                 startActivity(intent);
 
                 break;

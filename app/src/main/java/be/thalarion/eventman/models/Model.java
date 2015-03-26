@@ -2,6 +2,8 @@ package be.thalarion.eventman.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.io.IOException;
 import java.net.URL;
@@ -10,6 +12,10 @@ import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 
 public abstract class Model {
+
+    public static enum ACTION {
+        EDIT, NEW
+    }
 
     protected URL resource;
 

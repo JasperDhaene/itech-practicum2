@@ -21,8 +21,8 @@
             <ImageView android:id="@+id/person_list_view_avatar"
                 android:transitionName="avatar"
                 android:layout_margin="8dp"
-                android:layout_width="56dp"
-                android:layout_height="56dp"/>
+                android:layout_width="@dimen/avatar_small"
+                android:layout_height="@dimen/avatar_small"/>
 
             <LinearLayout android:orientation="vertical"
                 android:layout_width="match_parent"

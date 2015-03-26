@@ -2,7 +2,9 @@ package be.thalarion.eventman;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -20,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
 
@@ -28,71 +34,77 @@ public class EditPersonActivity extends ActionBarActivity {
     private Calendar calendar;
     private TextView dateView;
     private int year, month, day;
-    private Button btn_save;
+    private Button save;
+
+    private Person p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_person);
-        dateView = (TextView) findViewById(R.id.fld_birthdate);
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month+1, day);
+
+        this.dateView = (TextView) findViewById(R.id.field_birth_date);
+        this.calendar = Calendar.getInstance();
+        this.year = calendar.get(Calendar.YEAR);
+        this.month = calendar.get(Calendar.MONTH);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, (month + 1), day);
 
         Bundle data = getIntent().getExtras();
-        if(data.getString("action").equals("edit")){
-            Person person = (Person) data.getParcelable("person");
+        if(data.getSerializable("action") == Model.ACTION.EDIT){
+            this.p = Parcels.unwrap(data.getParcelable("person"));
 
-
-            ((EditText) findViewById(R.id.fld_name)).setText(person.getName());
-            ((EditText) findViewById(R.id.fld_email)).setText(person.getEmail());
-            ((EditText) findViewById(R.id.fld_birthdate)).setText(person.getBirthDate().toString());
+            // TODO: null-catching
+            ((EditText) findViewById(R.id.field_name)).setText(p.getName());
+            ((EditText) findViewById(R.id.field_email)).setText(p.getEmail());
+            ((EditText) findViewById(R.id.field_birth_date)).setText(Person.format.format(p.getBirthDate()));
         }
 
-        btn_save = (Button) findViewById(R.id.btn_save);
-        btn_save.setOnClickListener(new View.OnClickListener() {
+        save = (Button) findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //TODO: gemakkelijker dan een AsyncTask, right?
-            new Thread(new Runnable() {
-                        public void run() {
-                try {
-                    String name = ((EditText) findViewById(R.id.fld_name)).getText().toString();
-                    String email = ((EditText) findViewById(R.id.fld_email)).getText().toString();
-                    String birthdate = ((EditText) findViewById(R.id.fld_birthdate)).getText().toString();
-                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date;
-                    try {
-                        date = format.parse(birthdate);
-                    } catch (ParseException e) {
-                        date = new Date();
+                new AsyncTask<Void, Void, Exception>() {
+
+                    @Override
+                    protected Exception doInBackground(Void... params) {
+                        String name = ((EditText) findViewById(R.id.field_name)).getText().toString();
+                        String email = ((EditText) findViewById(R.id.field_email)).getText().toString();
+                        Date birthDate;
+                        try {
+                            birthDate = Person.format.parse(((EditText) findViewById(R.id.field_birth_date)).getText().toString());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            return e;
+                        }
+
+                        try {
+                            if (p != null) {
+                                // Update existing person
+                                p.setName(name);
+                                p.setEmail(email);
+                                p.setBirthDate(birthDate);
+                            } else {
+                                // Create new person
+                                p = new Person(name, email, birthDate);
+                            }
+                        } catch (IOException | APIException e) {
+                            e.printStackTrace();
+                            return e;
+                        }
+                            return null;
                     }
 
-                    Bundle data = getIntent().getExtras();
-                    if(data!=null) {
-                        if(data.getString("action").equals("edit")){
-                            Person person = (Person) data.getParcelable("person");
-                            person.setBirthDate(date);
-                            person.setEmail(email);
-                            person.setName(name);
-                        }else{
-                            if(name!=null) {
-                                new Person(name, email, date);
-                            }
-                        }
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if(e == null) {
+                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                        } else Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (APIException e) {
-                    e.printStackTrace();
-                }
-                }
-            }).start();
+                }.execute();
 
                 //TODO: load the peopleFragment here
-                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -140,7 +152,10 @@ public class EditPersonActivity extends ActionBarActivity {
     };
 
     private void showDate(int year, int month, int day) {
+        // Kom, kom, we gaan hier met ISO8601 werken hé.
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
+        dateView.setText(new StringBuilder().append(year).append("-")
+                .append(month).append("-").append(day));
     }
 }
