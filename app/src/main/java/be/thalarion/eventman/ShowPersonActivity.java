@@ -1,12 +1,14 @@
 package be.thalarion.eventman;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,11 +23,9 @@ import be.thalarion.eventman.models.Person;
 
 public class ShowPersonActivity extends ActionBarActivity {
 
-    public TextView name;
-    public TextView email;
-    public TextView birthDate;
-    public ImageView avatar;
-    public Person person;
+    private TextView name, email, birthDate;
+    private ImageView avatar;
+    private Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +72,27 @@ public class ShowPersonActivity extends ActionBarActivity {
                 break;
             case R.id.action_discard_person:
 
-                new Thread(new Runnable() {
-                    public void run() {
+                new AsyncTask<Void, Void, Exception>() {
+                    @Override
+                    protected Exception doInBackground(Void... params) {
                         try {
                             person.destroy();
-                        } catch (IOException e) {
+                            // Allow garbage collection
+                            person = null;
+                        } catch (APIException | IOException e) {
                             e.printStackTrace();
-                        } catch (APIException e) {
-                            e.printStackTrace();
+                            return e;
                         }
+                        return null;
                     }
-                }).start();
+
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if(e == null) {
+                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }.execute();
 
                 //TODO: load the peopleFragment here
                 intent = new Intent(this, MainActivity.class);

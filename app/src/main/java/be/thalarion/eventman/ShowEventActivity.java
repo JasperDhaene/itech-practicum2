@@ -1,12 +1,16 @@
 package be.thalarion.eventman;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.parceler.Parcels;
 
 import java.io.IOException;
 
@@ -17,12 +21,9 @@ import be.thalarion.eventman.models.Model;
 
 public class ShowEventActivity extends ActionBarActivity {
 
-    public TextView title;
-    public TextView description;
-    public TextView startDate;
-    public TextView endDate;
-    public ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
-    public Event event;
+    private TextView title, description, startDate, endDate;
+    private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
+    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +31,15 @@ public class ShowEventActivity extends ActionBarActivity {
         setContentView(R.layout.activity_show_event);
 
         Bundle data = getIntent().getExtras();
-        this.event = (Event) data.getParcelable("event");
+        this.event = Parcels.unwrap(data.getParcelable("event"));
 
         this.title = ((TextView) this.findViewById(R.id.event_title));
         this.description = ((TextView) this.findViewById(R.id.event_description));
         this.startDate = ((TextView) this.findViewById(R.id.event_startdate));
         this.endDate = ((TextView) this.findViewById(R.id.event_enddate));
         //TODO: banner invullen
-        //TODO first: crasht als je een event wilt openen die geen discription heeft.
 
+        // TODO: null-catching
         this.title.setText(event.getTitle());
         this.description.setText(event.getDescription());
         this.startDate.setText(event.getStartDate().toString());
@@ -58,25 +59,37 @@ public class ShowEventActivity extends ActionBarActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_edit_event:
+
                 intent = new Intent(this, EditEventActivity.class);
-                intent.putExtra("event", this.event);
-                intent.putExtra("action", "edit");
+                intent.putExtra("event", Parcels.wrap(this.event));
+                intent.putExtra("action", Model.ACTION.EDIT);
                 startActivity(intent);
 
                 break;
             case R.id.action_discard_event:
 
-                new Thread(new Runnable() {
-                    public void run() {
+                // TODO: DestroyModelTask
+                new AsyncTask<Void, Void, Exception>() {
+                    @Override
+                    protected Exception doInBackground(Void... params) {
                         try {
-                            ((Model) event).destroy();
-                        } catch (IOException e) {
+                            event.destroy();
+                            // Allow garbage collection
+                            event = null;
+                        } catch (APIException | IOException e) {
                             e.printStackTrace();
-                        } catch (APIException e) {
-                            e.printStackTrace();
+                            return e;
                         }
+                        return null;
                     }
-                }).start();
+
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if(e == null) {
+                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }.execute();
 
                 //TODO: load the eventFragment here
                 intent = new Intent(this, MainActivity.class);

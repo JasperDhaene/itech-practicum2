@@ -3,6 +3,7 @@ package be.thalarion.eventman;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -21,6 +25,7 @@ import java.util.Date;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Event;
+import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
 
@@ -29,74 +34,79 @@ public class EditEventActivity extends ActionBarActivity {
     private Calendar calendar;
     private TextView startDateView,endDateView;
     private int year, month, day;
-    private Button btn_save;
+    private Button save;
+
+    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
-        startDateView = (TextView) findViewById(R.id.fld_startdate);
-        endDateView = (TextView) findViewById(R.id.fld_enddate);
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month + 1, day);
+
+        this.startDateView = (TextView) findViewById(R.id.field_start_date);
+        this.endDateView = (TextView) findViewById(R.id.field_end_date);
+        this.calendar = Calendar.getInstance();
+        this.year = calendar.get(Calendar.YEAR);
+        this.month = calendar.get(Calendar.MONTH);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, (month + 1), day);
 
         Bundle data = getIntent().getExtras();
-        if (data.getString("action").equals("edit")) {
-            Event event = (Event) data.getParcelable("event");
+        if (data.get("action") == Model.ACTION.EDIT) {
+            this.event = Parcels.unwrap(data.getParcelable("event"));
 
-
-            ((EditText) findViewById(R.id.fld_title)).setText(event.getTitle());
-            ((EditText) findViewById(R.id.fld_description)).setText(event.getDescription());
-            ((EditText) findViewById(R.id.fld_startdate)).setText(event.getStartDate().toString());
-            ((EditText) findViewById(R.id.fld_enddate)).setText(event.getEndDate().toString());
+            // TODO: null-catching
+            ((EditText) findViewById(R.id.field_title)).setText(event.getTitle());
+            ((EditText) findViewById(R.id.field_description)).setText(event.getDescription());
+            ((EditText) findViewById(R.id.field_start_date)).setText(Event.format.format(event.getStartDate()));
+            ((EditText) findViewById(R.id.field_end_date)).setText(Event.format.format(event.getEndDate()));
         }
 
-        btn_save = (Button) findViewById(R.id.btn_save);
-        btn_save.setOnClickListener(new View.OnClickListener() {
+        save = (Button) findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: gemakkelijk dan een AsyncTask, right?
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                            String title = ((EditText) findViewById(R.id.fld_title)).getText().toString();
-                            String description = ((EditText) findViewById(R.id.fld_description)).getText().toString();
-                            String dateString = ((EditText) findViewById(R.id.fld_startdate)).getText().toString();
-                            Date startdate = null;
-                            Date enddate = null;
-                            try {
-                                startdate = format.parse(dateString);
-                                dateString = ((EditText) findViewById(R.id.fld_enddate)).getText().toString();
-                                enddate = format.parse(dateString);
-                            } catch (ParseException e) {
-                                e.printStackTrace();//TODO: give more meaningful errors. With Toast preferably. I <3 Toast!
-                            }
+                new AsyncTask<Void, Void, Exception>() {
 
-                            Bundle data = getIntent().getExtras();
-                            if (data != null) {
-                                if (data.getString("action").equals("edit")) {
-                                    Event event = (Event) data.getParcelable("event");
-                                    event.setTitle(title);
-                                    event.setDescription(description);
-                                    event.setStartDate(startdate);
-                                    event.setEndDate(enddate);
-                                } else {
-                                    if (title != "") {
-                                        new Event(title, description, startdate, enddate);
-                                    }
-                                }
-                            }
-                        } catch (IOException e) {
+                    @Override
+                    protected Exception doInBackground(Void... params) {
+                        String title = ((EditText) findViewById(R.id.field_title)).getText().toString();
+                        String description = ((EditText) findViewById(R.id.field_description)).getText().toString();
+                        Date startDate, endDate;
+                        try {
+                            startDate = Event.format.parse(((EditText) findViewById(R.id.field_start_date)).getText().toString());
+                            endDate = Event.format.parse(((EditText) findViewById(R.id.field_end_date)).getText().toString());
+                        } catch (ParseException e) {
                             e.printStackTrace();
-                        } catch (APIException e) {
-                            e.printStackTrace();
+                            return e;
                         }
+
+                        try {
+                            if (event != null) {
+                                // Update existing event
+                                event.setTitle(title);
+                                event.setDescription(description);
+                                event.setStartDate(startDate);
+                                event.setEndDate(endDate);
+                            } else {
+                                // Create new event
+                                event = new Event(title, description, startDate, endDate);
+                            }
+                        } catch (IOException | APIException e) {
+                            e.printStackTrace();
+                            return e;
+                        }
+                        return null;
                     }
-                }).start();
+
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if (e == null) {
+                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }.execute();
 
                 //TODO: load the eventFragment here
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);

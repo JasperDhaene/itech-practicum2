@@ -16,13 +16,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_title"
+                android:id="@+id/label_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title"/>
 
             <EditText
-                android:id="@+id/fld_title"
+                android:id="@+id/field_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_title"/>
@@ -34,13 +34,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_description"
+                android:id="@+id/label_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description"/>
 
             <EditText
-                android:id="@+id/fld_description"
+                android:id="@+id/field_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_description"/>
@@ -52,13 +52,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_startdate"
+                android:id="@+id/label_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/start_date"/>
 
             <EditText
-                android:id="@+id/fld_startdate"
+                android:id="@+id/field_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_start_date"
@@ -72,13 +72,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lbl_enddate"
+                android:id="@+id/label_end_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end_date"/>
 
             <EditText
-                android:id="@+id/fld_enddate"
+                android:id="@+id/field_end_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_end_date"
@@ -88,7 +88,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_save"
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"/>

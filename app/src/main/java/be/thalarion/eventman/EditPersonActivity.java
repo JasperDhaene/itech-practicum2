@@ -2,7 +2,6 @@ package be.thalarion.eventman;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -20,7 +19,6 @@ import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,7 +34,7 @@ public class EditPersonActivity extends ActionBarActivity {
     private int year, month, day;
     private Button save;
 
-    private Person p;
+    private Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +49,13 @@ public class EditPersonActivity extends ActionBarActivity {
         showDate(year, (month + 1), day);
 
         Bundle data = getIntent().getExtras();
-        if(data.getSerializable("action") == Model.ACTION.EDIT){
-            this.p = Parcels.unwrap(data.getParcelable("person"));
+        if(data.get("action") == Model.ACTION.EDIT){
+            this.person = Parcels.unwrap(data.getParcelable("person"));
 
             // TODO: null-catching
-            ((EditText) findViewById(R.id.field_name)).setText(p.getName());
-            ((EditText) findViewById(R.id.field_email)).setText(p.getEmail());
-            ((EditText) findViewById(R.id.field_birth_date)).setText(Person.format.format(p.getBirthDate()));
+            ((EditText) findViewById(R.id.field_name)).setText(person.getName());
+            ((EditText) findViewById(R.id.field_email)).setText(person.getEmail());
+            ((EditText) findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
         }
 
         save = (Button) findViewById(R.id.save);
@@ -79,14 +77,14 @@ public class EditPersonActivity extends ActionBarActivity {
                         }
 
                         try {
-                            if (p != null) {
+                            if (person != null) {
                                 // Update existing person
-                                p.setName(name);
-                                p.setEmail(email);
-                                p.setBirthDate(birthDate);
+                                person.setName(name);
+                                person.setEmail(email);
+                                person.setBirthDate(birthDate);
                             } else {
                                 // Create new person
-                                p = new Person(name, email, birthDate);
+                                person = new Person(name, email, birthDate);
                             }
                         } catch (IOException | APIException e) {
                             e.printStackTrace();
@@ -108,26 +106,6 @@ public class EditPersonActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.person_edit, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //TODO: No options in menubar for now. Make this a dummy method?
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void setDate(View view){
@@ -152,9 +130,6 @@ public class EditPersonActivity extends ActionBarActivity {
     };
 
     private void showDate(int year, int month, int day) {
-        // Kom, kom, we gaan hier met ISO8601 werken hé.
-        dateView.setText(new StringBuilder().append(day).append("/")
-                .append(month).append("/").append(year));
         dateView.setText(new StringBuilder().append(year).append("-")
                 .append(month).append("-").append(day));
     }

@@ -21,6 +21,7 @@ import java.util.List;
 import be.thalarion.eventman.adapters.EventsAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Event;
+import be.thalarion.eventman.models.Model;
 
 /**
  * Events layout contains a list of all events
@@ -70,9 +71,11 @@ public class EventsFragment extends android.support.v4.app.Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_add_event:
+
                 Intent intent = new Intent(this.getActivity(),EditEventActivity.class);
-                intent.putExtra("action","new");
+                intent.putExtra("action", Model.ACTION.NEW);
                 startActivity(intent);
+
                 break;
             default:
                 return false;

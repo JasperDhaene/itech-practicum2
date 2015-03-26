@@ -1,11 +1,10 @@
 package be.thalarion.eventman.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,13 +23,19 @@ import be.thalarion.eventman.api.APIException;
  * WARNING: this class contains a lot of synchronous networked methods.
  * Updating the model should run in a separate thread.
  */
-public class Event extends Model implements Parcelable {
 
-    private String title, description;
-    private Date startDate, endDate;
+@Parcel
+public class Event extends Model {
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    //                                                      2014-08-04 T 18:00:00.000 Z
+    // Keep public modifier for parcelling library
+    public String title, description;
+    public Date startDate, endDate;
+
+    @Transient
+    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+    // Empty constructor required for parcelling library
+    public Event() { }
 
     /**
      * Event - create a new event
@@ -204,51 +209,4 @@ public class Event extends Model implements Parcelable {
         return colors[code];
     }
 
-    /**
-     * Parcelling part
-     */
-    public Event(Parcel in){
-        String[] data = new String[3];
-        Date startdate, enddate;
-
-        in.readStringArray(data);
-        startdate = new Date(in.readLong());
-        enddate = new Date(in.readLong());
-        this.title = data[0];
-        this.description= data[1];
-        try {
-            this.resource = new URL(data[2]);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        this.startDate = startdate;
-        this.endDate = enddate;
-
-    }
-
-    public int describeContents(){
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.title, this.description,this.resource.toString()});
-
-        //TODO: eigenlijk zou dit toch niet mogelijk moeten zijn? Je kunt toch geen event posten zonder begin/einddatum?
-        if(this.startDate!=null) dest.writeLong(this.startDate.getTime());
-        else dest.writeLong(new Date().getTime());
-
-        if(this.endDate!=null) dest.writeLong(this.endDate.getTime());
-        else dest.writeLong(new Date().getTime());
-    }
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
-
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
 }
