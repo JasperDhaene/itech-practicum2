@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -78,7 +80,6 @@ public class PeopleFragment extends android.support.v4.app.Fragment
                 Intent intent = new Intent(this.getActivity(), EditPersonActivity.class);
                 intent.putExtra("action", Model.ACTION.NEW);
                 startActivity(intent);
-
                 break;
             default:
                 return false;

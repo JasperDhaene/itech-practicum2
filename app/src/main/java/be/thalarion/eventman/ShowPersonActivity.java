@@ -2,15 +2,11 @@ package be.thalarion.eventman;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -21,44 +17,20 @@ import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
-public class ShowPersonActivity extends ActionBarActivity {
 
-    private TextView name, email, birthDate;
-    private ImageView avatar;
-    private Person person;
+public class ShowPersonActivity extends ActionBarActivity {
+    Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_person);
 
-        this.name = ((TextView) this.findViewById(R.id.person_name));
-        this.email = ((TextView) this.findViewById(R.id.person_email));
-        this.birthDate = ((TextView) this.findViewById(R.id.person_birthdate));
-        this.avatar = ((ImageView) this.findViewById(R.id.person_avatar));
-
-        Bundle data = getIntent().getExtras();
-        this.person = Parcels.unwrap(data.getParcelable("person"));
-
-        if(this.person.getName() != null)
-            this.name.setText(person.getName());
-        else
-            this.name.setText(R.string.error_text_noname);
-
-        if(this.person.getEmail() != null)
-            this.email.setText(person.getEmail());
-        else
-            this.email.setText(R.string.error_text_noemail);
-
-        if(this.person.getBirthDate() != null)
-            this.birthDate.setText(Person.format.format(person.getBirthDate()));
-        else
-            this.birthDate.setText(R.string.error_text_nobirthdate);
-
-        Picasso.with(this)
-                .load(this.person.getAvatar(getResources().getDimensionPixelSize(R.dimen.avatar_large)))
-                .into(avatar);
-
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new ShowPersonFragment())
+                    .commit();
+        }
     }
 
 
@@ -71,30 +43,31 @@ public class ShowPersonActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Bundle data = getIntent().getExtras();
+        person = Parcels.unwrap(data.getParcelable("person"));
+
         Intent intent;
         switch(item.getItemId()){
             case R.id.action_edit_person:
                 intent = new Intent(this,EditPersonActivity.class);
-                intent.putExtra("person", Parcels.wrap(this.person));
+                intent.putExtra("person", Parcels.wrap(person));
                 intent.putExtra("action", Model.ACTION.EDIT);
                 startActivity(intent);
-
                 break;
             case R.id.action_discard_person:
-
                 new AsyncTask<Void, Void, Exception>() {
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
                             person.destroy();
-                            // Allow garbage collection
+// Allow garbage collection
                             person = null;
                         } catch (APIException | IOException e) {
                             return e;
                         }
                         return null;
                     }
-
                     @Override
                     protected void onPostExecute(Exception e) {
                         if(e == null) {
@@ -102,11 +75,9 @@ public class ShowPersonActivity extends ActionBarActivity {
                         } else ErrorHandler.announce(getApplicationContext(), e);
                     }
                 }.execute();
-
-                //TODO: load the peopleFragment here
+//TODO: load the peopleFragment here
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-
                 break;
             default:
                 return false;
