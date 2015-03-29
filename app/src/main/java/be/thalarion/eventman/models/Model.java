@@ -3,6 +3,7 @@ package be.thalarion.eventman.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.transfuse.annotations.Resource;
 
 import java.io.IOException;
 import java.net.URL;
@@ -102,6 +103,18 @@ public abstract class Model {
         }
 
         return models;
+    }
+
+    /**
+     * same - Compare a resource URL against a model
+     * @param resource
+     * @return
+     */
+    public boolean same(URL resource) {
+        if(resource == this.resource)
+            return true;
+
+        return false;
     }
 
     /**

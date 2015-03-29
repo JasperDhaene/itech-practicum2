@@ -73,17 +73,8 @@ public class Event extends Model {
                 JSONArray list = json.getJSONObject("confirmations").getJSONArray("list");
                 for(int i = 0; i < list.length(); i++) {
                     if(list.getJSONObject(i).getBoolean("going")) {
-                        final URL url = new URL(list.getJSONObject(i).getJSONObject("person").getString("url"));
-                        Person p = Cache.find(Person.class, new Comparator<Person>(){
-                            @Override
-                            public boolean equals(Object o) {
-                                if(((Person) o).resource.equals(url))
-                                    return true;
-                                return false;
-                            }
-                            @Override
-                            public int compare(Person lhs, Person rhs) { return 0; }
-                        });
+                        Person p = Cache.find(Person.class,
+                                new URL(list.getJSONObject(i).getJSONObject("person").getString("url")));
                         if(p != null) this.confirmations.add(p);
                     }
                 }

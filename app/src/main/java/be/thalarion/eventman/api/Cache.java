@@ -2,6 +2,7 @@ package be.thalarion.eventman.api;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +22,11 @@ public class Cache {
         return (List<T>) cache.get(model);
     }
 
-    public static <T extends Model> T find(Class<T> model, Comparator<T> comparator) throws IOException, APIException {
+    public static <T extends Model> T find(Class<T> model, URL resource) throws IOException, APIException {
         List<T> list = findAll(model);
 
         for(T t: list)
-            if(comparator.equals(t))
+            if(t.same(resource))
                 return t;
 
         return null;
