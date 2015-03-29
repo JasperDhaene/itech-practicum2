@@ -1,16 +1,25 @@
 package be.thalarion.eventman.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.Cache;
 
 @Parcel
 public class Event extends Model {
@@ -18,6 +27,7 @@ public class Event extends Model {
     // Keep public modifier for parcelling library
     public String title, description;
     public Date startDate, endDate;
+    public Set<Person> confirmations;
 
     @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -36,6 +46,7 @@ public class Event extends Model {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.confirmations = new HashSet<>();
     }
 
     /**
@@ -59,7 +70,27 @@ public class Event extends Model {
 
             if(!json.isNull("end_date")) this.endDate = this.format.parse(json.getString("end_date"));
             else this.endDate = null;
-        } catch (JSONException | ParseException e) {
+
+            if(!json.isNull("confirmations")) {
+                JSONArray list = json.getJSONObject("confirmations").getJSONArray("list");
+                for(int i = 0; i < list.length(); i++) {
+                    if(list.getJSONObject(i).getBoolean("going")) {
+                        final URL url = new URL(list.getJSONObject(i).getJSONObject("person").getString("url"));
+                        Person p = Cache.find(Person.class, new Comparator<Person>(){
+                            @Override
+                            public boolean equals(Object o) {
+                                if(((Person) o).resource.equals(url))
+                                    return true;
+                                return false;
+                            }
+                            @Override
+                            public int compare(Person lhs, Person rhs) { return 0; }
+                        });
+                        if(p != null) this.confirmations.add(p);
+                    }
+                }
+            }
+        } catch (IOException | JSONException | ParseException e) {
             throw new APIException(e);
         }
     }
@@ -72,6 +103,18 @@ public class Event extends Model {
             event.put("description", this.description);
             event.put("start_date", this.format.format(this.startDate));
             event.put("end_date", this.format.format(this.endDate));
+
+            JSONArray confirmations = new JSONArray();
+            for(Person p: this.confirmations) {
+                JSONObject pers = new JSONObject();
+                pers.put("going", true);
+                pers.put("person",
+                        new JSONObject()
+                            .put("name", p.getName())
+                            .put("url", p.resource));
+            }
+            JSONObject confirm = new JSONObject().put("list", confirmations);
+            event.put("confirmations", confirm);
         } catch (JSONException e) {
             throw new APIException(e);
         }
