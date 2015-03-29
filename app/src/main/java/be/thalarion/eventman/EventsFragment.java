@@ -13,13 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 
 import be.thalarion.eventman.adapters.EventsAdapter;
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
@@ -56,7 +56,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
             public void run() {
                 swipeLayout.setRefreshing(true);
                 // The refresh listener does not get called for some obscure reason
-                onRefresh();
+                refresh();
             }
         });
 
@@ -86,11 +86,20 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onRefresh() {
+        // onRefresh is called only when the user is explicitly swiping
+        Cache.invalidate(Event.class);
+        refresh();
+    }
+
+    /**
+     * refresh - Refresh models from cache
+     */
+    public void refresh() {
         new AsyncTask<Void, Exception, List<Event>>() {
             @Override
             protected List<Event> doInBackground(Void... params) {
                 try {
-                    return Model.findAll(Event.class);
+                    return Cache.findAll(Event.class);
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }

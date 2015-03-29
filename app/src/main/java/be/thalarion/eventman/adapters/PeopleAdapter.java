@@ -1,10 +1,7 @@
 package be.thalarion.eventman.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,18 +12,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowPersonActivity;
-import be.thalarion.eventman.api.API;
-import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
@@ -99,10 +91,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         }
 
         // TODO: find out if/how Picasso handles memory management on a large number of files
-        Picasso.with(this.context)
-                .load(dataSet.get(position)
-                .getAvatar(context.getResources().getDimensionPixelSize(R.dimen.avatar_small)))
-                .into(holder.avatar);
+//        Picasso.with(this.context)
+//                .load(dataSet.get(position)
+//                .getAvatar(context.getResources().getDimensionPixelSize(R.dimen.avatar_small)))
+//                .into(holder.avatar);
 
         holder.person = dataSet.get(position);
     }

@@ -1,21 +1,14 @@
 package be.thalarion.eventman.models;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 import fr.tkeunebr.gravatar.Gravatar;
 

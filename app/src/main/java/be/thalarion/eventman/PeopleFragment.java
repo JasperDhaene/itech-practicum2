@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,14 +14,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 
 import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
@@ -59,7 +59,7 @@ public class PeopleFragment extends android.support.v4.app.Fragment
             public void run() {
                 swipeLayout.setRefreshing(true);
                 // The refresh listener does not get called for some obscure reason
-                onRefresh();
+                refresh();
             }
         });
 
@@ -89,11 +89,20 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onRefresh() {
+        // onRefresh is called only when the user is explicitly swiping
+        Cache.invalidate(Person.class);
+        refresh();
+    }
+
+    /**
+     * refresh - Refresh models from cache
+     */
+    public void refresh() {
         new AsyncTask<Void, Exception, List<Person>>() {
             @Override
             protected List<Person> doInBackground(Void... params) {
                 try {
-                    return Model.findAll(Person.class);
+                    return Cache.findAll(Person.class);
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
