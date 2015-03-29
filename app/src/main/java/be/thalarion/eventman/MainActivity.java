@@ -33,12 +33,12 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
 
         setAccountListener(this);
 
-//        MaterialAccount account = new MaterialAccount(this.getResources(),
-//                "Florian Dejonckheere",
-//                "florian@floriandejonckheere.be",
-//                R.drawable.gravatar,
-//                R.drawable.material);
-//        this.addAccount(account);
+        MaterialAccount account = new MaterialAccount(this.getResources(),
+                "Florian Dejonckheere",
+                "florian@floriandejonckheere.be",
+                R.drawable.gravatar,
+                R.drawable.material);
+        this.addAccount(account);
     }
 
     @Override

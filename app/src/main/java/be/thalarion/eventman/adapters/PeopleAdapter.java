@@ -1,7 +1,6 @@
 package be.thalarion.eventman.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,14 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.parceler.Parcels;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.ShowPersonActivity;
+import be.thalarion.eventman.ShowPersonFragment;
 import be.thalarion.eventman.models.Person;
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
 
@@ -54,9 +54,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(itemView.getContext(), ShowPersonActivity.class);
-            intent.putExtra("person", Parcels.wrap(this.person));
-            itemView.getContext().startActivity(intent);
+            ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
+                    new ShowPersonFragment(this.person),
+                    v.getResources().getString(R.string.title_show_person)
+                    );
         }
     }
 

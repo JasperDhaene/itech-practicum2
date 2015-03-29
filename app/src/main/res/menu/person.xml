@@ -13,4 +13,9 @@
         android:icon="@drawable/ic_action_discard"
         app:showAsAction="always" />
 
+    <item android:id="@+id/action_login"
+        android:title="@string/action_login"
+        android:icon="@drawable/ic_action_social_person"
+        app:showAsAction="always" />
+
 </menu>
