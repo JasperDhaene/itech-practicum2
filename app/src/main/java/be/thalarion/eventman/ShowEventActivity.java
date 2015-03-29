@@ -78,7 +78,6 @@ public class ShowEventActivity extends ActionBarActivity {
                             // Allow garbage collection
                             event = null;
                         } catch (APIException | IOException e) {
-                            e.printStackTrace();
                             return e;
                         }
                         return null;

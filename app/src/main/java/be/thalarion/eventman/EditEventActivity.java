@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
@@ -78,23 +79,23 @@ public class EditEventActivity extends ActionBarActivity {
                             startDate = Event.format.parse(((EditText) findViewById(R.id.field_start_date)).getText().toString());
                             endDate = Event.format.parse(((EditText) findViewById(R.id.field_end_date)).getText().toString());
                         } catch (ParseException e) {
-                            e.printStackTrace();
                             return e;
                         }
 
+                        if (event != null) {
+                            // Update existing event
+                            event.setTitle(title);
+                            event.setDescription(description);
+                            event.setStartDate(startDate);
+                            event.setEndDate(endDate);
+                        } else {
+                            // Create new event
+                            event = new Event(title, description, startDate, endDate);
+                        }
+
                         try {
-                            if (event != null) {
-                                // Update existing event
-                                event.setTitle(title);
-                                event.setDescription(description);
-                                event.setStartDate(startDate);
-                                event.setEndDate(endDate);
-                            } else {
-                                // Create new event
-                                event = new Event(title, description, startDate, endDate);
-                            }
+                            event.syncModelToNetwork();
                         } catch (IOException | APIException e) {
-                            e.printStackTrace();
                             return e;
                         }
                         return null;

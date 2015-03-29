@@ -81,7 +81,6 @@ public class ShowPersonActivity extends ActionBarActivity {
                             // Allow garbage collection
                             person = null;
                         } catch (APIException | IOException e) {
-                            e.printStackTrace();
                             return e;
                         }
                         return null;

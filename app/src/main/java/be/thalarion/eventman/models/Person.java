@@ -19,11 +19,6 @@ import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 import fr.tkeunebr.gravatar.Gravatar;
 
-/**
- * WARNING: this class contains a lot of synchronous networked methods.
- * Updating the model should run in a separate thread.
- */
-
 @Parcel
 public class Person extends Model {
 
@@ -32,9 +27,8 @@ public class Person extends Model {
     public Date birthDate;
 
     @Transient
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-    // Empty constructor required for parcelling library
     public Person() { }
 
     /**
@@ -42,83 +36,49 @@ public class Person extends Model {
      * @param name
      * @param email
      * @param birthDate
-     * @throws IOException
-     * @throws be.thalarion.eventman.api.APIException
      */
-    public Person(String name, String email, Date birthDate) throws IOException, APIException {
+    public Person(String name, String email, Date birthDate) {
         this.name = name;
         this.email = email;
         this.birthDate = birthDate;
-
-
-        JSONObject p = new JSONObject();
-        try {
-            p.put("name", this.name);
-            p.put("email", this.email);
-            p.put("birth_date", format.format(this.birthDate));
-
-            JSONObject response = API.getInstance().create(
-                    API.getInstance().resolve("people"),
-                    p.toString()
-            );
-            this.resource = new URL(response.getString("url"));
-        } catch (JSONException e) {
-            throw new APIException(e);
-        }
-    }
-
-    private Person(JSONObject json) throws APIException {
-        try {
-            if(!json.isNull("name")) this.name = json.getString("name");
-            if(!json.isNull("email")) this.email = json.getString("email");
-
-            this.resource = new URL(json.getString("url"));
-
-            try {
-                this.birthDate = format.parse(json.getString("birth_date"));
-            } catch (ParseException e) {
-                // Thrown if birth_date is null
-            }
-        } catch (JSONException | MalformedURLException e) {
-            throw new APIException(e);
-        }
     }
 
     /**
      * API Methods
      *
      */
+    @Override
+    protected String getCanonicalName() { return "people"; }
 
-    public static List<Person> findAll() throws IOException, APIException {
-        List<Person> people = new ArrayList<>();
-
-        URL resourceRoot = null;
+    @Override
+    protected void fromJSON(JSONObject json) throws APIException {
         try {
-            resourceRoot = API.getInstance().resolve("people");
-        } catch (Exception e) {
+            if(!json.isNull("name")) this.name = json.getString("name");
+            else this.name = null;
+
+            if(!json.isNull("email")) this.email = json.getString("email");
+            else this.email = null;
+
+            if(!json.isNull("birth_date")) this.birthDate = this.format.parse(json.getString("birth_date"));
+            else this.birthDate = null;
+        } catch (JSONException | ParseException e) {
             throw new APIException(e);
         }
+    }
 
-        // Fetch /people
-        JSONObject json = API.getInstance().fetch(resourceRoot);
+    @Override
+    protected JSONObject toJSON() throws APIException {
+        JSONObject person = new JSONObject();
         try {
-            JSONArray jsonArray = json.getJSONArray("people");
-            for(int i = 0; i < jsonArray.length(); i++) {
-                // Fetch /people/{id}
-                JSONObject jsonPerson = API.getInstance().fetch(
-                        new URL(
-                                jsonArray.getJSONObject(i).getString("url")
-                        ));
-                people.add(new Person(jsonPerson));
-            }
+            person.put("name", this.name);
+            person.put("email", this.email);
+            person.put("birth_date", this.format.format(this.birthDate));
         } catch (JSONException e) {
             throw new APIException(e);
         }
-
-        return people;
+        return person;
     }
 
-    // Getters
     public String getName() {
         return this.name;
     }
@@ -137,34 +97,14 @@ public class Person extends Model {
                 .build();
     }
 
-    // Setters
-    public void setName(String name) throws IOException, APIException {
+    public void setName(String name) {
         this.name = name;
-        updateField("name", this.name);
     }
-
-    public void setEmail(String email) throws IOException, APIException {
+    public void setEmail(String email) {
         this.email = email;
-        updateField("email", this.email);
     }
-
-    public void setBirthDate(Date birthDate) throws IOException, APIException {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
-        updateField("birth_date", format.format(this.birthDate));
-    }
-
-    /**
-     * update - Sync model from network to memory
-     * @throws IOException
-     * @throws APIException
-     */
-    public void update() throws IOException, APIException {
-        this.name = fetchField("name");
-        this.email = fetchField("email");
-
-        try {
-            this.birthDate = format.parse(fetchField("birth_date"));
-        } catch (ParseException e) { }
     }
 
 }

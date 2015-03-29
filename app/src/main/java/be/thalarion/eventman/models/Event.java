@@ -19,11 +19,6 @@ import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 
-/**
- * WARNING: this class contains a lot of synchronous networked methods.
- * Updating the model should run in a separate thread.
- */
-
 @Parcel
 public class Event extends Model {
 
@@ -32,9 +27,8 @@ public class Event extends Model {
     public Date startDate, endDate;
 
     @Transient
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    // Empty constructor required for parcelling library
     public Event() { }
 
     /**
@@ -43,84 +37,54 @@ public class Event extends Model {
      * @param description
      * @param startDate
      * @param endDate
-     * @throws IOException
-     * @throws be.thalarion.eventman.api.APIException
      */
-    public Event(String title, String description, Date startDate, Date endDate) throws IOException, APIException {
+    public Event(String title, String description, Date startDate, Date endDate) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-
-        JSONObject event = new JSONObject();
-        try {
-            event.put("title", this.title);
-            event.put("description", this.description);
-            event.put("start", format.format(this.startDate));
-            event.put("end", format.format(this.endDate));
-
-            JSONObject response = API.getInstance().create(
-                    API.getInstance().resolve("events"),
-                    event.toString()
-            );
-            this.resource = new URL(response.getString("url"));
-        } catch (JSONException e) {
-            throw new APIException(e);
-        }
     }
-
-    private Event(JSONObject json) throws APIException {
-        try {
-            if(!json.isNull("title")) this.title = json.getString("title");
-            if(!json.isNull("description")) this.description = json.getString("description");
-            this.resource = new URL(json.getString("url"));
-
-            try {
-                this.startDate = format.parse(json.getString("start"));
-                this.endDate = format.parse(json.getString("end"));
-            } catch (ParseException e) {
-                // Thrown if either date is null
-            }
-        } catch (JSONException | MalformedURLException e) {
-            throw new APIException(e);
-        }
-    }
-
 
     /**
      * API Methods
      *
      */
-    public static List<Event> findAll() throws IOException, APIException {
-        List<Event> events = new ArrayList<>();
+    @Override
+    protected String getCanonicalName() { return "events"; }
 
-        URL resourceRoot = null;
+    @Override
+    protected void fromJSON(JSONObject json) throws APIException {
         try {
-            resourceRoot = API.getInstance().resolve("events");
-        } catch (Exception e) {
+            if(!json.isNull("title")) this.title= json.getString("title");
+            else this.title = null;
+
+            if(!json.isNull("description")) this.description = json.getString("description");
+            else this.description = null;
+
+            if(!json.isNull("start_date")) this.startDate = this.format.parse(json.getString("start_date"));
+            else this.startDate = null;
+
+            if(!json.isNull("end_date")) this.endDate = this.format.parse(json.getString("end_date"));
+            else this.endDate = null;
+        } catch (JSONException | ParseException e) {
             throw new APIException(e);
         }
+    }
 
-        // Fetch /events
-        JSONObject json = API.getInstance().fetch(resourceRoot);
+    @Override
+    protected JSONObject toJSON() throws APIException {
+        JSONObject event = new JSONObject();
         try {
-            JSONArray jsonArray = json.getJSONArray("events");
-            for(int i = 0; i < jsonArray.length(); i++) {
-                // Fetch /events/{id}
-                JSONObject jsonEvent = API.getInstance().fetch(
-                        new URL(
-                                jsonArray.getJSONObject(i).getString("url")
-                        ));
-                events.add(new Event(jsonEvent));
-            }
+            event.put("title", this.title);
+            event.put("description", this.description);
+            event.put("start_date", this.format.format(this.startDate));
+            event.put("end_date", this.format.format(this.endDate));
         } catch (JSONException e) {
             throw new APIException(e);
         }
-
-        return events;
+        return event;
     }
 
-    // Getters
     public String getTitle() {
         return title;
     }
@@ -134,40 +98,17 @@ public class Event extends Model {
         return endDate;
     }
 
-    // Setters
-    public void setTitle(String title) throws IOException, APIException {
+    public void setTitle(String title) {
         this.title = title;
-        updateField("title", this.title);
     }
-
-    public void setDescription(String description) throws IOException, APIException {
+    public void setDescription(String description) {
         this.description = description;
-        updateField("description", this.description);
     }
-
-    public void setStartDate(Date startDate) throws IOException, APIException {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
-        updateField("start", format.format(this.startDate));
     }
-
-    public void setEndDate(Date endDate) throws IOException, APIException {
-        this.startDate = endDate;
-        updateField("end", format.format(this.endDate));
-    }
-
-    /**
-     * update - Sync model from network to memory
-     * @throws IOException
-     * @throws APIException
-     */
-    public void update() throws IOException, APIException {
-        this.title = fetchField("title");
-        this.description = fetchField("description");
-
-        try {
-            this.startDate = format.parse(fetchField("start"));
-            this.startDate = format.parse(fetchField("end"));
-        } catch (ParseException e) { }
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     /**

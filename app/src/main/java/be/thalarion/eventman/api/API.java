@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class API {
 
@@ -30,7 +32,7 @@ public class API {
         try {
             instance = new API(new URL(root));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,6 +41,8 @@ public class API {
      */
 
     private URL root;
+    // Model URL mapping cache
+    private Map<String, URL> mapping;
 
     private API(URL root) {
         this.root = root;
@@ -52,10 +56,17 @@ public class API {
      * @throws IOException, APIException
      */
     public URL resolve(String resource) throws IOException, APIException {
+        if(this.mapping == null) this.mapping = new HashMap<>();
+
+        if(this.mapping.containsKey(resource))
+            return this.mapping.get(resource);
+
         JSONObject json = fetch(root);
 
         try {
-            return new URL(json.getString(resource));
+            URL url = new URL(json.getString(resource));
+            this.mapping.put(resource, url);
+            return url;
         } catch (JSONException e) {
             throw new APIException(e);
         }

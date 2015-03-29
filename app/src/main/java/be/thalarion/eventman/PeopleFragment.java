@@ -93,9 +93,8 @@ public class PeopleFragment extends android.support.v4.app.Fragment
             @Override
             protected List<Person> doInBackground(Void... params) {
                 try {
-                    return Person.findAll();
+                    return Model.findAll(Person.class);
                 } catch (IOException | APIException e) {
-                    e.printStackTrace();
                     publishProgress(e);
                 }
                 return null;

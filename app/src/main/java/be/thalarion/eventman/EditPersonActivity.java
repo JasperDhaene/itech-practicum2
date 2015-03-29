@@ -73,25 +73,25 @@ public class EditPersonActivity extends ActionBarActivity {
                         try {
                             birthDate = Person.format.parse(((EditText) findViewById(R.id.field_birth_date)).getText().toString());
                         } catch (ParseException e) {
-                            e.printStackTrace();
                             return e;
                         }
 
+                        if (person != null) {
+                            // Update existing person
+                            person.setName(name);
+                            person.setEmail(email);
+                            person.setBirthDate(birthDate);
+                        } else {
+                            // Create new person
+                            person = new Person(name, email, birthDate);
+                        }
+
                         try {
-                            if (person != null) {
-                                // Update existing person
-                                person.setName(name);
-                                person.setEmail(email);
-                                person.setBirthDate(birthDate);
-                            } else {
-                                // Create new person
-                                person = new Person(name, email, birthDate);
-                            }
+                            person.syncModelToNetwork();
                         } catch (IOException | APIException e) {
-                            e.printStackTrace();
                             return e;
                         }
-                            return null;
+                        return null;
                     }
 
                     @Override

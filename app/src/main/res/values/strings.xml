@@ -49,6 +49,10 @@
 
     <string name="save">Save</string>
 
+    <!-- Error handling -->
+    <string name="error_unknown">An error occurred while processing your request</string>
+    <string name="error_io">I/O Error</string>
+    <string name="error_api">API Error</string>
 
 
 </resources>

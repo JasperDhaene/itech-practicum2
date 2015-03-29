@@ -90,9 +90,8 @@ public class EventsFragment extends android.support.v4.app.Fragment
             @Override
             protected List<Event> doInBackground(Void... params) {
                 try {
-                    return Event.findAll();
+                    return Model.findAll(Event.class);
                 } catch (IOException | APIException e) {
-                    e.printStackTrace();
                     publishProgress(e);
                 }
                 return null;
