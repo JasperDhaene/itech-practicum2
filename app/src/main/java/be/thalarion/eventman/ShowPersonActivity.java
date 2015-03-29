@@ -32,21 +32,31 @@ public class ShowPersonActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_person);
 
-        Bundle data = getIntent().getExtras();
-        this.person = Parcels.unwrap(data.getParcelable("person"));
-
         this.name = ((TextView) this.findViewById(R.id.person_name));
         this.email = ((TextView) this.findViewById(R.id.person_email));
         this.birthDate = ((TextView) this.findViewById(R.id.person_birthdate));
         this.avatar = ((ImageView) this.findViewById(R.id.person_avatar));
 
-        // TODO: null-catching
-        this.name.setText(person.getName());
-        this.email.setText(person.getEmail());
-        this.birthDate.setText(person.getBirthDate().toString());
+        Bundle data = getIntent().getExtras();
+        this.person = Parcels.unwrap(data.getParcelable("person"));
+
+        if(this.person.getName() != null)
+            this.name.setText(person.getName());
+        else
+            this.name.setText(R.string.error_text_noname);
+
+        if(this.person.getEmail() != null)
+            this.email.setText(person.getEmail());
+        else
+            this.email.setText(R.string.error_text_noemail);
+
+        if(this.person.getBirthDate() != null)
+            this.birthDate.setText(Person.format.format(person.getBirthDate()));
+        else
+            this.birthDate.setText(R.string.error_text_nobirthdate);
 
         Picasso.with(this)
-                .load(person.getAvatar(getResources().getDimensionPixelSize(R.dimen.avatar_large)))
+                .load(this.person.getAvatar(getResources().getDimensionPixelSize(R.dimen.avatar_large)))
                 .into(avatar);
 
     }

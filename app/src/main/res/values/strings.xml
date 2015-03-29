@@ -15,9 +15,12 @@
 
     <string name="error_text_noname">No name available</string>
     <string name="error_text_noemail">No email available</string>
+    <string name="error_text_nobirthdate">No birth date available</string>
 
     <string name="error_text_notitle">No title available</string>
     <string name="error_text_nodescription">No description available</string>
+    <string name="error_text_nostartdate">No start date available</string>
+    <string name="error_text_noenddate">No end date available</string>
 
     <string name="error_text_fetch">Error fetching data</string>
 

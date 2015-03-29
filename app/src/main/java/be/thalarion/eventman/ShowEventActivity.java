@@ -40,13 +40,26 @@ public class ShowEventActivity extends ActionBarActivity {
         this.endDate = ((TextView) this.findViewById(R.id.event_enddate));
         //TODO: banner invullen
 
-        // TODO: null-catching
-        this.title.setText(event.getTitle());
-        this.description.setText(event.getDescription());
-        this.startDate.setText(event.getStartDate().toString());
-        this.endDate.setText(event.getEndDate().toString());
-    }
+        if(this.event.getTitle() != null)
+            this.title.setText(event.getTitle());
+        else
+            this.title.setText(R.string.error_text_notitle);
 
+        if(this.event.getDescription() != null)
+            this.description.setText(event.getDescription());
+        else
+            this.title.setText(R.string.error_text_nodescription);
+
+        if(this.event.getStartDate() != null)
+            this.startDate.setText(Event.format.format(event.getStartDate()));
+        else
+            this.startDate.setText(R.string.error_text_nostartdate);
+
+        if(this.event.getEndDate() != null)
+            this.endDate.setText(Event.format.format(event.getEndDate()));
+        else
+            this.endDate.setText(R.string.error_text_noenddate);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

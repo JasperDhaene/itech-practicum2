@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
+            android:theme="@style/NavigationDrawerTheme"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,11 @@
         </activity>
         <activity
             android:name=".EditPersonActivity"
-            android:label="@string/title_activity_edit_person" >
+            android:label="@string/title_activity_edit_person"
+            android:parentActivityName=".ShowPersonActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.thalarion.eventman.ShowPersonActivity" />
         </activity>
         <activity
             android:name=".ShowEventActivity"
@@ -40,14 +45,11 @@
         <activity
             android:name=".EditEventActivity"
             android:label="@string/title_activity_edit_event"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".ShowEventActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="be.thalarion.eventman.MainActivity" />
+                android:value="be.thalarion.eventman.ShowEventActivity" />
         </activity>
-        <activity
-            android:name="NavigationDrawer"
-            android:theme="@style/NavigationDrawerTheme" />
     </application>
 
 </manifest>

@@ -1,11 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
     </style>
 
-    <style name="CardTitle">
+    <!-- Card themes -->
+
+    <style name="Title">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:maxLines">1</item>
@@ -14,11 +16,11 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="CardTitleMissing" parent="CardTitle">
+    <style name="TitleMissing" parent="Title">
         <item name="android:textStyle">italic</item>
     </style>
 
-    <style name="CardSubTitle">
+    <style name="SubTitle">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/secondary</item>
         <item name="android:maxLines">1</item>
@@ -27,13 +29,14 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="CardSubTitleMissing" parent="CardSubTitle">
+    <style name="SubTitleMissing" parent="SubTitle">
         <item name="android:textStyle">italic</item>
     </style>
 
-    <style name="NavigationDrawerTheme" parent="MaterialNavigationDrawerTheme">
-        <item name="colorPrimary">@color/md_lime_500</item>
-        <item name="colorPrimaryDark">@color/md_lime_800</item>
+    <!-- Navigation drawer theme -->
+    <style name="NavigationDrawerTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_light_green</item>
+        <item name="colorPrimaryDark">@color/md_light_green_800</item>
         <item name="colorAccent">#FFFFFF</item>
         <item name="rippleBackport">true</item>
         <item name="singleAccount">true</item>

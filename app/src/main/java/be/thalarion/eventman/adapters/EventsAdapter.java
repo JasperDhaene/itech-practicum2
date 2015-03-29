@@ -75,21 +75,21 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         String color;
         if(dataSet.get(position).getTitle() != null) {
-            holder.title.setTextAppearance(context, R.style.CardTitle);
+            holder.title.setTextAppearance(context, R.style.Title);
             holder.title.setText(dataSet.get(position).getTitle());
 
             color = Event.hash(dataSet.get(position).getTitle());
         } else {
-            holder.title.setTextAppearance(context, R.style.CardTitleMissing);
+            holder.title.setTextAppearance(context, R.style.TitleMissing);
             holder.title.setText(R.string.error_text_notitle);
 
             color = Event.hash("Ev");
         }
         if(dataSet.get(position).getDescription() != null) {
-            holder.description.setTextAppearance(context, R.style.CardSubTitle);
+            holder.description.setTextAppearance(context, R.style.SubTitle);
             holder.description.setText(dataSet.get(position).getDescription());
         } else {
-            holder.description.setTextAppearance(context, R.style.CardSubTitleMissing);
+            holder.description.setTextAppearance(context, R.style.SubTitleMissing);
             holder.description.setText(R.string.error_text_nodescription);
         }
 

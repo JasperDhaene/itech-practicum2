@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -74,25 +76,25 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if(dataSet.get(position).getName() != null) {
-            holder.name.setTextAppearance(context, R.style.CardTitle);
+            holder.name.setTextAppearance(context, R.style.Title);
             holder.name.setText(dataSet.get(position).getName());
         } else {
-            holder.name.setTextAppearance(context, R.style.CardTitleMissing);
+            holder.name.setTextAppearance(context, R.style.TitleMissing);
             holder.name.setText(R.string.error_text_noname);
         }
         if(dataSet.get(position).getEmail() != null) {
-            holder.email.setTextAppearance(context, R.style.CardSubTitle);
+            holder.email.setTextAppearance(context, R.style.SubTitle);
             holder.email.setText(dataSet.get(position).getEmail());
         } else {
-            holder.email.setTextAppearance(context, R.style.CardSubTitleMissing);
+            holder.email.setTextAppearance(context, R.style.SubTitleMissing);
             holder.email.setText(R.string.error_text_noemail);
         }
 
         // TODO: find out if/how Picasso handles memory management on a large number of files
-//        Picasso.with(this.context)
-//                .load(dataSet.get(position)
-//                .getAvatar(context.getResources().getDimensionPixelSize(R.dimen.avatar_small)))
-//                .into(holder.avatar);
+        Picasso.with(this.context)
+                .load(dataSet.get(position)
+                .getAvatar(context.getResources().getDimensionPixelSize(R.dimen.avatar_small)))
+                .into(holder.avatar);
 
         holder.person = dataSet.get(position);
     }
