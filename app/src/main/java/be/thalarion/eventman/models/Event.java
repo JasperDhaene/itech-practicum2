@@ -10,11 +10,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import be.thalarion.eventman.R;
@@ -122,16 +120,19 @@ public class Event extends Model {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
     public String getDescription() {
-        return description;
+        return this.description;
     }
     public Date getStartDate() {
-        return startDate;
+        return this.startDate;
     }
     public Date getEndDate() {
-        return endDate;
+        return this.endDate;
+    }
+    public Set<Person> getConfirmations() {
+        return this.confirmations;
     }
 
     public void setTitle(String title) {
@@ -145,6 +146,12 @@ public class Event extends Model {
     }
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+    public void confirm(Person p, boolean going) {
+        if(going)
+            this.confirmations.add(p);
+        else
+            this.confirmations.remove(p);
     }
 
     /**

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import be.thalarion.eventman.models.Model;
-import be.thalarion.eventman.models.Person;
 
 public class Cache {
 

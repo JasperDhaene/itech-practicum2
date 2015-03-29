@@ -22,7 +22,6 @@ import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
-import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
