@@ -20,6 +20,7 @@ import java.util.List;
 
 import be.thalarion.eventman.adapters.EventsAdapter;
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 
@@ -100,8 +101,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
             @Override
             protected void onProgressUpdate(Exception... values) {
                 // Use progress updates to report errors instead
-                // On production, replace message by 'R.string.error_fetch'
-                Toast.makeText(getActivity(), values[0].getMessage(), Toast.LENGTH_LONG).show();
+                ErrorHandler.announce(getActivity(), values[0]);
             }
             @Override
             protected void onPostExecute(List<Event> events) {

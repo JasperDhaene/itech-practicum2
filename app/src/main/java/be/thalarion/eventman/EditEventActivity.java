@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
@@ -104,7 +105,7 @@ public class EditEventActivity extends ActionBarActivity {
                         if (e == null) {
                             Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
                         } else
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            ErrorHandler.announce(getApplicationContext(), e);
                     }
                 }.execute();
 

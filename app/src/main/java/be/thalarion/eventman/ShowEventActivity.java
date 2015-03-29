@@ -15,6 +15,7 @@ import org.parceler.Parcels;
 import java.io.IOException;
 
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 
@@ -87,7 +88,7 @@ public class ShowEventActivity extends ActionBarActivity {
                     protected void onPostExecute(Exception e) {
                         if(e == null) {
                             Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(getApplicationContext(), e);
                     }
                 }.execute();
 
