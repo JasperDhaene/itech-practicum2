@@ -1,8 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
     </style>
 
     <style name="CardTitle">
@@ -29,6 +29,14 @@
 
     <style name="CardSubTitleMissing" parent="CardSubTitle">
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="NavigationDrawerTheme" parent="MaterialNavigationDrawerTheme">
+        <item name="colorPrimary">@color/md_lime_500</item>
+        <item name="colorPrimaryDark">@color/md_lime_800</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="rippleBackport">true</item>
+        <item name="singleAccount">true</item>
     </style>
 
 </resources>

@@ -45,6 +45,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.thalarion.eventman.MainActivity" />
         </activity>
+        <activity
+            android:name="NavigationDrawer"
+            android:theme="@style/NavigationDrawerTheme" />
     </application>
 
 </manifest>

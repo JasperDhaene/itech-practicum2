@@ -7,76 +7,36 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
+import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 
-public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+public class MainActivity extends MaterialNavigationDrawer {
 
     /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
+     * neokree MaterialNavigationDrawer
+     * 1. you have an init method
+     * 2. you must not override onCreate method
+     * 3. you must not call setContentView method, because the library have it's own layout
+     * 4. you must not override onBackPressed method, because the library implement it on its own
      */
-    private CharSequence mTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public void init(Bundle bundle) {
+        MaterialSection secOverview = newSection(getResources().getString(R.string.title_overview), new OverviewFragment());
+        MaterialSection secEvents = newSection(getResources().getString(R.string.title_events), new EventsFragment());
+        MaterialSection secPeople = newSection(getResources().getString(R.string.title_people), new PeopleFragment());
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        addSection(secOverview);
+        addSection(secEvents);
+        addSection(secPeople);
 
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment;
-        switch(position){
-            case 0:
-                fragment = new OverviewFragment();
-                break;
-            case 1:
-                fragment = new EventsFragment();
-                break;
-            case 2:
-                fragment = new PeopleFragment();
-                break;
-            default:
-                fragment = new OverviewFragment();
-        }
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_overview);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_events);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_people);
-                break;
-        }
-    }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        MaterialAccount account = new MaterialAccount(this.getResources(),
+                "Florian Dejonckheere",
+                "florian@floriandejonckheere.be",
+                R.drawable.gravatar,
+                R.drawable.material);
+        this.addAccount(account);
     }
 }
