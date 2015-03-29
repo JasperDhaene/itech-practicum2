@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+
     <style name="CardTitle">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/text</item>

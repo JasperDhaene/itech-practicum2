@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".ShowPersonActivity"
-            android:label="@string/title_activity_show_person" >
+            android:label="@string/title_activity_show_person"
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.thalarion.eventman.MainActivity" />
