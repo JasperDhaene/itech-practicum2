@@ -1,12 +1,25 @@
 package be.thalarion.eventman;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.parceler.Parcels;
+
+import java.io.IOException;
+
+import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.models.Model;
+import be.thalarion.eventman.models.Person;
 
 
 public class ShowPersonActivity extends ActionBarActivity {
+    Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +42,45 @@ public class ShowPersonActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
+        Bundle data = getIntent().getExtras();
+        person = Parcels.unwrap(data.getParcelable("person"));
 
-
-        return super.onOptionsItemSelected(item);
+        Intent intent;
+        switch(item.getItemId()){
+            case R.id.action_edit_person:
+                intent = new Intent(this,EditPersonActivity.class);
+                intent.putExtra("person", Parcels.wrap(person));
+                intent.putExtra("action", Model.ACTION.EDIT);
+                startActivity(intent);
+                break;
+            case R.id.action_discard_person:
+                new AsyncTask<Void, Void, Exception>() {
+                    @Override
+                    protected Exception doInBackground(Void... params) {
+                        try {
+                            person.destroy();
+// Allow garbage collection
+                            person = null;
+                        } catch (APIException | IOException e) {
+                            return e;
+                        }
+                        return null;
+                    }
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if(e == null) {
+                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(getApplicationContext(), e);
+                    }
+                }.execute();
+//TODO: load the peopleFragment here
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 }
