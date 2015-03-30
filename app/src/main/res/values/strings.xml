@@ -36,9 +36,9 @@
     <string name="action_settings">Settings</string>
 
     <string name="name">Name</string>
-    <string name="hint_name">John Doe</string>
+    <string name="hint_name">Enter name</string>
     <string name="email">Email</string>
-    <string name="hint_email">john.doe@example.com</string>
+    <string name="hint_email">Enter email</string>
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">Select your birthdate</string>
     <string name="title">Title</string>
@@ -58,8 +58,7 @@
     <string name="error_io">I/O Error</string>
     <string name="error_api">API Error</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="title_activity_edit_person">Edit Person</string>
 
 </resources>

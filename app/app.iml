@@ -92,6 +92,7 @@
     <orderEntry type="library" exported="" name="parceler-0.2.16" level="project" />
     <orderEntry type="library" exported="" name="gravatar-android-1.0" level="project" />
     <orderEntry type="library" exported="" name="com.amulyakhare.textdrawable-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="material-dialogs-0.6.6.3" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="parceler-api-0.2.16" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.0.0" level="project" />
