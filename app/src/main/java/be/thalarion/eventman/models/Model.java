@@ -95,6 +95,7 @@ public abstract class Model {
                                 jsonArray.getJSONObject(i).getString("url")
                         ));
                 m = model.newInstance();
+                m.resource = new URL(jsonObject.getString("url"));
                 m.fromJSON(jsonObject);
                 models.add(m);
             }
