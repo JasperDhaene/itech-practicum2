@@ -32,7 +32,7 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_cancel);
     }
 
     @Override
