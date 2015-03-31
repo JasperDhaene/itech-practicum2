@@ -1,24 +1,29 @@
 package be.thalarion.eventman;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+
+import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Person;
 
 
@@ -49,7 +54,7 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
 
         @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.save_menu, menu);
+        inflater.inflate(R.menu.menu_save, menu);
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,60 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
         ((TextView) rootView.findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
 
         return rootView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch(item.getItemId()){
+            case R.id.menu_save:
+                new AsyncTask<Void, Void, Exception>() {
+                    @Override
+                    protected Exception doInBackground(Void... params) {
+                        Activity activity = getActivity();
+                        String name = ((EditText) activity.findViewById(R.id.field_name)).getText().toString();
+                        String email = ((EditText) activity.findViewById(R.id.field_email)).getText().toString();
+                        Date birthDate;
+                        try {
+                            birthDate = Person.format.parse(((TextView) activity.findViewById(R.id.field_birth_date)).getText().toString());
+                        } catch (ParseException e) {
+                            return e;
+                        }
+
+                        if (person != null) {
+                            // Update existing person
+                            person.setName(name);
+                            person.setEmail(email);
+                            person.setBirthDate(birthDate);
+                        } else {
+                            // Create new person
+                            person = new Person(name, email, birthDate);
+                        }
+
+                        try {
+                            person.syncModelToNetwork();
+                        } catch (IOException | APIException e) {
+                            return e;
+                        }
+                        return null;
+                    }
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if(e == null) {
+                            Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(getActivity(), e);
+                    }
+                }.execute();
+
+                //TODO: load the peopleFragment here
+                intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                return false;
+        }
+        return true;
     }
 
     /*@Override
