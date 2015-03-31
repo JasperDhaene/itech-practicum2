@@ -12,18 +12,42 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.parceler.Parcels;
+
+import be.thalarion.eventman.models.Person;
 
 
 public class EditPersonDialogFragment extends android.support.v4.app.DialogFragment {
 
+    private Person person;
 
     public EditPersonDialogFragment() {
         // Required empty public constructor
     }
 
-    @Override
+    //TODO: als Parcels geen vertraging oplevert, verwijder deze constructor aangezien het geen good practice is
+    public EditPersonDialogFragment(Person person){
+        this.person = person;
+    }
+
+    public static EditPersonDialogFragment newInstance(Person person) {
+        EditPersonDialogFragment f = new EditPersonDialogFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("person",Parcels.wrap(person));
+
+        f.setArguments(bundle);
+
+        return f;
+    }
+
+
+        @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.save_menu, menu);
     }
@@ -39,7 +63,17 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_person_dialog, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_edit_person_dialog, container, false);
+
+        Bundle data = getArguments();
+        this.person = Parcels.unwrap(data.getParcelable("person"));
+
+
+        ((EditText) rootView.findViewById(R.id.field_name)).setText(person.getName());
+        ((EditText) rootView.findViewById(R.id.field_email)).setText(person.getEmail());
+        ((TextView) rootView.findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
+
+        return rootView;
     }
 
     /*@Override

@@ -14,6 +14,7 @@
         style="@style/Form_components"/>
 
     <EditText
+        android:id="@+id/field_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/form_head_entry"
@@ -34,6 +35,7 @@
 
 
     <EditText
+        android:id="@+id/field_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/customEntry"
@@ -53,6 +55,7 @@
         style="@style/Form_components"/>
 
     <TextView
+        android:id="@+id/field_birth_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/DatePicker"
