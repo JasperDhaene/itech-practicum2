@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/name"
         android:textColor="#70000000"
-        style="@style/Form_components"/>
+        style="@style/Form_component"/>
 
     <EditText
         android:id="@+id/field_name"
@@ -21,7 +21,7 @@
 
         android:textColor="#000000"
         android:hint="@string/hint_name"
-        style="@style/Form_components"/>
+        style="@style/Form_component_editText"/>
 
     <TextView
         style="@style/Section_Dummy" />
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:textColor="#70000000"
-        style="@style/Form_components"/>
+        style="@style/Form_component"/>
 
 
     <EditText
@@ -42,7 +42,7 @@
 
         android:textColor="#000000"
         android:hint="@string/hint_email"
-        style="@style/Form_components"/>
+        style="@style/Form_component_editText_email"/>
 
     <TextView
         style="@style/Section_Dummy" />
@@ -52,14 +52,14 @@
         android:layout_height="wrap_content"
         android:text="@string/birth_date"
         android:textColor="#70000000"
-        style="@style/Form_components"/>
+        style="@style/Form_component"/>
 
     <TextView
         android:id="@+id/field_birth_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/DatePicker"
-        android:text="12/02/1994"/>
+        android:text="11/02/1994"/>
 
 
 <RelativeLayout
@@ -74,8 +74,7 @@
         android:clickable="true"
         android:text="@string/save"
         android:textColor="@color/material_pink_500"
-        style="@style/Form_components"
-        />
+        style="@style/Form_component"/>
 
     </RelativeLayout>
 
