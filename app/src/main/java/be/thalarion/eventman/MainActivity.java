@@ -17,8 +17,7 @@ import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainActivity extends MaterialNavigationDrawer implements MaterialAccountListener,
-                                                                        DrawerLayout.DrawerListener {
+public class MainActivity extends MaterialNavigationDrawer implements DrawerLayout.DrawerListener {
 
     /**
      * neokree MaterialNavigationDrawer
@@ -29,8 +28,13 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
      */
 
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
     private boolean mUserLearnedDrawer;
+
+    private AccountManager accountManager;
+
+    public AccountManager getAccountManager() {
+        return accountManager;
+    }
 
     @Override
     public void init(Bundle bundle) {
@@ -44,17 +48,12 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
         addSection(newSection(getResources().getString(R.string.title_events), R.drawable.ic_action_image_nature_people, new EventsFragment()));
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
 
+        allowArrowAnimation();
         setDefaultSectionLoaded(0);
 
-        setAccountListener(this);
         setDrawerListener(this);
 
-        MaterialAccount account = new MaterialAccount(this.getResources(),
-                "Florian Dejonckheere",
-                "florian@floriandejonckheere.be",
-                R.drawable.gravatar,
-                R.drawable.material);
-        this.addAccount(account);
+        this.accountManager = new AccountManager(this);
     }
 
     @Override
@@ -89,15 +88,5 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
     @Override
     public void onHomeAsUpSelected() {
         // when the back arrow is selected this method is called
-    }
-
-    @Override
-    public void onAccountOpening(MaterialAccount materialAccount) {
-
-    }
-
-    @Override
-    public void onChangeAccount(MaterialAccount materialAccount) {
-
     }
 }

@@ -14,11 +14,11 @@
     <string name="action_delete">Delete</string>
     <string name="action_login">Login</string>
 
-    <string name="error_text_noname">No name available</string>
+    <string name="error_text_noname">Unnamed person</string>
     <string name="error_text_noemail">No email available</string>
     <string name="error_text_nobirthdate">No birth date available</string>
 
-    <string name="error_text_notitle">No title available</string>
+    <string name="error_text_notitle">Unnamed event</string>
     <string name="error_text_nodescription">No description available</string>
     <string name="error_text_nostartdate">No start date available</string>
     <string name="error_text_noenddate">No end date available</string>
@@ -27,6 +27,7 @@
 
     <string name="info_text_edit">Successfully updated attributes</string>
     <string name="info_text_destroy">Successfully deleted object</string>
+    <string name="info_text_login">You are now logged in as %s</string>
 
     <string name="title_activity_person">PersonActivity</string>
     <string name="hello_world">Hello world!</string>

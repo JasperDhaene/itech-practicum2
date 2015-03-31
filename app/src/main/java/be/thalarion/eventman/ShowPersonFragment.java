@@ -119,11 +119,8 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 startActivity(intent);
                 break;
             case R.id.action_login:
-                MaterialAccount account = ((MaterialNavigationDrawer) getActivity()).getCurrentAccount();
-                // TODO: null-catching
-                account.setTitle(this.person.getName());
-                account.setSubTitle(this.person.getEmail());
-                ((MaterialNavigationDrawer) getActivity()).notifyAccountDataChanged();
+                ((MainActivity)getActivity()).getAccountManager().setAccount(this.person);
+                Toast.makeText(getActivity(), String.format(getString(R.string.info_text_login), person.getFormattedName(getActivity())), Toast.LENGTH_SHORT).show();
                 break;
             default:
                 return false;

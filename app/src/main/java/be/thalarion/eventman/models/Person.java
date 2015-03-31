@@ -1,14 +1,18 @@
 package be.thalarion.eventman.models;
 
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import fr.tkeunebr.gravatar.Gravatar;
 
@@ -75,11 +79,26 @@ public class Person extends Model {
     public String getName() {
         return this.name;
     }
+    public String getFormattedName(Context c) {
+        if(this.name == null)
+            return c.getString(R.string.error_text_noname);
+        return this.name;
+    }
     public String getEmail() {
+        return this.email;
+    }
+    public String getFormattedEmail(Context c) {
+        if(this.email == null)
+            return c.getString(R.string.error_text_noemail);
         return this.email;
     }
     public Date getBirthDate() {
         return this.birthDate;
+    }
+    public String getFormattedBirthDate(Context c) {
+        if(this.birthDate == null)
+            return c.getString(R.string.error_text_nobirthdate);
+        return this.format.format(this.birthDate);
     }
     public String getAvatar(int size) {
         String email = "dummy@email.be";
