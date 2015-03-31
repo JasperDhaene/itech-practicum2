@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -51,8 +52,20 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
+    //todo: REMOVE
     public ShowPersonFragment(Person person) {
         this.person = person;
+    }
+
+    public static ShowPersonFragment newInstance(Person person) {
+        ShowPersonFragment f = new ShowPersonFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("person",Parcels.wrap(person));
+
+        f.setArguments(bundle);
+
+        return f;
     }
 
     @Override
@@ -86,6 +99,8 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 .load(this.person.getAvatar(getResources().getDimensionPixelSize(R.dimen.avatar_large)))
                 .into(this.avatar);
 
+        //((MaterialNavigationDrawer) getActivity()).
+
         return rootView;
     }
 
@@ -99,18 +114,9 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         Intent intent;
         switch(item.getItemId()){
             case R.id.action_edit_person:
-                /*((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
-                        new EditPersonFragment(this.person),
-                        this.getActivity().getResources().getString(R.string.title_show_person)
-                );*/
 
                 showDialog();
 
-
-                /*intent = new Intent(getActivity(), EditPersonActivity.class);
-                intent.putExtra("person", Parcels.wrap(this.person));
-                intent.putExtra("action", Model.ACTION.EDIT);
-                startActivity(intent);*/
                 break;
             case R.id.action_discard_person:
                 new AsyncTask<Void, Void, Exception>() {
@@ -133,9 +139,10 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                     }
                 }.execute();
 
-                //TODO: load the peopleFragment here
-                intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                PeopleFragment f = new PeopleFragment();
+
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_people));
+
                 break;
             case R.id.action_login:
                 MaterialAccount account = ((MaterialNavigationDrawer) getActivity()).getCurrentAccount();
@@ -168,7 +175,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 .add(R.id.container, new EditPersonDialogFragment())
                 .addToBackStack(null).commit();*/
 
-        EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(this.person);
+        EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(this.person,Model.ACTION.EDIT);
 
         ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_show_person));
 /*

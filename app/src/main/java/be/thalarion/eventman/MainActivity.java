@@ -39,6 +39,8 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
                 R.drawable.gravatar,
                 R.drawable.material);
         this.addAccount(account);
+
+        allowArrowAnimation();
     }
 
     @Override

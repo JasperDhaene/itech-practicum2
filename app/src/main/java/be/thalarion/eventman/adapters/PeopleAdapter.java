@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.thalarion.eventman.EditPersonDialogFragment;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowPersonFragment;
 import be.thalarion.eventman.models.Person;

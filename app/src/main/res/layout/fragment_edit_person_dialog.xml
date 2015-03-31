@@ -59,23 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/DatePicker"
-        android:text="11/02/1994"/>
+        android:text="1994-02-11"/>
 
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    android:gravity="right">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="@string/save"
-        android:textColor="@color/material_pink_500"
-        style="@style/Form_component"/>
-
-    </RelativeLayout>
 
 </LinearLayout>

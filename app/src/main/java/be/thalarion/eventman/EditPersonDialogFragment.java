@@ -24,7 +24,9 @@ import java.util.Date;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 
 public class EditPersonDialogFragment extends android.support.v4.app.DialogFragment {
@@ -36,15 +38,19 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
     }
 
     //TODO: als Parcels geen vertraging oplevert, verwijder deze constructor aangezien het geen good practice is
-    public EditPersonDialogFragment(Person person){
+    public EditPersonDialogFragment(Person person) {
         this.person = person;
     }
 
-    public static EditPersonDialogFragment newInstance(Person person) {
-        EditPersonDialogFragment f = new EditPersonDialogFragment();
+    public static EditPersonDialogFragment newInstance(Person person, Model.ACTION action) {
 
+        EditPersonDialogFragment f = new EditPersonDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("person",Parcels.wrap(person));
+        if (person != null) {
+            bundle.putParcelable("person", Parcels.wrap(person));
+        }
+
+        bundle.putSerializable("action", action);
 
         f.setArguments(bundle);
 
@@ -52,10 +58,11 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
     }
 
 
-        @Override
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_save, menu);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +78,16 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
         View rootView = inflater.inflate(R.layout.fragment_edit_person_dialog, container, false);
 
         Bundle data = getArguments();
-        this.person = Parcels.unwrap(data.getParcelable("person"));
+        if (data.getSerializable("action") == Model.ACTION.EDIT) {
+            this.person = Parcels.unwrap(data.getParcelable("person"));
 
 
-        ((EditText) rootView.findViewById(R.id.field_name)).setText(person.getName());
-        ((EditText) rootView.findViewById(R.id.field_email)).setText(person.getEmail());
-        ((TextView) rootView.findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
+            ((EditText) rootView.findViewById(R.id.field_name)).setText(person.getName());
+            ((EditText) rootView.findViewById(R.id.field_email)).setText(person.getEmail());
+            ((TextView) rootView.findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
+        } else if (data.getSerializable("action") == Model.ACTION.NEW) {
+            this.person = new Person();
+        }
 
         return rootView;
     }
@@ -84,7 +95,7 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_save:
                 new AsyncTask<Void, Void, Exception>() {
                     @Override
@@ -96,18 +107,12 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
                         try {
                             birthDate = Person.format.parse(((TextView) activity.findViewById(R.id.field_birth_date)).getText().toString());
                         } catch (ParseException e) {
-                            return e;
+                            return e; //TODO: what dafuq dit mag hier niet returnn wi. Zet dan een default waarde als datum en print af dat er een fucking error is. Lul.
                         }
-
-                        if (person != null) {
-                            // Update existing person
-                            person.setName(name);
-                            person.setEmail(email);
-                            person.setBirthDate(birthDate);
-                        } else {
-                            // Create new person
-                            person = new Person(name, email, birthDate);
-                        }
+                        //new Person has been created if action==ACTION.NEW
+                        person.setName(name);
+                        person.setEmail(email);
+                        person.setBirthDate(birthDate);
 
                         try {
                             person.syncModelToNetwork();
@@ -116,17 +121,19 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
                         }
                         return null;
                     }
+
                     @Override
                     protected void onPostExecute(Exception e) {
-                        if(e == null) {
-                            Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                        if (e == null) {
+                            //TODO first: crasht hier voor no apparent reason
+                           // Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
                         } else ErrorHandler.announce(getActivity(), e);
                     }
                 }.execute();
 
-                //TODO: load the peopleFragment here
-                intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                PeopleFragment f = new PeopleFragment();
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getResources().getString(R.string.title_people));
+
                 break;
 
             default:
@@ -151,7 +158,6 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
 
 
     }*/
-
 
 
 }
