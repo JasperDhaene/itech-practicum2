@@ -1,32 +1,41 @@
 package be.thalarion.eventman.models;
 
-import android.net.Uri;
+import java.text.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.cache.Cache;
 
 @Parcel
-public class Confirmation extends Model {
+public class Message extends Model {
 
     public Person person;
+    public String text;
     public Event event;
+    public Date date;
 
-    public Confirmation() { }
+    @Transient
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    public Confirmation(Person person, Event event) {
+    public Message() { }
+
+    public Message(Person person, String text, Event event) {
         this.person = person;
-        this.event = event;
+        this.text = text;
+        this.date = new Date();
     }
 
-    public Confirmation(Event event) { this.event = event; }
+    public Message(Event event) { this.event = event; }
 
     /**
      * API Methods
@@ -37,17 +46,12 @@ public class Confirmation extends Model {
     @Override
     protected void fromJSON(JSONObject json) throws APIException {
         try {
-            if (json.getBoolean("going")) {
-                JSONObject p = json.getJSONObject("person");
-                this.person = Cache.find(Person.class, new URL(p.getString("url")));
-                this.resource = new URL(json.getString("url"));
-            }
-        } catch (IOException | JSONException e) {
-            /**
-             * Thrown on one of the following errors
-             * - going, person, url is not available
-             * - url cannot be parsed
-             */
+            if(!json.isNull("text")) this.text = json.getString("text");
+            if(!json.isNull("created_at")) this.date = this.format.parse(json.getString("created_at"));
+            JSONObject p = json.getJSONObject("person");
+            this.person = Cache.find(Person.class, new URL(p.getString("url")));
+            this.resource = new URL(json.getString("url"));
+        } catch (ParseException | IOException | JSONException e) {
             throw new APIException(e);
         }
     }
@@ -56,7 +60,8 @@ public class Confirmation extends Model {
     protected JSONObject toJSON() throws APIException {
         JSONObject json = new JSONObject();
         try {
-            json.put("going", true);
+            json.put("text", this.text);
+            json.put("created_at", this.format.format(this.date));
             JSONObject person = new JSONObject();
             person.put("name", this.person.getName());
             person.put("url", this.person.resource);
@@ -67,8 +72,8 @@ public class Confirmation extends Model {
     }
 
     /**
-     * syncModelToNetwork - Create or update confirmation
-     * Confirmation handling works a bit differently. A new confirmation does not have a resource, and
+     * syncModelToNetwork - Ensure message
+     * Message handling works a bit differently. A new message does not have a resource, and
      * upon POSTing does not receive one either. As a consequence the containing model has to be refreshed.
      * This method calls Event.syncModelToMemory()
      * @throws IOException
@@ -81,7 +86,7 @@ public class Confirmation extends Model {
         if (this.resource == null) {
             // Create new resource
             API.getInstance().create(
-                    this.event.confirmationResource,
+                    this.event.messageResource,
                     json.toString()
             );
             this.event.syncModelToMemory();
@@ -91,21 +96,21 @@ public class Confirmation extends Model {
         }
     }
 
-    /**
-     * destroy - Delete confirmation
-     * This method calls Event.syncModelToMemory() - see Confirmation.syncModelToNetwork()
-     * @throws IOException
-     * @throws APIException
-     */
-    @Override
-    public void destroy() throws IOException, APIException {
-        super.destroy();
-        this.event.syncModelToMemory();
+    public Person getPerson() {
+        return person;
+    }
+    public String getText() {
+        return text;
+    }
+    public Date getDate() {
+        return date;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return ((Confirmation) o).person.equals(this.person);
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

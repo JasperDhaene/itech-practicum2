@@ -12,8 +12,12 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import be.thalarion.eventman.R;
@@ -25,13 +29,21 @@ public class Event extends Model {
     // Keep public modifier for parcelling library
     public String title, description;
     public Date startDate, endDate;
-    public Set<Confirmation> confirmations;
+
+    // I'd use a Set here, but for some ironic reason you cannot retrieve items from it
+    public Map<Confirmation, Confirmation> confirmations;
     public URL confirmationResource;
+
+    public List<Message> messages;
+    public URL messageResource;
 
     @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    public Event() { }
+    public Event() {
+        this.confirmations = new HashMap<>();
+        this.messages = new ArrayList<>();
+    }
 
     /**
      * Event - create a new event
@@ -45,7 +57,8 @@ public class Event extends Model {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.confirmations = new HashSet<>();
+        this.confirmations = new HashMap<>();
+        this.messages = new ArrayList<>();
     }
 
     /**
@@ -70,17 +83,28 @@ public class Event extends Model {
             if(!json.isNull("end_date")) this.endDate = this.format.parse(json.getString("end_date"));
             else this.endDate = null;
 
-            this.confirmations = new HashSet<>();
-
             if(!json.isNull("confirmations")) {
-                if(!json.isNull("url")) this.confirmationResource = new URL(json.getString("url"));
-                JSONObject confirm = json.getJSONObject("confirmations");
-                if(confirm.isNull("list")) {
-                    JSONArray list = confirm.getJSONArray("list");
+                JSONObject jsonConfirmations = json.getJSONObject("confirmations");
+                if(!jsonConfirmations.isNull("url")) this.confirmationResource = new URL(jsonConfirmations.getString("url"));
+                if(!jsonConfirmations.isNull("list")) {
+                    JSONArray list = jsonConfirmations.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
                         Confirmation c = new Confirmation(this);
                         c.fromJSON(list.getJSONObject(i));
-                        this.confirmations.add(c);
+                        this.confirmations.put(c, c);
+                    }
+                }
+            }
+
+            if(!json.isNull("messages")) {
+                JSONObject jsonMessages = json.getJSONObject("message");
+                if(!jsonMessages.isNull("url")) this.messageResource = new URL(jsonMessages.getString("url"));
+                if(!jsonMessages.isNull("list")) {
+                    JSONArray list = jsonMessages.getJSONArray("list");
+                    for(int i = 0; i < list.length(); i++) {
+                        Message m = new Message(this);
+                        m.fromJSON(list.getJSONObject(i));
+                        this.messages.add(m);
                     }
                 }
             }
@@ -110,7 +134,7 @@ public class Event extends Model {
         super.syncModelToNetwork();
 
         // Sync confirmations
-        for(Confirmation c: this.confirmations) {
+        for(Confirmation c: this.confirmations.keySet()) {
             c.syncModelToNetwork();
         }
     }
@@ -127,6 +151,14 @@ public class Event extends Model {
     public Date getEndDate() {
         return this.endDate;
     }
+    public List<Person> getConfirmations() {
+        List<Person> people = new ArrayList<>();
+        for(Confirmation c: this.confirmations) {
+            people.add(c.person);
+        }
+        return people;
+    }
+    public List<Message> getMessages() { return this.messages; }
 
     public void setTitle(String title) {
         this.title = title;
@@ -140,17 +172,28 @@ public class Event extends Model {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
     public void confirm(Person p, boolean going) throws IOException, APIException {
-        if(going && !this.confirmations.contains(p)) {
+        if(going && !this.confirmations.containsKey(p)) {
             // Person has confirmed
             Confirmation c = new Confirmation(p, this);
-            this.confirmations.add(c);
+            this.confirmations.put(c, null);
             c.syncModelToNetwork(); // this will call Event.syncModelFromNetwork()
-        } else if(!going && this.confirmations.contains(p)) {
+        } else if(!going && this.confirmations.containsKey(p)) {
             // Person has denied
+            this.confirmations.get(new Confirmation(p, null)).destroy();
             this.confirmations.remove(p);
         }
+    }
+    public void createMessage(Person p, String text) throws IOException, APIException {
+        Message m = new Message(this);
+        m.setPerson(p);
+        m.setText(text);
+        this.messages.add(m);
+        m.syncModelToNetwork(); // this will call Event.syncModelFromNetwork()
+    }
+    public void destroyMessage(Message m) throws IOException, APIException {
+        this.messages.remove(m);
+        m.destroy();
     }
 
     /**
