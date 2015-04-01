@@ -63,5 +63,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_edit_event">Edit Event</string>
+    <string name="title_show_event">Event Details</string>
 
 </resources>

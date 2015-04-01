@@ -17,9 +17,14 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.thalarion.eventman.EditEventDialogFragment;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowEventActivity;
+import be.thalarion.eventman.ShowEventFragment;
+import be.thalarion.eventman.ShowPersonFragment;
 import be.thalarion.eventman.models.Event;
+import be.thalarion.eventman.models.Model;
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
 
@@ -54,9 +59,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(v.getContext(), ShowEventActivity.class);
+            /*Intent intent = new Intent(v.getContext(), ShowEventActivity.class);
             intent.putExtra("event", Parcels.wrap(this.event));
-            v.getContext().startActivity(intent);
+            v.getContext().startActivity(intent);*/
+
+
+            ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
+                    ShowEventFragment.newInstance(this.event),
+                    v.getResources().getString(R.string.title_show_event)
+            );
         }
     }
 

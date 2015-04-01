@@ -55,6 +55,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
+            //TODO: replace by newInstance
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
                     new ShowPersonFragment(this.person),
                     v.getResources().getString(R.string.title_show_person)
