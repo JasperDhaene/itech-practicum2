@@ -3,7 +3,6 @@ package be.thalarion.eventman.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.transfuse.annotations.Resource;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,7 +18,11 @@ public abstract class Model {
         EDIT, NEW
     }
 
-    public URL resource;
+    protected URL resource;
+
+    public URL getResource() {
+        return resource;
+    }
 
     /**
      * syncModelToNetwork - Sync in-memory model with API model

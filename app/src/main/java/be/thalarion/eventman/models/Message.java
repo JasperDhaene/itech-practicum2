@@ -1,14 +1,11 @@
 package be.thalarion.eventman.models;
 
-import java.text.ParseException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
-import org.parceler.Transient;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,15 +13,13 @@ import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.cache.Cache;
 
-@Parcel
 public class Message extends Model {
 
-    public Person person;
-    public String text;
-    public Event event;
-    public Date date;
+    private Person person;
+    private String text;
+    private Date date;
+    private Event event;
 
-    @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public Message() { }

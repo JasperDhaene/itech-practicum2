@@ -1,12 +1,9 @@
 package be.thalarion.eventman;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,16 +17,12 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import org.parceler.Parcels;
-
 import java.io.IOException;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 
 
 public class ShowPersonFragment extends android.support.v4.app.Fragment {
@@ -93,7 +86,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         switch(item.getItemId()){
             case R.id.action_edit_person:
                 intent = new Intent(getActivity(), EditPersonActivity.class);
-                intent.putExtra("person", Parcels.wrap(this.person));
+                intent.putExtra("person", this.person.getResource().toString());
                 intent.putExtra("action", Model.ACTION.EDIT);
                 startActivity(intent);
                 break;

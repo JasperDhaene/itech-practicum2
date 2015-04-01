@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), ShowEventActivity.class);
-            intent.putExtra("event", Parcels.wrap(this.event));
+            intent.putExtra("event", this.event.getResource().toString());
             v.getContext().startActivity(intent);
         }
     }

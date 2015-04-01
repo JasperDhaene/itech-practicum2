@@ -1,10 +1,6 @@
 package be.thalarion.eventman.cache;
 
-import java.io.IOException;
 import java.util.Date;
-
-import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.models.Model;
 
 public class Cacheable<T> {
 

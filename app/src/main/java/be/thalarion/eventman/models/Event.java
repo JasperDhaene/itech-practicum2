@@ -3,41 +3,31 @@ package be.thalarion.eventman.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
-import org.parceler.Transient;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 
-@Parcel
 public class Event extends Model {
 
-    // Keep public modifier for parcelling library
-    public String title, description;
-    public Date startDate, endDate;
+    private String title, description;
+    private Date startDate, endDate;
 
     // I'd use a Set here, but for some ironic reason you cannot retrieve items from it
-    public Map<Confirmation, Confirmation> confirmations;
-    public URL confirmationResource;
+    private Map<Confirmation, Confirmation> confirmations;
+    private List<Message> messages;
+    public URL confirmationResource, messageResource;
 
-    public List<Message> messages;
-    public URL messageResource;
-
-    @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public Event() {
@@ -97,7 +87,7 @@ public class Event extends Model {
             }
 
             if(!json.isNull("messages")) {
-                JSONObject jsonMessages = json.getJSONObject("message");
+                JSONObject jsonMessages = json.getJSONObject("messages");
                 if(!jsonMessages.isNull("url")) this.messageResource = new URL(jsonMessages.getString("url"));
                 if(!jsonMessages.isNull("list")) {
                     JSONArray list = jsonMessages.getJSONArray("list");
@@ -153,8 +143,8 @@ public class Event extends Model {
     }
     public List<Person> getConfirmations() {
         List<Person> people = new ArrayList<>();
-        for(Confirmation c: this.confirmations) {
-            people.add(c.person);
+        for(Confirmation c: this.confirmations.keySet()) {
+            people.add(c.getPerson());
         }
         return people;
     }

@@ -1,17 +1,12 @@
 package be.thalarion.eventman.cache;
 
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Model;
@@ -34,8 +29,8 @@ public class Cache {
             List<T> models = Model.findAll(model);
             List<URL> urls = new ArrayList<>();
             for(T t: models) {
-                objectCache.put(t.resource, new Cacheable<T>(t));
-                urls.add(t.resource);
+                objectCache.put(t.getResource(), new Cacheable<T>(t));
+                urls.add(t.getResource());
             }
             listCache.put(model, new Cacheable(urls));
         }

@@ -13,15 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.parceler.Parcels;
-
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 
@@ -49,7 +50,11 @@ public class EditPersonActivity extends ActionBarActivity {
 
         Bundle data = getIntent().getExtras();
         if(data.get("action") == Model.ACTION.EDIT){
-            this.person = Parcels.unwrap(data.getParcelable("person"));
+            try {
+                this.person = Cache.find(Person.class, new URL(getIntent().getStringExtra("person")));
+            } catch (IOException | APIException e) {
+                ErrorHandler.announce(getApplicationContext(), e);
+            }
 
             // TODO: null-catching
             ((EditText) findViewById(R.id.field_name)).setText(person.getName());

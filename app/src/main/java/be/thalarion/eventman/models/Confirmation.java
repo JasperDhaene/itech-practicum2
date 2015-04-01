@@ -1,10 +1,7 @@
 package be.thalarion.eventman.models;
 
-import android.net.Uri;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,11 +10,10 @@ import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.cache.Cache;
 
-@Parcel
 public class Confirmation extends Model {
 
-    public Person person;
-    public Event event;
+    private Person person;
+    private Event event;
 
     public Confirmation() { }
 
@@ -106,6 +102,10 @@ public class Confirmation extends Model {
     @Override
     public boolean equals(Object o) {
         return ((Confirmation) o).person.equals(this.person);
+    }
+
+    public Person getPerson() {
+        return this.person;
     }
 
 }

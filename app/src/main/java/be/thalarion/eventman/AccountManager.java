@@ -1,7 +1,6 @@
 package be.thalarion.eventman;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -9,7 +8,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 
 public class AccountManager {
 
