@@ -10,14 +10,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.Cache;
+import be.thalarion.eventman.cache.Cache;
 
 @Parcel
 public class Event extends Model {
