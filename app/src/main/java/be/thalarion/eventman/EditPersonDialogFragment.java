@@ -36,8 +36,8 @@ import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 
-public class EditPersonDialogFragment extends DialogFragment
-        implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
+public class EditPersonDialogFragment extends EditDialogFragment
+        implements  View.OnClickListener {
 
     private Person person;
     private EditText field_name,field_email;
@@ -175,17 +175,14 @@ public class EditPersonDialogFragment extends DialogFragment
     }*/
 
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        ((TextView) this.getView().findViewById(R.id.field_birth_date)).setText(
-                new StringBuilder().append(year).append("-")
-                        .append(monthOfYear).append("-").append(dayOfMonth));
-    }
+
 
     @Override
     public void onClick(View v) { // Parameter v stands for the view that was clicked.
-        DialogFragment f = DateDialogFragment.newInstance(this);
+        if(v.getContentDescription().toString().equals("Date_Start")){
+            DialogFragment f = DateDialogFragment.newInstance(this,v);
 
-        f.show(getActivity().getSupportFragmentManager(), "datePicker");
+            f.show(getActivity().getSupportFragmentManager(), "datePicker");
+        }
     }
 }

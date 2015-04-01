@@ -29,6 +29,10 @@ public class Event extends Model {
 
     @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    @Transient
+    public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
+    @Transient
+    public static final SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
     public Event() { }
 

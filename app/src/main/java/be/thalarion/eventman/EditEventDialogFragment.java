@@ -3,6 +3,8 @@ package be.thalarion.eventman;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,9 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.parceler.Parcels;
 import org.w3c.dom.Text;
@@ -37,8 +41,8 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EditEventDialogFragment extends DialogFragment
-        implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
+public class EditEventDialogFragment extends EditDialogFragment
+        implements View.OnClickListener {
 
     private Event event;
     private EditText field_title,field_description;
@@ -94,9 +98,11 @@ public class EditEventDialogFragment extends DialogFragment
             this.field_description.setText(event.getDescription());
             //TODO: implement null handling
             //TODO: look how the dateformat affects everything
-            this.field_start_date.setText(Event.format.format(event.getStartDate()));
+            this.field_start_date.setText(Event.formatDate.format(event.getStartDate()));
+            this.field_start_time.setText(Event.formatTime.format(event.getStartDate()));
             //TODO: implement null handling
-            this.field_end_date.setText(Event.format.format(event.getEndDate()));
+            this.field_end_date.setText(Event.formatDate.format(event.getEndDate()));
+            this.field_end_time.setText(Event.formatTime.format(event.getEndDate()));
         } else if (data.getSerializable("action") == Model.ACTION.NEW) {
             this.event = new Event();
         }
@@ -169,18 +175,38 @@ public class EditEventDialogFragment extends DialogFragment
     }
 
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        //TODO from which textView did this come?
+/*
+    public void onDateSet(DatePicker view,View target, int year, int monthOfYear, int dayOfMonth) {
+
         ((TextView) this.getView().findViewById(R.id.field_start_date)).setText(
                 new StringBuilder().append(year).append("-")
                         .append(monthOfYear).append("-").append(dayOfMonth));
     }
 
+
+    public void onTimeSet(TimePicker view,View target, int hourOfDay, int minute) {
+        ((TextView) this.getView().findViewById(R.id.field_start_time)).setText(
+                new StringBuilder().append(hourOfDay).append(":").append(minute));
+
+
+
+
+
+    }*/
+
     @Override
     public void onClick(View v) { // Parameter v stands for the view that was clicked.
-        DialogFragment f = DateDialogFragment.newInstance(this);
+        String c = v.getContentDescription().toString();
+        if(c.equals("Date_Start") || c.equals("Date_End")){
+            DialogFragment f = DateDialogFragment.newInstance(this,v);
 
-        f.show(getActivity().getSupportFragmentManager(), "datePicker");
+            f.show(getActivity().getSupportFragmentManager(), "datePicker");
+        }else if(c.equals("Time_Start") || c.equals("Time_End")){
+            DialogFragment f = TimeDialogFragment.newInstance(this,v);
+
+            f.show(getActivity().getSupportFragmentManager(), "timePicker");
+        }
+
+
     }
 }

@@ -65,5 +65,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_edit_event">Edit Event</string>
     <string name="title_show_event">Event Details</string>
+    <string name="content_description_time_start">Time_Start</string>
+    <string name="content_description_date_start">Date_Start</string>
+    <string name="content_description_date_end">Date_End</string>
+    <string name="content_description_time_end">Time_End</string>
+
 
 </resources>

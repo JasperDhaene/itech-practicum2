@@ -21,19 +21,20 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
                                                     implements DatePickerDialog.OnDateSetListener {
 
 
-    private DatePickerDialog.OnDateSetListener datePickerListener;
+    private EditDialogFragment datePickerListener;
+    private View target;
 
 
     public DateDialogFragment() {
         // Required empty public constructor
     }
 
-    public static DateDialogFragment newInstance(DatePickerDialog.OnDateSetListener listener) {
+    public static DateDialogFragment newInstance(EditDialogFragment listener,View v) {
 
         DateDialogFragment f = new DateDialogFragment();
 
         f.setDatePickerListener(listener);
-
+        f.setTarget(v);
 
         return f;
     }
@@ -54,17 +55,25 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
         notifyDatePickerListener(view,year,monthOfYear,dayOfMonth);
     }
 
-    public DatePickerDialog.OnDateSetListener getDatePickerListener() {
+    public EditDialogFragment getDatePickerListener() {
         return this.datePickerListener;
     }
 
-    public void setDatePickerListener(DatePickerDialog.OnDateSetListener listener) {
+    public void setDatePickerListener(EditDialogFragment listener) {
         this.datePickerListener = listener;
     }
 
     protected void notifyDatePickerListener(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         if(this.datePickerListener != null) {
-            this.datePickerListener.onDateSet(view,year,monthOfYear,dayOfMonth);
+            this.datePickerListener.onDateSet(view,this.target,year,monthOfYear,dayOfMonth);
         }
+    }
+
+    public View getTarget() {
+        return target;
+    }
+
+    public void setTarget(View target) {
+        this.target = target;
     }
 }

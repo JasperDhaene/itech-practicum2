@@ -59,7 +59,8 @@
         android:layout_height="wrap_content"
         style="@style/DatePicker"
         android:text="1970-01-01"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:contentDescription="@string/content_description_date_start"/>
 
 
 </LinearLayout>
