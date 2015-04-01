@@ -23,6 +23,7 @@ import be.thalarion.eventman.api.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * Events layout contains a list of all events
@@ -72,11 +73,8 @@ public class EventsFragment extends android.support.v4.app.Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_add_event:
-
-                Intent intent = new Intent(this.getActivity(),EditEventActivity.class);
-                intent.putExtra("action", Model.ACTION.NEW);
-                startActivity(intent);
-
+                EditEventDialogFragment f = EditEventDialogFragment.newInstance(null,Model.ACTION.NEW);
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
                 break;
             default:
                 return false;

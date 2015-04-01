@@ -40,6 +40,8 @@ public class EditPersonDialogFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     private Person person;
+    private EditText field_name,field_email;
+    private TextView field_birthdate;
 
     public EditPersonDialogFragment() {
         // Required empty public constructor
@@ -85,20 +87,23 @@ public class EditPersonDialogFragment extends DialogFragment
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_edit_person_dialog, container, false);
 
+        this.field_name = ((EditText) rootView.findViewById(R.id.field_name));
+        this.field_email = ((EditText) rootView.findViewById(R.id.field_email));
+        this.field_birthdate = ((TextView) rootView.findViewById(R.id.field_birth_date));
+
         Bundle data = getArguments();
         if (data.getSerializable("action") == Model.ACTION.EDIT) {
             this.person = Parcels.unwrap(data.getParcelable("person"));
 
-
-            ((EditText) rootView.findViewById(R.id.field_name)).setText(person.getName());
-            ((EditText) rootView.findViewById(R.id.field_email)).setText(person.getEmail());
+            this.field_name.setText(person.getName());
+            this.field_email.setText(person.getEmail());
             //TODO: implement null handling
-            ((TextView) rootView.findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
+            this.field_birthdate.setText(Person.format.format(person.getBirthDate()));
         } else if (data.getSerializable("action") == Model.ACTION.NEW) {
             this.person = new Person();
         }
 
-        ((TextView) rootView.findViewById(R.id.field_birth_date)).setOnClickListener(this);
+        this.field_birthdate.setOnClickListener(this);
 
         return rootView;
     }
@@ -111,12 +116,11 @@ public class EditPersonDialogFragment extends DialogFragment
                 new AsyncTask<Void, Void, Exception>() {
                     @Override
                     protected Exception doInBackground(Void... params) {
-                        Activity activity = getActivity();
-                        String name = ((EditText) activity.findViewById(R.id.field_name)).getText().toString();
-                        String email = ((EditText) activity.findViewById(R.id.field_email)).getText().toString();
+                        String name = field_name.getText().toString();
+                        String email = field_email.getText().toString();
                         Date birthDate;
                         try {
-                            birthDate = Person.format.parse(((TextView) activity.findViewById(R.id.field_birth_date)).getText().toString());
+                            birthDate = Person.format.parse(field_birthdate.getText().toString());
                         } catch (ParseException e) {
                             return e; //TODO: what dafuq dit mag hier niet returnn wi. Zet dan een default waarde als datum en print af dat er een fucking error is. Lul.
                         }

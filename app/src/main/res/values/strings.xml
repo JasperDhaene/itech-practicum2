@@ -42,9 +42,9 @@
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">Select your birthdate</string>
     <string name="title">Title</string>
-    <string name="hint_title">party</string>
+    <string name="hint_title">Enter Event title</string>
     <string name="description">Description</string>
-    <string name="hint_description">super duper party!</string>
+    <string name="hint_description">Enter description</string>
     <string name="start_date">Start date</string>
     <string name="hint_start_date">Select the start date</string>
     <string name="end_date">End date</string>
