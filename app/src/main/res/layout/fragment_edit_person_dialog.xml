@@ -4,7 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,7 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/DatePicker"
-        android:text="1994-02-11"/>
+        android:text="1970-01-01"
+        android:clickable="true"/>
 
 
 </LinearLayout>

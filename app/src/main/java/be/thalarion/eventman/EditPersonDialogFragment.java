@@ -2,9 +2,14 @@ package be.thalarion.eventman;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +27,7 @@ import org.parceler.Parcels;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
@@ -29,7 +36,8 @@ import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 
-public class EditPersonDialogFragment extends android.support.v4.app.DialogFragment {
+public class EditPersonDialogFragment extends DialogFragment
+        implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     private Person person;
 
@@ -84,10 +92,28 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
 
             ((EditText) rootView.findViewById(R.id.field_name)).setText(person.getName());
             ((EditText) rootView.findViewById(R.id.field_email)).setText(person.getEmail());
+            //TODO: implement null handling
             ((TextView) rootView.findViewById(R.id.field_birth_date)).setText(Person.format.format(person.getBirthDate()));
         } else if (data.getSerializable("action") == Model.ACTION.NEW) {
             this.person = new Person();
         }
+
+        ((TextView) rootView.findViewById(R.id.field_birth_date)).setOnClickListener(this);
+                /*new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //DialogFragment f = new DateDialogFragment();
+
+                        EditPersonDialogFragment ef = (EditPersonDialogFragment) v.getContext();
+                        //(EditPersonDialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(getActivity().getResources().getString(R.string.title_edit_person));
+                        DialogFragment f = DateDialogFragment.newInstance(ef);
+
+
+                        f.show(getActivity().getSupportFragmentManager(), "datePicker");
+                    }
+                }
+        );*/
+
 
         return rootView;
     }
@@ -126,7 +152,7 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
                     protected void onPostExecute(Exception e) {
                         if (e == null) {
                             //TODO first: crasht hier voor no apparent reason
-                           // Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
                         } else ErrorHandler.announce(getActivity(), e);
                     }
                 }.execute();
@@ -160,4 +186,18 @@ public class EditPersonDialogFragment extends android.support.v4.app.DialogFragm
     }*/
 
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        ((TextView) this.getView().findViewById(R.id.field_birth_date)).setText(
+                new StringBuilder().append(year).append("-")
+                        .append(monthOfYear).append("-").append(dayOfMonth));
+    }
+
+    @Override
+    public void onClick(View v) { // Parameter v stands for the view that was clicked.
+        DialogFragment f = DateDialogFragment.newInstance(this);
+
+
+        f.show(getActivity().getSupportFragmentManager(), "datePicker");
+    }
 }

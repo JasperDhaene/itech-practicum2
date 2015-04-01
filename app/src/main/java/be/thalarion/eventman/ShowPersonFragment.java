@@ -177,7 +177,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
 
         EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(this.person,Model.ACTION.EDIT);
 
-        ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_show_person));
+        ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_edit_person));
 /*
         MaterialDialog dialog = new MaterialDialog.Builder(this.getActivity())
                 .title(R.string.title_activity_edit_person)
