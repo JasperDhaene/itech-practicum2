@@ -1,6 +1,7 @@
 package be.thalarion.eventman.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +75,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if(dataSet.get(position).getName() != null) {
             holder.name.setTextAppearance(context, R.style.Title);
             holder.name.setText(dataSet.get(position).getName());
@@ -89,11 +91,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             holder.email.setText(R.string.error_text_noemail);
         }
 
-        // TODO: find out if/how Picasso handles memory management on a large number of files
-        Picasso.with(this.context)
-                .load(dataSet.get(position)
-                .getAvatar(context.getResources().getDimensionPixelSize(R.dimen.avatar_small)))
-                .into(holder.avatar);
+        ImageLoader.getInstance().loadImage(dataSet.get(position).getAvatar(Person.AVATAR.THUMB), new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                holder.avatar.setImageBitmap(loadedImage);
+            }
+        });
 
         holder.person = dataSet.get(position);
     }

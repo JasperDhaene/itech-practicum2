@@ -10,6 +10,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
@@ -17,8 +22,7 @@ import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainActivity extends MaterialNavigationDrawer implements MaterialAccountListener,
-                                                                        DrawerLayout.DrawerListener {
+public class MainActivity extends MaterialNavigationDrawer implements DrawerLayout.DrawerListener {
 
     /**
      * neokree MaterialNavigationDrawer
@@ -29,8 +33,13 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
      */
 
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
     private boolean mUserLearnedDrawer;
+
+    private AccountManager accountManager;
+
+    public AccountManager getAccountManager() {
+        return accountManager;
+    }
 
     @Override
     public void init(Bundle bundle) {
@@ -44,17 +53,25 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
         addSection(newSection(getResources().getString(R.string.title_events), R.drawable.ic_action_image_nature_people, new EventsFragment()));
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
 
+        // ImageLoader configuration
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                    .build();
+        ImageLoader.getInstance().init(config);
+
+        allowArrowAnimation();
         setDefaultSectionLoaded(0);
 
-        setAccountListener(this);
+        MaterialAccount account = new MaterialAccount(getResources(),
+                getString(R.string.name_admin),
+                getString(R.string.email_admin),
+                R.drawable.ic_action_social_people,
+                R.drawable.material
+        );
+        addAccount(account);
+
         setDrawerListener(this);
 
-        MaterialAccount account = new MaterialAccount(this.getResources(),
-                "Florian Dejonckheere",
-                "florian@floriandejonckheere.be",
-                R.drawable.gravatar,
-                R.drawable.material);
-        this.addAccount(account);
+        this.accountManager = new AccountManager(this);
     }
 
     @Override
@@ -89,15 +106,5 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
     @Override
     public void onHomeAsUpSelected() {
         // when the back arrow is selected this method is called
-    }
-
-    @Override
-    public void onAccountOpening(MaterialAccount materialAccount) {
-
-    }
-
-    @Override
-    public void onChangeAccount(MaterialAccount materialAccount) {
-
     }
 }
