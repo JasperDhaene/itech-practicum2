@@ -99,21 +99,6 @@ public class EditPersonDialogFragment extends DialogFragment
         }
 
         ((TextView) rootView.findViewById(R.id.field_birth_date)).setOnClickListener(this);
-                /*new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //DialogFragment f = new DateDialogFragment();
-
-                        EditPersonDialogFragment ef = (EditPersonDialogFragment) v.getContext();
-                        //(EditPersonDialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(getActivity().getResources().getString(R.string.title_edit_person));
-                        DialogFragment f = DateDialogFragment.newInstance(ef);
-
-
-                        f.show(getActivity().getSupportFragmentManager(), "datePicker");
-                    }
-                }
-        );*/
-
 
         return rootView;
     }
@@ -196,7 +181,6 @@ public class EditPersonDialogFragment extends DialogFragment
     @Override
     public void onClick(View v) { // Parameter v stands for the view that was clicked.
         DialogFragment f = DateDialogFragment.newInstance(this);
-
 
         f.show(getActivity().getSupportFragmentManager(), "datePicker");
     }
