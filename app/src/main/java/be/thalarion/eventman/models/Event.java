@@ -34,7 +34,7 @@ public class Event extends Model {
     @Transient
     public static final SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
-    public Event() { }
+    public Event() { this.confirmations = new HashSet<>(); }
 
     /**
      * Event - create a new event
@@ -98,16 +98,19 @@ public class Event extends Model {
             event.put("end", this.format.format(this.endDate));
 
             JSONArray confirmations = new JSONArray();
-            for(Person p: this.confirmations) {
-                JSONObject pers = new JSONObject();
-                pers.put("going", true);
-                pers.put("person",
-                        new JSONObject()
-                            .put("name", p.getName())
-                            .put("url", p.resource));
+            if (!this.confirmations.isEmpty()) {
+                for (Person p : this.confirmations) {
+                    JSONObject pers = new JSONObject();
+                    pers.put("going", true);
+                    pers.put("person",
+                            new JSONObject()
+                                    .put("name", p.getName())
+                                    .put("url", p.resource));
+                }
+
+                JSONObject confirm = new JSONObject().put("list", confirmations);
+                event.put("confirmations", confirm);
             }
-            JSONObject confirm = new JSONObject().put("list", confirmations);
-            event.put("confirmations", confirm);
         } catch (JSONException e) {
             throw new APIException(e);
         }

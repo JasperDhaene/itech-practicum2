@@ -97,7 +97,6 @@ public class EditEventDialogFragment extends EditDialogFragment
             this.field_title.setText(event.getTitle());
             this.field_description.setText(event.getDescription());
             //TODO: implement null handling
-            //TODO: look how the dateformat affects everything
             this.field_start_date.setText(Event.formatDate.format(event.getStartDate()));
             this.field_start_time.setText(Event.formatTime.format(event.getStartDate()));
             //TODO: implement null handling
@@ -130,14 +129,23 @@ public class EditEventDialogFragment extends EditDialogFragment
                     protected Exception doInBackground(Void... params) {
                         String title = field_title.getText().toString();
                         String description = field_description.getText().toString();
-                        Date startdate,enddate,starttime,endtime;
+                        Date startdate=null,enddate=null;
                         try {
-                            startdate = Event.format.parse(field_start_date.getText().toString());
-                            enddate = Event.format.parse(field_end_date.getText().toString());
-                            starttime = Event.format.parse(field_start_time.getText().toString());
-                            endtime = Event.format.parse(field_end_time.getText().toString());
+                            StringBuilder builderStart = new StringBuilder().append(field_start_date.getText().toString())
+                                    .append("T")
+                                    .append(field_start_time.getText().toString())
+                                    .append(".000Z");
+
+                            StringBuilder builderEnd = new StringBuilder().append(field_end_date.getText().toString())
+                                    .append("T")
+                                    .append(field_end_time.getText().toString())
+                                    .append(".000Z");
+
+                            startdate = Event.format.parse(builderStart.toString());
+                            enddate = Event.format.parse(builderEnd.toString());
+
                         } catch (ParseException e) {
-                            return e; //TODO: what dafuq dit mag hier niet returnn wi. Zet dan een default waarde als datum en print af dat er een fucking error is. Lul.
+                            //return e; //TODO: what dafuq dit mag hier niet returnn wi. Zet dan een default waarde als datum en print af dat er een fucking error is. Lul.
                         }
                         //new Event has been created if action==ACTION.NEW
                         event.setTitle(title);
@@ -173,26 +181,6 @@ public class EditEventDialogFragment extends EditDialogFragment
         }
         return true;
     }
-
-
-/*
-    public void onDateSet(DatePicker view,View target, int year, int monthOfYear, int dayOfMonth) {
-
-        ((TextView) this.getView().findViewById(R.id.field_start_date)).setText(
-                new StringBuilder().append(year).append("-")
-                        .append(monthOfYear).append("-").append(dayOfMonth));
-    }
-
-
-    public void onTimeSet(TimePicker view,View target, int hourOfDay, int minute) {
-        ((TextView) this.getView().findViewById(R.id.field_start_time)).setText(
-                new StringBuilder().append(hourOfDay).append(":").append(minute));
-
-
-
-
-
-    }*/
 
     @Override
     public void onClick(View v) { // Parameter v stands for the view that was clicked.
