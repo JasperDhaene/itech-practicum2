@@ -7,6 +7,8 @@ import org.parceler.Parcel;
 import org.parceler.Transient;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -24,6 +26,7 @@ public class Event extends Model {
     public String title, description;
     public Date startDate, endDate;
     public Set<Confirmation> confirmations;
+    public URL confirmationResource;
 
     @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -70,6 +73,7 @@ public class Event extends Model {
             this.confirmations = new HashSet<>();
 
             if(!json.isNull("confirmations")) {
+                if(!json.isNull("url")) this.confirmationResource = new URL(json.getString("url"));
                 JSONObject confirm = json.getJSONObject("confirmations");
                 if(confirm.isNull("list")) {
                     JSONArray list = confirm.getJSONArray("list");
@@ -80,7 +84,7 @@ public class Event extends Model {
                     }
                 }
             }
-        } catch (JSONException | ParseException e) {
+        } catch (MalformedURLException | JSONException | ParseException e) {
             throw new APIException(e);
         }
     }

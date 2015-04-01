@@ -32,7 +32,7 @@ public class Confirmation extends Model {
      * API Methods
      */
     @Override
-    protected String getCanonicalName() { return "confirmations"; }
+    protected String getCanonicalName() { return ""; }
 
     @Override
     protected void fromJSON(JSONObject json) throws APIException {
@@ -80,7 +80,7 @@ public class Confirmation extends Model {
         if (this.resource == null) {
             // Create new resource
             API.getInstance().create(
-                    new URL(API.getInstance().resolve(this.event.getCanonicalName()).toString() + '/' + getCanonicalName()),
+                    this.event.confirmationResource,
                     json.toString()
             );
             this.event.syncModelToMemory();
