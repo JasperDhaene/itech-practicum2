@@ -63,10 +63,10 @@ public class Event extends Model {
             if(!json.isNull("description")) this.description = json.getString("description");
             else this.description = null;
 
-            if(!json.isNull("start_date")) this.startDate = this.format.parse(json.getString("start_date"));
+            if(!json.isNull("start")) this.startDate = this.format.parse(json.getString("start"));
             else this.startDate = null;
 
-            if(!json.isNull("end_date")) this.endDate = this.format.parse(json.getString("end_date"));
+            if(!json.isNull("end")) this.endDate = this.format.parse(json.getString("end"));
             else this.endDate = null;
 
             if(!json.isNull("confirmations")) {
@@ -90,8 +90,8 @@ public class Event extends Model {
         try {
             event.put("title", this.title);
             event.put("description", this.description);
-            event.put("start_date", this.format.format(this.startDate));
-            event.put("end_date", this.format.format(this.endDate));
+            event.put("start", this.format.format(this.startDate));
+            event.put("end", this.format.format(this.endDate));
 
             JSONArray confirmations = new JSONArray();
             for(Person p: this.confirmations) {
