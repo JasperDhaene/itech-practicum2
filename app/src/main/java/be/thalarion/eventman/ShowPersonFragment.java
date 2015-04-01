@@ -2,6 +2,7 @@ package be.thalarion.eventman;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.parceler.Parcels;
 
@@ -70,10 +72,12 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         else
             this.birthDate.setText(R.string.error_text_nobirthdate);
 
-        // TODO: what happens to avatars if email is null?
-        Picasso.with(rootView.getContext())
-                .load(this.person.getAvatar(Person.AVATAR.LARGE))
-                .into(this.avatar);
+        ImageLoader.getInstance().loadImage(this.person.getAvatar(Person.AVATAR.LARGE), new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                avatar.setImageBitmap(loadedImage);
+            }
+        });
 
         return rootView;
     }

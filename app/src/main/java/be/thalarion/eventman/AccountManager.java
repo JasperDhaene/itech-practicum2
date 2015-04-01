@@ -26,18 +26,17 @@ public class AccountManager {
         ImageLoader il = ImageLoader.getInstance();
         il.loadImage(p.getAvatar(Person.AVATAR.THUMB), new SimpleImageLoadingListener() {
             @Override
-            public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.getCurrentAccount().setTitle(p.getFormattedName(activity));
-                        activity.getCurrentAccount().setSubTitle(p.getFormattedEmail(activity));
-                        activity.getCurrentAccount().setPhoto(loadedImage);
-                        activity.notifyAccountDataChanged();
-                        activity.openDrawer();
-                    }
-                });
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                activity.getCurrentAccount().setTitle(p.getFormattedName(activity));
+                activity.getCurrentAccount().setSubTitle(p.getFormattedEmail(activity));
+                activity.getCurrentAccount().setPhoto(loadedImage);
+                activity.notifyAccountDataChanged();
+                activity.openDrawer();
             }
         });
+    }
+
+    public Person getPerson() {
+        return this.person;
     }
 }
