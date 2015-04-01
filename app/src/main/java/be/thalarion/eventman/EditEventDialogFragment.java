@@ -42,7 +42,7 @@ public class EditEventDialogFragment extends DialogFragment
 
     private Event event;
     private EditText field_title,field_description;
-    private TextView field_startdate,field_enddate;
+    private TextView field_start_date,field_start_time,field_end_date,field_end_time;
 
     public EditEventDialogFragment() {
         // Required empty public constructor
@@ -80,8 +80,10 @@ public class EditEventDialogFragment extends DialogFragment
 
         this.field_title = ((EditText) rootView.findViewById(R.id.field_title));
         this.field_description = ((EditText) rootView.findViewById(R.id.field_description));
-        this.field_startdate = ((TextView) rootView.findViewById(R.id.field_start_date));
-        this.field_enddate = ((TextView) rootView.findViewById(R.id.field_end_date));
+        this.field_start_date = ((TextView) rootView.findViewById(R.id.field_start_date));
+        this.field_end_date = ((TextView) rootView.findViewById(R.id.field_end_date));
+        this.field_start_time = ((TextView) rootView.findViewById(R.id.field_start_time));
+        this.field_end_time = ((TextView) rootView.findViewById(R.id.field_end_time));
 
         Bundle data = getArguments();
         if (data.getSerializable("action") == Model.ACTION.EDIT) {
@@ -92,15 +94,17 @@ public class EditEventDialogFragment extends DialogFragment
             this.field_description.setText(event.getDescription());
             //TODO: implement null handling
             //TODO: look how the dateformat affects everything
-            this.field_startdate.setText(Event.format.format(event.getStartDate()));
+            this.field_start_date.setText(Event.format.format(event.getStartDate()));
             //TODO: implement null handling
-            this.field_enddate.setText(Event.format.format(event.getEndDate()));
+            this.field_end_date.setText(Event.format.format(event.getEndDate()));
         } else if (data.getSerializable("action") == Model.ACTION.NEW) {
             this.event = new Event();
         }
 
-        this.field_startdate.setOnClickListener(this);
-        this.field_enddate.setOnClickListener(this);
+        this.field_start_date.setOnClickListener(this);
+        this.field_end_date.setOnClickListener(this);
+        this.field_start_time.setOnClickListener(this);
+        this.field_end_time.setOnClickListener(this);
 
         return rootView;
     }
@@ -120,14 +124,16 @@ public class EditEventDialogFragment extends DialogFragment
                     protected Exception doInBackground(Void... params) {
                         String title = field_title.getText().toString();
                         String description = field_description.getText().toString();
-                        Date startdate,enddate;
+                        Date startdate,enddate,starttime,endtime;
                         try {
-                            startdate = Event.format.parse(field_startdate.getText().toString());
-                            enddate = Event.format.parse(field_enddate.getText().toString());
+                            startdate = Event.format.parse(field_start_date.getText().toString());
+                            enddate = Event.format.parse(field_end_date.getText().toString());
+                            starttime = Event.format.parse(field_start_time.getText().toString());
+                            endtime = Event.format.parse(field_end_time.getText().toString());
                         } catch (ParseException e) {
                             return e; //TODO: what dafuq dit mag hier niet returnn wi. Zet dan een default waarde als datum en print af dat er een fucking error is. Lul.
                         }
-                        //new Person has been created if action==ACTION.NEW
+                        //new Event has been created if action==ACTION.NEW
                         event.setTitle(title);
                         event.setDescription(description);
                         event.setStartDate(startdate);

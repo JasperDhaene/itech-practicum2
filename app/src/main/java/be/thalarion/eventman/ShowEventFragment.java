@@ -123,8 +123,8 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
                     @Override
                     protected void onPostExecute(Exception e) {
                         if(e == null) {
-                            Toast.makeText(getActivity(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else ErrorHandler.announce(getActivity(), e);
+                            //Toast.makeText(getActivity(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else {}//ErrorHandler.announce(getActivity(), e);
                     }
                 }.execute();
 
