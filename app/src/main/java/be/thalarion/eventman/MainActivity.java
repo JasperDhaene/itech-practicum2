@@ -12,17 +12,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainActivity extends MaterialNavigationDrawer implements DrawerLayout.DrawerListener {
+public class MainActivity extends MaterialNavigationDrawer implements DrawerLayout.DrawerListener,
+                                                                        MaterialAccountListener {
 
     /**
      * neokree MaterialNavigationDrawer
@@ -54,9 +58,10 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
 
         // ImageLoader configuration
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                    .build();
-        ImageLoader.getInstance().init(config);
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.memoryCache(new LruMemoryCache(2 * 1024 * 1024)); // 2 MiB memory cache
+        ImageLoader.getInstance().init(config.build());
 
         allowArrowAnimation();
         setDefaultSectionLoaded(0);
@@ -69,6 +74,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
         );
         addAccount(account);
 
+        setAccountListener(this);
         setDrawerListener(this);
 
         this.accountManager = new AccountManager(this);
@@ -107,4 +113,16 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
     public void onHomeAsUpSelected() {
         // when the back arrow is selected this method is called
     }
+
+    @Override
+    public void onAccountOpening(MaterialAccount materialAccount) {
+        if(accountManager.getPerson() != null)
+            setFragmentChild(
+                    new ShowPersonFragment(accountManager.getPerson()),
+                    getResources().getString(R.string.title_show_person)
+            );
+    }
+
+    @Override
+    public void onChangeAccount(MaterialAccount materialAccount) { }
 }
