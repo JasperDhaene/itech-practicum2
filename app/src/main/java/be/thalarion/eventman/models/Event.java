@@ -7,16 +7,15 @@ import org.parceler.Parcel;
 import org.parceler.Transient;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.cache.Cache;
 
 @Parcel
 public class Event extends Model {
@@ -24,7 +23,7 @@ public class Event extends Model {
     // Keep public modifier for parcelling library
     public String title, description;
     public Date startDate, endDate;
-    public Set<Person> confirmations;
+    public Set<Confirmation> confirmations;
 
     @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -68,17 +67,20 @@ public class Event extends Model {
             if(!json.isNull("end_date")) this.endDate = this.format.parse(json.getString("end_date"));
             else this.endDate = null;
 
+            this.confirmations = new HashSet<>();
+
             if(!json.isNull("confirmations")) {
-                JSONArray list = json.getJSONObject("confirmations").getJSONArray("list");
-                for(int i = 0; i < list.length(); i++) {
-                    if(list.getJSONObject(i).getBoolean("going")) {
-                        Person p = Cache.find(Person.class,
-                                new URL(list.getJSONObject(i).getJSONObject("person").getString("url")));
-                        if(p != null) this.confirmations.add(p);
+                JSONObject confirm = json.getJSONObject("confirmations");
+                if(confirm.isNull("list")) {
+                    JSONArray list = confirm.getJSONArray("list");
+                    for(int i = 0; i < list.length(); i++) {
+                        Confirmation c = new Confirmation(this);
+                        c.fromJSON(list.getJSONObject(i));
+                        this.confirmations.add(c);
                     }
                 }
             }
-        } catch (IOException | JSONException | ParseException e) {
+        } catch (JSONException | ParseException e) {
             throw new APIException(e);
         }
     }
@@ -92,21 +94,21 @@ public class Event extends Model {
             event.put("start_date", this.format.format(this.startDate));
             event.put("end_date", this.format.format(this.endDate));
 
-            JSONArray confirmations = new JSONArray();
-            for(Person p: this.confirmations) {
-                JSONObject pers = new JSONObject();
-                pers.put("going", true);
-                pers.put("person",
-                        new JSONObject()
-                            .put("name", p.getName())
-                            .put("url", p.resource));
-            }
-            JSONObject confirm = new JSONObject().put("list", confirmations);
-            event.put("confirmations", confirm);
+            // Serialization of confirmations is handled in Confirmation.syncModelToNetwork()
         } catch (JSONException e) {
             throw new APIException(e);
         }
         return event;
+    }
+
+    @Override
+    public void syncModelToNetwork() throws IOException, APIException {
+        super.syncModelToNetwork();
+
+        // Sync confirmations
+        for(Confirmation c: this.confirmations) {
+            c.syncModelToNetwork();
+        }
     }
 
     public String getTitle() {
@@ -121,9 +123,6 @@ public class Event extends Model {
     public Date getEndDate() {
         return this.endDate;
     }
-    public Set<Person> getConfirmations() {
-        return this.confirmations;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -137,11 +136,17 @@ public class Event extends Model {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    public void confirm(Person p, boolean going) {
-        if(going)
-            this.confirmations.add(p);
-        else
+
+    public void confirm(Person p, boolean going) throws IOException, APIException {
+        if(going && !this.confirmations.contains(p)) {
+            // Person has confirmed
+            Confirmation c = new Confirmation(p, this);
+            this.confirmations.add(c);
+            c.syncModelToNetwork(); // this will call Event.syncModelFromNetwork()
+        } else if(!going && this.confirmations.contains(p)) {
+            // Person has denied
             this.confirmations.remove(p);
+        }
     }
 
     /**

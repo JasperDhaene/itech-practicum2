@@ -56,8 +56,6 @@ public abstract class Model {
         if(this.resource == null)
             throw new APIException("Model must have a resource URL");
 
-        JSONObject json = API.getInstance().fetch(this.resource);
-
         fromJSON(API.getInstance().fetch(this.resource));
     }
 
@@ -67,7 +65,8 @@ public abstract class Model {
      * @throws APIException
      */
     public void destroy() throws IOException, APIException {
-        API.getInstance().delete(this.resource);
+        if(this.resource != null)
+            API.getInstance().delete(this.resource);
     }
 
     /**
