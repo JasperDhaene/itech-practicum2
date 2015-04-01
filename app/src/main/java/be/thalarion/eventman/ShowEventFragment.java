@@ -104,7 +104,9 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
         switch(item.getItemId()){
             case R.id.action_edit_event:
 
-                showDialog();
+                EditEventDialogFragment editEventFrag = EditEventDialogFragment.newInstance(this.event, Model.ACTION.EDIT);
+
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editEventFrag,this.getActivity().getResources().getString(R.string.title_edit_event));
 
                 break;
             case R.id.action_discard_event:
@@ -128,32 +130,15 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
                     }
                 }.execute();
 
-                EventsFragment f = new EventsFragment();
+                EventsFragment eventsFrag = new EventsFragment();
 
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_people));
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(eventsFrag,this.getActivity().getResources().getString(R.string.title_people));
 
                 break;
-            //TODO: maybe make this an 'attend' button for testing
-            /*
-            case R.id.action_login:
-                MaterialAccount account = ((MaterialNavigationDrawer) getActivity()).getCurrentAccount();
-                // TODO: null-catching
-                account.setTitle(this.person.getName());
-                account.setSubTitle(this.person.getEmail());
-                ((MaterialNavigationDrawer) getActivity()).notifyAccountDataChanged();
-                break;*/
             default:
                 return false;
         }
         return true;
     }
-
-    void showDialog() {
-
-        EditEventDialogFragment f = EditEventDialogFragment.newInstance(this.event, Model.ACTION.EDIT);
-
-        ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_edit_event));
-    }
-
 
 }

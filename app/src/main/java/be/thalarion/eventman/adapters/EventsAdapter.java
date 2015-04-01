@@ -19,7 +19,6 @@ import java.util.List;
 
 import be.thalarion.eventman.EditEventDialogFragment;
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.ShowEventActivity;
 import be.thalarion.eventman.ShowEventFragment;
 import be.thalarion.eventman.ShowPersonFragment;
 import be.thalarion.eventman.models.Event;

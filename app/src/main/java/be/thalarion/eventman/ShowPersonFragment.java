@@ -26,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -99,8 +97,6 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 .load(this.person.getAvatar(getResources().getDimensionPixelSize(R.dimen.avatar_large)))
                 .into(this.avatar);
 
-        //((MaterialNavigationDrawer) getActivity()).
-
         return rootView;
     }
 
@@ -115,7 +111,9 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         switch(item.getItemId()){
             case R.id.action_edit_person:
 
-                showDialog();
+                EditPersonDialogFragment editPersonFrag = EditPersonDialogFragment.newInstance(this.person,Model.ACTION.EDIT);
+
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editPersonFrag,this.getActivity().getResources().getString(R.string.title_edit_person));
 
                 break;
             case R.id.action_discard_person:
@@ -133,15 +131,15 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                     }
                     @Override
                     protected void onPostExecute(Exception e) {
-                        if(e == null) {
-                            Toast.makeText(getActivity(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else ErrorHandler.announce(getActivity(), e);
+                        if(e == null) {//TODO
+                            //Toast.makeText(getActivity(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else { }//ErrorHandler.announce(getActivity(), e);
                     }
                 }.execute();
 
-                PeopleFragment f = new PeopleFragment();
+                PeopleFragment peopleFrag = new PeopleFragment();
 
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_people));
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(peopleFrag,this.getActivity().getResources().getString(R.string.title_people));
 
                 break;
             case R.id.action_login:
@@ -164,48 +162,5 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.show();
     }
-
-    private View positiveAction;
-
-    void showDialog() {
-        //DialogFragment newFragment = new EditPersonDialogFragment();
-        //newFragment.show(getFragmentManager(), "dialog");
-
-        /*getFragmentManager().beginTransaction()
-                .add(R.id.container, new EditPersonDialogFragment())
-                .addToBackStack(null).commit();*/
-
-        EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(this.person,Model.ACTION.EDIT);
-
-        ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f,this.getActivity().getResources().getString(R.string.title_edit_person));
-/*
-        MaterialDialog dialog = new MaterialDialog.Builder(this.getActivity())
-                .title(R.string.title_activity_edit_person)
-                .customView(R.layout.fragment_edit_person_dialog,false)
-                .positiveText(R.string.save)
-                .negativeText(android.R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        //showToast("Password: " + passwordInput.getText().toString());
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                    }
-                }).build();
-
-        positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
-
-
-        //TODO: zorg dat 'save' enkel zichtbaar wordt nadat er iets ingetyped is.
-        //alles wat niet ingetyped is moet blijven zoals het was. We doen niet mee aan null-submitting!
-
-        //dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        dialog.show();
-        positiveAction.setEnabled(false); // disabled by default*/
-    }
-
 
 }
