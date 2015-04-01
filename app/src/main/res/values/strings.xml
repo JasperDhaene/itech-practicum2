@@ -54,13 +54,12 @@
 
     <string name="save">Save</string>
 
+    <string name="name_admin">Administrator</string>
+    <string name="email_admin">admin@events.restdesc.org</string>
+
     <!-- Error handling -->
     <string name="error_unknown">An error occurred while processing your request</string>
     <string name="error_io">I/O Error</string>
     <string name="error_api">API Error</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 </resources>

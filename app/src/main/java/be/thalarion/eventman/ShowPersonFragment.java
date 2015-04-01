@@ -72,7 +72,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
 
         // TODO: what happens to avatars if email is null?
         Picasso.with(rootView.getContext())
-                .load(this.person.getAvatar(getResources().getDimensionPixelSize(R.dimen.avatar_large)))
+                .load(this.person.getAvatar(Person.AVATAR.LARGE))
                 .into(this.avatar);
 
         return rootView;

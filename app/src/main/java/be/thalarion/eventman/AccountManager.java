@@ -1,6 +1,11 @@
 package be.thalarion.eventman;
 
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.View;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -17,24 +22,21 @@ public class AccountManager {
     }
 
     public void setAccount(final Person p) {
-        this.activity.runOnUiThread(new Runnable() {
+        this.person = p;
+        ImageLoader il = ImageLoader.getInstance();
+        il.loadImage(p.getAvatar(Person.AVATAR.THUMB), new SimpleImageLoadingListener() {
             @Override
-            public void run() {
-                if(activity.getCurrentAccount() == null) {
-                    MaterialAccount account = new MaterialAccount(activity.getResources(),
-                            p.getFormattedName(activity),
-                            p.getFormattedEmail(activity),
-                            R.drawable.gravatar,
-                            R.drawable.material
-                    );
-                    account.setPhoto(R.drawable.gravatar);
-                    activity.addAccount(account);
-                } else {
-                    activity.getCurrentAccount().setTitle(p.getFormattedName(activity));
-                    activity.getCurrentAccount().setSubTitle(p.getFormattedEmail(activity));
-                    activity.notifyAccountDataChanged();
-                }
-                activity.openDrawer();
+            public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.getCurrentAccount().setTitle(p.getFormattedName(activity));
+                        activity.getCurrentAccount().setSubTitle(p.getFormattedEmail(activity));
+                        activity.getCurrentAccount().setPhoto(loadedImage);
+                        activity.notifyAccountDataChanged();
+                        activity.openDrawer();
+                    }
+                });
             }
         });
     }

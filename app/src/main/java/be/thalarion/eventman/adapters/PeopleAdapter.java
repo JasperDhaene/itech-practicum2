@@ -92,7 +92,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         // TODO: find out if/how Picasso handles memory management on a large number of files
         Picasso.with(this.context)
                 .load(dataSet.get(position)
-                .getAvatar(context.getResources().getDimensionPixelSize(R.dimen.avatar_small)))
+                .getAvatar(Person.AVATAR.MEDIUM))
                 .into(holder.avatar);
 
         holder.person = dataSet.get(position);
