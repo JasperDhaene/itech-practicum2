@@ -1,11 +1,15 @@
 package be.thalarion.eventman;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.View;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
@@ -13,7 +17,8 @@ import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainActivity extends MaterialNavigationDrawer implements MaterialAccountListener {
+public class MainActivity extends MaterialNavigationDrawer implements MaterialAccountListener,
+                                                                        DrawerLayout.DrawerListener {
 
     /**
      * neokree MaterialNavigationDrawer
@@ -23,8 +28,18 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
      * 4. you must not override onBackPressed method, because the library implement it on its own
      */
 
+    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+
+    private boolean mUserLearnedDrawer;
+
     @Override
     public void init(Bundle bundle) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        if(mUserLearnedDrawer)
+            this.disableLearningPattern();
+
         addSection(newSection(getResources().getString(R.string.title_overview), R.drawable.ic_action_action_schedule, new OverviewFragment()));
         addSection(newSection(getResources().getString(R.string.title_events), R.drawable.ic_action_image_nature_people, new EventsFragment()));
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
@@ -32,6 +47,7 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
         setDefaultSectionLoaded(0);
 
         setAccountListener(this);
+        setDrawerListener(this);
 
         MaterialAccount account = new MaterialAccount(this.getResources(),
                 "Florian Dejonckheere",
@@ -42,6 +58,27 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
 
         allowArrowAnimation();
     }
+
+    @Override
+    public void onDrawerOpened(View drawerView) { }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) { }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if(!mUserLearnedDrawer) {
+            // The user manually opened the drawer; store this flag to prevent auto-showing
+            // the navigation drawer automatically in the future.
+            mUserLearnedDrawer = true;
+            SharedPreferences sp = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) { }
 
     @Override
     protected void onStart() {
