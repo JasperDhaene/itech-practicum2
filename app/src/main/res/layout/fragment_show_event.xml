@@ -20,62 +20,29 @@
                 <TextView
                     android:id="@+id/event_title"
                     android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:maxLines="1"
-                    android:textColor="@color/text"/>
+                    style="@style/Show_event_component_text" />
 
                 <TextView
                     android:id="@+id/event_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    android:textColor="@color/secondary"/>
+                    style="@style/Show_event_component_description" />
+
+                <TextView
+                    style="@style/Section_Dummy"/>
 
                 <TextView
                     android:id="@+id/event_startdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    android:textColor="@color/secondary"/>
+                    style="@style/Show_event_component_date"/>
 
                 <TextView
                     android:id="@+id/event_enddate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    android:textColor="@color/secondary"/>
+                    style="@style/Show_event_component_date"/>
 
             </LinearLayout>
 
