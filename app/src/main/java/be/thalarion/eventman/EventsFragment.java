@@ -19,7 +19,7 @@ import java.util.List;
 
 import be.thalarion.eventman.adapters.EventsAdapter;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.Cache;
+import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;

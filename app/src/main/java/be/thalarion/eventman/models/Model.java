@@ -19,7 +19,7 @@ public abstract class Model {
         EDIT, NEW
     }
 
-    protected URL resource;
+    public URL resource;
 
     /**
      * syncModelToNetwork - Sync in-memory model with API model
@@ -71,7 +71,7 @@ public abstract class Model {
     }
 
     /**
-     * findAll - Retrieve list of all models from network
+     * findAll - Retrieve and serialize list of all models from network
      * @param model Model class object
      * @return List of models
      * @throws IOException
@@ -104,6 +104,29 @@ public abstract class Model {
         }
 
         return models;
+    }
+
+    /**
+     * find - Retrieve and serialize a model from network
+     * @param model Model class object
+     * @return model
+     * @throws IOException
+     * @throws APIException
+     */
+    public static <T extends Model> T find(Class<T> model, URL resource) throws IOException, APIException {
+        T m;
+        try {
+            // GET /{model}/{id}
+            JSONObject jsonObject = API.getInstance().fetch(resource);
+            m = model.newInstance();
+            m.resource = resource;
+            m.fromJSON(jsonObject);
+
+        } catch (IllegalAccessException | InstantiationException e) {
+            throw new APIException(e);
+        }
+
+        return m;
     }
 
     /**

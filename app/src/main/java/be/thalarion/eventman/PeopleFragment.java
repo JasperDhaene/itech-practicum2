@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +20,7 @@ import java.util.List;
 
 import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.Cache;
+import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
