@@ -10,15 +10,23 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainActivity extends MaterialNavigationDrawer implements MaterialAccountListener,
-                                                                        DrawerLayout.DrawerListener {
+public class MainActivity extends MaterialNavigationDrawer implements DrawerLayout.DrawerListener,
+                                                                        MaterialAccountListener {
 
     /**
      * neokree MaterialNavigationDrawer
@@ -29,8 +37,13 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
      */
 
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
     private boolean mUserLearnedDrawer;
+
+    private AccountManager accountManager;
+
+    public AccountManager getAccountManager() {
+        return accountManager;
+    }
 
     @Override
     public void init(Bundle bundle) {
@@ -44,19 +57,27 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
         addSection(newSection(getResources().getString(R.string.title_events), R.drawable.ic_action_image_nature_people, new EventsFragment()));
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
 
+        // ImageLoader configuration
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.memoryCache(new LruMemoryCache(2 * 1024 * 1024)); // 2 MiB memory cache
+        ImageLoader.getInstance().init(config.build());
+
+        allowArrowAnimation();
         setDefaultSectionLoaded(0);
+
+        MaterialAccount account = new MaterialAccount(getResources(),
+                getString(R.string.name_admin),
+                getString(R.string.email_admin),
+                R.drawable.ic_action_social_people,
+                R.drawable.material
+        );
+        addAccount(account);
 
         setAccountListener(this);
         setDrawerListener(this);
 
-        MaterialAccount account = new MaterialAccount(this.getResources(),
-                "Florian Dejonckheere",
-                "florian@floriandejonckheere.be",
-                R.drawable.gravatar,
-                R.drawable.material);
-        this.addAccount(account);
-
-        allowArrowAnimation();
+        this.accountManager = new AccountManager(this);
     }
 
     @Override
@@ -95,11 +116,13 @@ public class MainActivity extends MaterialNavigationDrawer implements MaterialAc
 
     @Override
     public void onAccountOpening(MaterialAccount materialAccount) {
-
+        if(accountManager.getPerson() != null)
+            setFragmentChild(
+                    new ShowPersonFragment(accountManager.getPerson()),
+                    getResources().getString(R.string.title_show_person)
+            );
     }
 
     @Override
-    public void onChangeAccount(MaterialAccount materialAccount) {
-
-    }
+    public void onChangeAccount(MaterialAccount materialAccount) { }
 }
