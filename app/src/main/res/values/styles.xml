@@ -108,6 +108,10 @@
     </style>
 
     <!-- List item -->
+    <style name="List_item_container">
+        <item name="android:background">@color/md_white_1000</item>
+    </style>
+
     <style name="List_item_avatar">
         <item name="android:layout_width">@dimen/avatar_small</item>
         <item name="android:layout_height">@dimen/avatar_small</item>
@@ -115,10 +119,16 @@
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
+    <style name="List_item_content_container">
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
+
     <style name="List_item_text_container">
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingRight">16dp</item>
     </style>
 
     <style name="List_item_text">

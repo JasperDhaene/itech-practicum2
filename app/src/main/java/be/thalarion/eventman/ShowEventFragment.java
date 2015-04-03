@@ -37,6 +37,8 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
     private Event event;
 
 
+
+
     public ShowEventFragment() {
         // Required empty public constructor
     }

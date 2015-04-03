@@ -13,24 +13,39 @@
                 android:transitionName="avatar"
                 style="@style/List_item_avatar"/>
 
-            <LinearLayout android:orientation="vertical"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/List_item_text_container">
+                style="@style/List_item_content_container">
 
-                <TextView
-                    android:id="@+id/person_list_view_name"
+                <LinearLayout android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/List_item_text_primary"/>
+                    android:layout_height="match_parent"
+                    style="@style/List_item_text_container">
 
-                <TextView
-                    android:id="@+id/person_list_view_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/List_item_text_secondary"/>
+                    <TextView
+                        android:id="@+id/person_list_view_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/List_item_text_primary"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/person_list_view_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/List_item_text_secondary"/>
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_social_person"
+                    />
+
+                </LinearLayout>
+
+
 
         </LinearLayout>
 
