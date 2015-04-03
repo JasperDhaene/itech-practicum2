@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,7 +17,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import java.util.ArrayList;
 import java.util.List;
 
-import be.thalarion.eventman.EditPersonDialogFragment;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowPersonFragment;
 import be.thalarion.eventman.models.Person;
@@ -42,7 +42,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public TextView name;
         public TextView email;
         public ImageView avatar;
-        public CardView card;
+        public LinearLayout container;
         public Person person;
 
         public ViewHolder(final View itemView) {
@@ -50,9 +50,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             this.name = ((TextView) itemView.findViewById(R.id.person_list_view_name));
             this.email = ((TextView) itemView.findViewById(R.id.person_list_view_email));
             this.avatar = ((ImageView) itemView.findViewById(R.id.person_list_view_avatar));
-            this.card = ((CardView) itemView.findViewById(R.id.card));
+            this.container = ((LinearLayout) itemView.findViewById(R.id.list_item_container));
 
-            card.setOnClickListener(this);
+            container.setOnClickListener(this);
         }
 
         @Override
@@ -70,7 +70,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public PeopleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_person, parent, false);
+                .inflate(R.layout.list_item_person, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -79,17 +79,17 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if(dataSet.get(position).getName() != null) {
-            holder.name.setTextAppearance(context, R.style.Title);
+            //holder.name.setTextAppearance(context, R.style.Title);
             holder.name.setText(dataSet.get(position).getName());
         } else {
-            holder.name.setTextAppearance(context, R.style.TitleMissing);
+            //holder.name.setTextAppearance(context, R.style.TitleMissing);
             holder.name.setText(R.string.error_text_noname);
         }
         if(dataSet.get(position).getEmail() != null) {
-            holder.email.setTextAppearance(context, R.style.SubTitle);
+            //holder.email.setTextAppearance(context, R.style.SubTitle);
             holder.email.setText(dataSet.get(position).getEmail());
         } else {
-            holder.email.setTextAppearance(context, R.style.SubTitleMissing);
+            //holder.email.setTextAppearance(context, R.style.SubTitleMissing);
             holder.email.setText(R.string.error_text_noemail);
         }
 
