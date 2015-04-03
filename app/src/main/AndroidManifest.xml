@@ -19,30 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".EditPersonActivity"
-            android:label="@string/title_edit_person"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="be.thalarion.eventman.MainActivity" />
-        </activity>
-        <activity
-            android:name=".ShowEventActivity"
-            android:label="@string/title_activity_show_event"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="be.thalarion.eventman.MainActivity" />
-        </activity>
-        <activity
-            android:name=".EditEventActivity"
-            android:label="@string/title_activity_edit_event"
-            android:parentActivityName=".ShowEventActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="be.thalarion.eventman.ShowEventActivity" />
-        </activity>
+
     </application>
 
 </manifest>
