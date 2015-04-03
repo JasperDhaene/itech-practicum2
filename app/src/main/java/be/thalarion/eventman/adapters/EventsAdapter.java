@@ -5,18 +5,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowEventFragment;
+import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Event;
+import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
@@ -40,14 +45,37 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         public TextView description;
         public ImageView avatar;
         public Event event;
+        public CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.title = ((TextView) itemView.findViewById(R.id.event_list_view_title));
             this.description = ((TextView) itemView.findViewById(R.id.event_list_view_description));
             this.avatar = ((ImageView) itemView.findViewById(R.id.event_list_view_avatar));
+            this.checkBox = ((CheckBox) itemView.findViewById(R.id.list_item_checkbox));
 
             ((LinearLayout) itemView.findViewById(R.id.list_item_container)).setOnClickListener(this);
+
+            this.checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(((CheckBox) v).isChecked()){
+                        //TODO find out why app crashes at syncModelToNetwork
+                        //variables are for debug purposes.
+                        MainActivity a  = ((MainActivity)v.getContext());
+                        Person p = ((MainActivity)v.getContext()).getAccountManager().getPerson();
+                        event.confirm(p,true);
+                        try {
+                            event.syncModelToNetwork();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (APIException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            });
         }
 
         @Override
