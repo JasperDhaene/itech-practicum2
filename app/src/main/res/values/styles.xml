@@ -108,28 +108,30 @@
     </style>
 
     <!-- List item -->
-    <style name="List_item_person_avatar">
+    <style name="List_item_avatar">
         <item name="android:layout_width">@dimen/avatar_small</item>
         <item name="android:layout_height">@dimen/avatar_small</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
-    <style name="List_item_person_text_container">
+    <style name="List_item_text_container">
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
 
-    <style name="List_item_person_text">
+    <style name="List_item_text">
         <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="List_item_person_text_primary" parent="List_item_person_text">
+    <style name="List_item_text_primary" parent="List_item_text">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_normal</item>
     </style>
 
-    <style name="List_item_person_text_secondary" parent="List_item_person_text">
+    <style name="List_item_text_secondary" parent="List_item_text">
         <item name="android:textSize">14sp</item>
     </style>
 

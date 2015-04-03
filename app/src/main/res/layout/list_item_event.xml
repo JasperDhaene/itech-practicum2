@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView android:id="@+id/person_list_view_avatar"
+            <ImageView android:id="@+id/event_list_view_avatar"
                 android:transitionName="avatar"
                 style="@style/List_item_avatar"/>
 
@@ -19,13 +19,13 @@
                 style="@style/List_item_text_container">
 
                 <TextView
-                    android:id="@+id/person_list_view_name"
+                    android:id="@+id/event_list_view_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/List_item_text_primary"/>
 
                 <TextView
-                    android:id="@+id/person_list_view_email"
+                    android:id="@+id/event_list_view_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/List_item_text_secondary"/>
@@ -33,7 +33,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
 
 </LinearLayout>
