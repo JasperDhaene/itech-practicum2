@@ -22,7 +22,7 @@
                 <LinearLayout android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/list_item_icon"
+                    android:layout_toLeftOf="@+id/list_item_checkbox"
                     android:layout_alignParentLeft="true"
                     style="@style/List_item_text_container">
 
@@ -41,17 +41,14 @@
                 </LinearLayout>
 
 
-                <ImageView
-                    android:id="@+id/list_item_icon"
+                <CheckBox
+                    android:id="@+id/list_item_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_person_grey"
                     android:gravity="center_vertical"
                     android:clickable="true"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-
-                    />
+                    android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
 

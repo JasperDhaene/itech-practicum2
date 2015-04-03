@@ -13,7 +13,7 @@
                 android:transitionName="avatar"
                 style="@style/List_item_avatar"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 style="@style/List_item_content_container">
@@ -21,6 +21,8 @@
                 <LinearLayout android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/list_item_icon"
+                    android:layout_alignParentLeft="true"
                     style="@style/List_item_text_container">
 
                     <TextView
@@ -37,18 +39,18 @@
 
                 </LinearLayout>
 
-                <ImageButton
+                <ImageView
+                    android:id="@+id/list_item_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_social_person"
-                    />
+                    android:src="@drawable/ic_person_grey"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
 
-                </LinearLayout>
-
-
+            </RelativeLayout>
 
         </LinearLayout>
-
-
 
 </LinearLayout>
