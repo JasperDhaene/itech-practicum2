@@ -2,6 +2,7 @@ package be.thalarion.eventman.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -16,6 +18,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import java.util.ArrayList;
 import java.util.List;
 
+import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowPersonFragment;
 import be.thalarion.eventman.models.Person;
@@ -43,6 +46,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public ImageView avatar;
         public LinearLayout container;
         public Person person;
+        public ImageView icon;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -50,8 +54,17 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             this.email = ((TextView) itemView.findViewById(R.id.person_list_view_email));
             this.avatar = ((ImageView) itemView.findViewById(R.id.person_list_view_avatar));
             this.container = ((LinearLayout) itemView.findViewById(R.id.list_item_container));
+            this.icon = ((ImageView) itemView.findViewById(R.id.list_item_icon));
 
-            container.setOnClickListener(this);
+            this.icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) v.getContext()).getAccountManager().setAccount(person);
+                    //Toast.makeText(v.getContext(), String.format(getString(R.string.info_text_login), person.getFormattedName(v.getContext())), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(),"Logged in", Toast.LENGTH_SHORT).show();
+                }
+            });
+            this.container.setOnClickListener(this);
         }
 
         @Override
