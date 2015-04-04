@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import be.thalarion.eventman.MessageFragment;
-import be.thalarion.eventman.ShowEventDetailFragment;
+import be.thalarion.eventman.ShowEventTabFragment;
 import be.thalarion.eventman.models.Event;
 
 /**
@@ -24,7 +24,7 @@ public class EventMessagePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                ShowEventDetailFragment frag = ShowEventDetailFragment.newInstance(this.event);
+                ShowEventTabFragment frag = ShowEventTabFragment.newInstance(this.event);
                 return frag;
                 //return new MessageFragment();
             case 1:

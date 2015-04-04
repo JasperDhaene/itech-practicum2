@@ -1,6 +1,7 @@
 package be.thalarion.eventman;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -122,6 +123,13 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 break;
             case R.id.action_discard_person:
                 new AsyncTask<Void, Void, Exception>() {
+                    private Context context;
+
+                    @Override
+                    protected void onPreExecute() {
+                        this.context = getActivity();
+                    }
+
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
@@ -135,9 +143,9 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                     }
                     @Override
                     protected void onPostExecute(Exception e) {
-                        if(e == null) {//TODO
-                            //Toast.makeText(getActivity(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else { }//ErrorHandler.announce(getActivity(), e);
+                        if(e == null) {
+                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(this.context, e);
                     }
                 }.execute();
 

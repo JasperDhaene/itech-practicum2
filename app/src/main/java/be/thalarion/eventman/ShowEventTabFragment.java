@@ -1,24 +1,25 @@
 package be.thalarion.eventman;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 
 import java.io.IOException;
 
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -26,19 +27,19 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShowEventDetailFragment extends android.support.v4.app.Fragment {
+public class ShowEventTabFragment extends android.support.v4.app.Fragment {
 
     private TextView title, description, startDate, endDate;
     private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
     private Event event;
 
 
-    public ShowEventDetailFragment() {
+    public ShowEventTabFragment() {
         // Required empty public constructor
     }
 
-    public static ShowEventDetailFragment newInstance(Event event) {
-        ShowEventDetailFragment f = new ShowEventDetailFragment();
+    public static ShowEventTabFragment newInstance(Event event) {
+        ShowEventTabFragment f = new ShowEventTabFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("event", Parcels.wrap(event));
@@ -101,6 +102,13 @@ public class ShowEventDetailFragment extends android.support.v4.app.Fragment {
                 break;
             case R.id.action_discard_event:
                 new AsyncTask<Void, Void, Exception>() {
+                    private Context context;
+
+                    @Override
+                    protected void onPreExecute() {
+                        this.context = getActivity();
+                    }
+
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
@@ -115,8 +123,8 @@ public class ShowEventDetailFragment extends android.support.v4.app.Fragment {
                     @Override
                     protected void onPostExecute(Exception e) {
                         if(e == null) {
-                            //Toast.makeText(getActivity(), getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else {}//ErrorHandler.announce(getActivity(), e);
+                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(this.context, e);
                     }
                 }.execute();
 

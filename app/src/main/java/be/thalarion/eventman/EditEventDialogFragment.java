@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 import org.w3c.dom.Text;
@@ -73,6 +74,7 @@ public class EditEventDialogFragment extends EditDialogFragment
         setHasOptionsMenu(true);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_cancel);
+        //TODO: look into the above.
     }
 
 
@@ -125,6 +127,13 @@ public class EditEventDialogFragment extends EditDialogFragment
         switch (item.getItemId()) {
             case R.id.menu_save:
                 new AsyncTask<Void, Void, Exception>() {
+                    private Context context;
+
+                    @Override
+                    protected void onPreExecute() {
+                        this.context = getActivity();
+                    }
+
                     @Override
                     protected Exception doInBackground(Void... params) {
                         String title = field_title.getText().toString();
@@ -164,10 +173,9 @@ public class EditEventDialogFragment extends EditDialogFragment
                     @Override
                     protected void onPostExecute(Exception e) {
                         if (e == null) {
-                            //TODO first: crasht hier voor no apparent reason
-                            // Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
-                        } else {//ErrorHandler.announce(getActivity(), e);
-                        } //TODO: crash
+                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(this.context, e);
+
                     }
                 }.execute();
 

@@ -4,6 +4,7 @@ package be.thalarion.eventman;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -110,10 +111,16 @@ public class EditPersonDialogFragment extends EditDialogFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_save:
                 new AsyncTask<Void, Void, Exception>() {
+                    private Context context;
+
+                    @Override
+                    protected void onPreExecute() {
+                        this.context = getActivity();
+                    }
+
                     @Override
                     protected Exception doInBackground(Void... params) {
                         String name = field_name.getText().toString();
@@ -140,9 +147,8 @@ public class EditPersonDialogFragment extends EditDialogFragment
                     @Override
                     protected void onPostExecute(Exception e) {
                         if (e == null) {
-                            //TODO first: crasht hier voor no apparent reason
-                            // Toast.makeText(getActivity(), getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
-                        } else ErrorHandler.announce(getActivity(), e);
+                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(this.context, e);
                     }
                 }.execute();
 

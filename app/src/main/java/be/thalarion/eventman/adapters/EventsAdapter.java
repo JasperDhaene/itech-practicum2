@@ -18,7 +18,7 @@ import java.util.List;
 
 import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.ShowEventFragment;
+import be.thalarion.eventman.ShowEventContainerFragment;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Person;
@@ -82,7 +82,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         public void onClick(View v) {
 
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
-                    ShowEventFragment.newInstance(this.event),
+                    ShowEventContainerFragment.newInstance(this.event),
                     v.getResources().getString(R.string.title_show_event)
             );
         }
