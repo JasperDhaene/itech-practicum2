@@ -4,9 +4,7 @@ package be.thalarion.eventman;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,41 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.parceler.Parcels;
 
 import java.io.IOException;
 
-import be.thalarion.eventman.adapters.EventMessagePagerAdapter;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShowEventFragment extends android.support.v4.app.Fragment {
+public class ShowEventDetailFragment extends android.support.v4.app.Fragment {
 
     private TextView title, description, startDate, endDate;
     private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
     private Event event;
 
-    private EventMessagePagerAdapter adapter;
-    private ViewPager viewPager;
 
-
-
-    public ShowEventFragment() {
+    public ShowEventDetailFragment() {
         // Required empty public constructor
     }
 
-    public static ShowEventFragment newInstance(Event event) {
-        ShowEventFragment f = new ShowEventFragment();
+    public static ShowEventDetailFragment newInstance(Event event) {
+        ShowEventDetailFragment f = new ShowEventDetailFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("event", Parcels.wrap(event));
@@ -60,28 +49,17 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.viewpager_event, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_show_event, container, false);
         setHasOptionsMenu(true);
 
         Bundle data = getArguments();
         this.event = Parcels.unwrap(data.getParcelable("event"));
 
-        // ViewPager and its adapters use support library
-        // fragments, so use getSupportFragmentManager.
-        FragmentManager fm = this.getActivity().getSupportFragmentManager();
-        adapter = new EventMessagePagerAdapter(fm,this.event);
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
-        viewPager.setAdapter(adapter);
-
-
-        //Bundle data = getArguments();
-        //this.event = Parcels.unwrap(data.getParcelable("event"));
-
-       /* this.title = ((TextView) rootView.findViewById(R.id.event_title));
+        this.title = ((TextView) rootView.findViewById(R.id.event_title));
         this.description = ((TextView) rootView.findViewById(R.id.event_description));
         this.startDate = ((TextView) rootView.findViewById(R.id.event_startdate));
         this.endDate = ((TextView) rootView.findViewById(R.id.event_enddate));
@@ -105,15 +83,9 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
         if(this.event.getEndDate() != null)
             this.endDate.setText(Event.format.format(event.getEndDate()));
         else
-            this.endDate.setText(R.string.error_text_noenddate);*/
+            this.endDate.setText(R.string.error_text_noenddate);
 
         return rootView;
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.event, menu);
     }
 
     @Override
@@ -158,5 +130,6 @@ public class ShowEventFragment extends android.support.v4.app.Fragment {
         }
         return true;
     }
+
 
 }
