@@ -146,10 +146,10 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(peopleFrag,this.getActivity().getResources().getString(R.string.title_people));
 
                 break;
-            case R.id.action_login:
+            /*case R.id.action_login:
                 ((MainActivity)getActivity()).getAccountManager().setAccount(this.person);
                 Toast.makeText(getActivity(), String.format(getString(R.string.info_text_login), person.getFormattedName(getActivity())), Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
             default:
                 return false;
         }
