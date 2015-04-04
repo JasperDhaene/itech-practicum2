@@ -20,8 +20,8 @@ import java.util.List;
 
 import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -75,10 +75,6 @@ public class PeopleFragment extends android.support.v4.app.Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_add_person:
-
-                /*Intent intent = new Intent(this.getActivity(), EditPersonActivity.class);
-                intent.putExtra("action", Model.ACTION.NEW);
-                startActivity(intent);*/
 
                 EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(null,Model.ACTION.NEW);
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_person));

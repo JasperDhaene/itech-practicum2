@@ -64,12 +64,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                         //variables are for debug purposes.
                         MainActivity a  = ((MainActivity)v.getContext());
                         Person p = ((MainActivity)v.getContext()).getAccountManager().getPerson();
-                        event.confirm(p,true);
+
                         try {
+                            event.confirm(p,true);
                             event.syncModelToNetwork();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (APIException e) {
+                        } catch (IOException|APIException e) {
                             e.printStackTrace();
                         }
                     }
@@ -80,9 +79,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
-                    ShowEventContainerFragment.newInstance(this.event),
+                    ShowEventContainerFragment.newInstance(this.event.getResource().toString()), //TODO: should i switch to URL approach?
                     v.getResources().getString(R.string.title_show_event)
             );
         }

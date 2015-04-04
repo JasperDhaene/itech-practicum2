@@ -3,7 +3,6 @@ package be.thalarion.eventman.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.transfuse.annotations.Resource;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,7 +18,13 @@ public abstract class Model {
         EDIT, NEW
     }
 
-    public URL resource;
+    public static String DEFAULT_DATE = "1970-01-01";
+
+    protected URL resource;
+
+    public URL getResource() {
+        return resource;
+    }
 
     /**
      * syncModelToNetwork - Sync in-memory model with API model
@@ -56,8 +61,6 @@ public abstract class Model {
         if(this.resource == null)
             throw new APIException("Model must have a resource URL");
 
-        JSONObject json = API.getInstance().fetch(this.resource);
-
         fromJSON(API.getInstance().fetch(this.resource));
     }
 
@@ -67,7 +70,8 @@ public abstract class Model {
      * @throws APIException
      */
     public void destroy() throws IOException, APIException {
-        API.getInstance().delete(this.resource);
+        if(this.resource != null)
+            API.getInstance().delete(this.resource);
     }
 
     /**

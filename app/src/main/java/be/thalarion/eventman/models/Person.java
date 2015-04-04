@@ -1,33 +1,22 @@
 package be.thalarion.eventman.models;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
-import org.parceler.Transient;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
-import fr.tkeunebr.gravatar.Gravatar;
 
-@Parcel
 public class Person extends Model {
 
-    // Keep public modifier for parcelling library
-    public String name, email, avatarSmall, avatarLarge;
-    public Date birthDate;
+    private String name, email, avatarSmall, avatarLarge;
+    private Date birthDate;
 
-    @Transient
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public Person() { }

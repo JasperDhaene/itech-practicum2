@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.parceler.Parcels;
 
 import java.io.IOException;
 
@@ -35,9 +34,6 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 public class ShowEventContainerFragment extends android.support.v4.app.Fragment {
 
-    private TextView title, description, startDate, endDate;
-    private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
-    private Event event;
 
     private EventMessagePagerAdapter adapter;
     private ViewPager viewPager;
@@ -48,11 +44,11 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
         // Required empty public constructor
     }
 
-    public static ShowEventContainerFragment newInstance(Event event) {
+    public static ShowEventContainerFragment newInstance(String event_url) {
         ShowEventContainerFragment f = new ShowEventContainerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable("event", Parcels.wrap(event));
+        bundle.putString("event_url",event_url);
 
         f.setArguments(bundle);
 
@@ -68,21 +64,22 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
         setHasOptionsMenu(true);
 
         Bundle data = getArguments();
-        this.event = Parcels.unwrap(data.getParcelable("event"));
 
-        this.adapter = new EventMessagePagerAdapter(this.getActivity().getSupportFragmentManager(),this.event);
+
+        this.adapter = new EventMessagePagerAdapter(this.getActivity().getSupportFragmentManager(),data.getString("event_url"));
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(adapter);
 
         return rootView;
     }
 
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.event, menu);
     }
-
+    */
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -131,6 +128,6 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
                 return false;
         }
         return true;
-    }
+    }*/
 
 }

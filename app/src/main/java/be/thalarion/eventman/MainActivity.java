@@ -3,30 +3,22 @@ package be.thalarion.eventman;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
-import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
 public class MainActivity extends MaterialNavigationDrawer implements DrawerLayout.DrawerListener,
-                                                                        MaterialAccountListener {
+                                                                      MaterialAccountListener {
 
     /**
      * neokree MaterialNavigationDrawer
@@ -117,8 +109,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
     @Override
     public void onAccountOpening(MaterialAccount materialAccount) {
         if(accountManager.getPerson() != null)
-            setFragmentChild(
-                    new ShowPersonFragment(accountManager.getPerson()),
+            setFragmentChild(ShowPersonFragment.newInstance(accountManager.getPerson().getResource().toString()),
                     getResources().getString(R.string.title_show_person)
             );
     }

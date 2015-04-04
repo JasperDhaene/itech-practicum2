@@ -13,20 +13,18 @@ import be.thalarion.eventman.models.Event;
  */
 public class EventMessagePagerAdapter extends FragmentPagerAdapter {
 
-    private Event event;
+    private String event_url;
 
-    public EventMessagePagerAdapter(FragmentManager fm,Event event) {
+    public EventMessagePagerAdapter(FragmentManager fm,String event_url) {
         super(fm);
-        this.event = event;
+        this.event_url = event_url;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                ShowEventTabFragment frag = ShowEventTabFragment.newInstance(this.event);
-                return frag;
-                //return new MessageFragment();
+                return ShowEventTabFragment.newInstance(this.event_url);
             case 1:
                 return new MessageFragment();
 

@@ -3,37 +3,43 @@ package be.thalarion.eventman.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
-import org.parceler.Transient;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.cache.Cache;
 
-@Parcel
 public class Event extends Model {
 
-    // Keep public modifier for parcelling library
-    public String title, description;
-    public Date startDate, endDate;
-    public Set<Person> confirmations;
+    private String title, description;
+    private Date startDate, endDate;
 
-    @Transient
+    // I'd use a Set here, but for some ironic reason you cannot retrieve items from it
+    private Map<Confirmation, Confirmation> confirmations;
+    private List<Message> messages;
+    public URL confirmationResource, messageResource;
+
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    @Transient
+
     public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
-    @Transient
+
     public static final SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
-    public Event() { this.confirmations = new HashSet<>(); }
+
+    public Event() {
+        this.confirmations = new HashMap<>();
+        this.messages = new ArrayList<>();
+    }
+
 
     /**
      * Event - create a new event
@@ -47,7 +53,8 @@ public class Event extends Model {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.confirmations = new HashSet<>();
+        this.confirmations = new HashMap<>();
+        this.messages = new ArrayList<>();
     }
 
     /**
@@ -73,16 +80,31 @@ public class Event extends Model {
             else this.endDate = null;
 
             if(!json.isNull("confirmations")) {
-                JSONArray list = json.getJSONObject("confirmations").getJSONArray("list");
-                for(int i = 0; i < list.length(); i++) {
-                    if(list.getJSONObject(i).getBoolean("going")) {
-                        Person p = Cache.find(Person.class,
-                                new URL(list.getJSONObject(i).getJSONObject("person").getString("url")));
-                        if(p != null) this.confirmations.add(p);
+                JSONObject jsonConfirmations = json.getJSONObject("confirmations");
+                if(!jsonConfirmations.isNull("url")) this.confirmationResource = new URL(jsonConfirmations.getString("url"));
+                if(!jsonConfirmations.isNull("list")) {
+                    JSONArray list = jsonConfirmations.getJSONArray("list");
+                    for(int i = 0; i < list.length(); i++) {
+                        Confirmation c = new Confirmation(this);
+                        c.fromJSON(list.getJSONObject(i));
+                        this.confirmations.put(c, c);
                     }
                 }
             }
-        } catch (IOException | JSONException | ParseException e) {
+
+            if(!json.isNull("messages")) {
+                JSONObject jsonMessages = json.getJSONObject("messages");
+                if(!jsonMessages.isNull("url")) this.messageResource = new URL(jsonMessages.getString("url"));
+                if(!jsonMessages.isNull("list")) {
+                    JSONArray list = jsonMessages.getJSONArray("list");
+                    for(int i = 0; i < list.length(); i++) {
+                        Message m = new Message(this);
+                        m.fromJSON(list.getJSONObject(i));
+                        this.messages.add(m);
+                    }
+                }
+            }
+        } catch (MalformedURLException | JSONException | ParseException e) {
             throw new APIException(e);
         }
     }
@@ -96,24 +118,21 @@ public class Event extends Model {
             event.put("start", this.format.format(this.startDate));
             event.put("end", this.format.format(this.endDate));
 
-            JSONArray confirmations = new JSONArray();
-            if (!this.confirmations.isEmpty()) {
-                for (Person p : this.confirmations) {
-                    JSONObject pers = new JSONObject();
-                    pers.put("going", true);
-                    pers.put("person",
-                            new JSONObject()
-                                    .put("name", p.getName())
-                                    .put("url", p.resource));
-                }
-
-                JSONObject confirm = new JSONObject().put("list", confirmations);
-                event.put("confirmations", confirm);
-            }
+            // Serialization of confirmations is handled in Confirmation.syncModelToNetwork()
         } catch (JSONException e) {
             throw new APIException(e);
         }
         return event;
+    }
+
+    @Override
+    public void syncModelToNetwork() throws IOException, APIException {
+        super.syncModelToNetwork();
+
+        // Sync confirmations
+        for(Confirmation c: this.confirmations.keySet()) {
+            c.syncModelToNetwork();
+        }
     }
 
     public String getTitle() {
@@ -128,9 +147,14 @@ public class Event extends Model {
     public Date getEndDate() {
         return this.endDate;
     }
-    public Set<Person> getConfirmations() {
-        return this.confirmations;
+    public List<Person> getConfirmations() {
+        List<Person> people = new ArrayList<>();
+        for(Confirmation c: this.confirmations.keySet()) {
+            people.add(c.getPerson());
+        }
+        return people;
     }
+    public List<Message> getMessages() { return this.messages; }
 
     public void setTitle(String title) {
         this.title = title;
@@ -144,11 +168,28 @@ public class Event extends Model {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    public void confirm(Person p, boolean going) {
-        if(going)
-            this.confirmations.add(p);
-        else
+    public void confirm(Person p, boolean going) throws IOException, APIException {
+        if(going && !this.confirmations.containsKey(p)) {
+            // Person has confirmed
+            Confirmation c = new Confirmation(p, this);
+            this.confirmations.put(c, null);
+            c.syncModelToNetwork(); // this will call Event.syncModelFromNetwork()
+        } else if(!going && this.confirmations.containsKey(p)) {
+            // Person has denied
+            this.confirmations.get(new Confirmation(p, null)).destroy();
             this.confirmations.remove(p);
+        }
+    }
+    public void createMessage(Person p, String text) throws IOException, APIException {
+        Message m = new Message(this);
+        m.setPerson(p);
+        m.setText(text);
+        this.messages.add(m);
+        m.syncModelToNetwork(); // this will call Event.syncModelFromNetwork()
+    }
+    public void destroyMessage(Message m) throws IOException, APIException {
+        this.messages.remove(m);
+        m.destroy();
     }
 
     /**

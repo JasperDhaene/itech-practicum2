@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -58,7 +57,8 @@ public class EditEventDialogFragment extends EditDialogFragment
         EditEventDialogFragment f = new EditEventDialogFragment();
         Bundle bundle = new Bundle();
         if (event != null) {
-            bundle.putParcelable("event", Parcels.wrap(event));
+            //TODO: first
+            //bundle.putParcelable("event", Parcels.wrap(event));
         }
 
         bundle.putSerializable("action", action);
@@ -93,8 +93,8 @@ public class EditEventDialogFragment extends EditDialogFragment
 
         Bundle data = getArguments();
         if (data.getSerializable("action") == Model.ACTION.EDIT) {
-            this.event = Parcels.unwrap(data.getParcelable("event"));
-
+            //this.event = Parcels.unwrap(data.getParcelable("event"));
+            //TODO: first
 
             this.field_title.setText(event.getTitle());
             this.field_description.setText(event.getDescription());

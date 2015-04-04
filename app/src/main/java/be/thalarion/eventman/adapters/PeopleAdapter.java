@@ -60,6 +60,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     ((MainActivity) v.getContext()).getAccountManager().setAccount(person);
+                    //TODO
                     //Toast.makeText(v.getContext(), String.format(getString(R.string.info_text_login), person.getFormattedName(v.getContext())), Toast.LENGTH_SHORT).show();
                     Toast.makeText(v.getContext(),"Logged in", Toast.LENGTH_SHORT).show();
                 }
@@ -69,9 +70,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            //TODO: replace by newInstance
+
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
-                    new ShowPersonFragment(this.person),
+                    ShowPersonFragment.newInstance(this.person.getResource().toString()),
                     v.getResources().getString(R.string.title_show_person)
                     );
         }

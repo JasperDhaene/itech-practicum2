@@ -1,19 +1,12 @@
 package be.thalarion.eventman;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,16 +24,15 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import org.parceler.Parcels;
-
 import java.io.IOException;
+import java.net.URL;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 
 
 public class ShowPersonFragment extends android.support.v4.app.Fragment {
@@ -53,16 +45,12 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-    //todo: REMOVE
-    public ShowPersonFragment(Person person) {
-        this.person = person;
-    }
-
-    public static ShowPersonFragment newInstance(Person person) {
+    public static ShowPersonFragment newInstance(String person_url) {
         ShowPersonFragment f = new ShowPersonFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable("person",Parcels.wrap(person));
+
+        bundle.putString("person_url", person_url);
 
         f.setArguments(bundle);
 
@@ -80,27 +68,52 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         this.birthDate = (TextView) rootView.findViewById(R.id.person_birthdate);
         this.avatar = (ImageView) rootView.findViewById(R.id.person_avatar);
 
-        if(this.person.getName() != null)
-            this.name.setText(person.getName());
-        else
-            this.name.setText(R.string.error_text_noname);
-
-        if(this.person.getEmail() != null)
-            this.email.setText(person.getEmail());
-        else
-            this.email.setText(R.string.error_text_noemail);
-
-        if(this.person.getBirthDate() != null)
-            this.birthDate.setText(Person.format.format(person.getBirthDate()));
-        else
-            this.birthDate.setText(R.string.error_text_nobirthdate);
-
-        ImageLoader.getInstance().loadImage(this.person.getAvatar(Person.AVATAR.LARGE), new SimpleImageLoadingListener() {
+        final Context context = getActivity();
+        new AsyncTask<Bundle, Exception, Person>() {
             @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                avatar.setImageBitmap(loadedImage);
+            protected Person doInBackground(Bundle... params) {
+                Person pers = null;
+                Bundle data = params[0];
+                try {
+                    pers = Cache.find(Person.class, new URL(data.getString("person_url")));
+                } catch (IOException | APIException e) {
+                    publishProgress(e);
+                }
+
+                return pers;
             }
-        });
+            @Override
+            protected void onPostExecute(Person pers) {
+                person = pers;
+                if (pers.getName() != null)
+                    name.setText(person.getName());
+                else
+                    name.setText(R.string.error_text_noname);
+
+                if (pers.getEmail() != null)
+                    email.setText(person.getEmail());
+                else
+                    email.setText(R.string.error_text_noemail);
+
+                if (pers.getBirthDate() != null)
+                    birthDate.setText(Person.format.format(person.getBirthDate()));
+                else
+                    birthDate.setText(R.string.error_text_nobirthdate);
+
+                ImageLoader.getInstance().loadImage(pers.getAvatar(Person.AVATAR.LARGE), new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        avatar.setImageBitmap(loadedImage);
+                    }
+                });
+
+            }
+            @Override
+            protected void onProgressUpdate(Exception... values) {
+                ErrorHandler.announce(context, values[0]);
+            }
+        }.execute(getArguments());
+
 
         return rootView;
     }
@@ -113,12 +126,13 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_edit_person:
 
-                EditPersonDialogFragment editPersonFrag = EditPersonDialogFragment.newInstance(this.person,Model.ACTION.EDIT);
+                EditPersonDialogFragment editPersonFrag = EditPersonDialogFragment.newInstance(
+                        this.person.getResource().toString(), Model.ACTION.EDIT);
 
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editPersonFrag,this.getActivity().getResources().getString(R.string.title_edit_person));
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editPersonFrag, this.getActivity().getResources().getString(R.string.title_edit_person));
 
                 break;
             case R.id.action_discard_person:
@@ -141,9 +155,10 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                         }
                         return null;
                     }
+
                     @Override
                     protected void onPostExecute(Exception e) {
-                        if(e == null) {
+                        if (e == null) {
                             Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
                         } else ErrorHandler.announce(this.context, e);
                     }
@@ -151,7 +166,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
 
                 PeopleFragment peopleFrag = new PeopleFragment();
 
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(peopleFrag,this.getActivity().getResources().getString(R.string.title_people));
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(peopleFrag, this.getActivity().getResources().getString(R.string.title_people));
 
                 break;
             /*case R.id.action_login:
@@ -167,7 +182,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
     private void showToast(String message) {
 
         Toast mToast = new Toast(this.getActivity());
-        mToast.setText( message);
+        mToast.setText(message);
         mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.show();
     }
