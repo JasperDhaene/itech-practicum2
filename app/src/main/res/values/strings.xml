@@ -28,6 +28,8 @@
     <string name="info_text_edit">Successfully updated attributes</string>
     <string name="info_text_destroy">Successfully deleted object</string>
     <string name="info_text_login">You are now logged in as %s</string>
+    <string name="info_confirmation_accept">Successfully confirmed your attendance to an event</string>
+    <string name="info_confirmation_decline">Successfully reclined your attendance to an event</string>
 
     <string name="title_activity_person">PersonActivity</string>
     <string name="hello_world">Hello world!</string>

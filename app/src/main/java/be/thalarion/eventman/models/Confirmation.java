@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import be.thalarion.eventman.api.API;
@@ -52,10 +53,12 @@ public class Confirmation extends Model {
     protected JSONObject toJSON() throws APIException {
         JSONObject json = new JSONObject();
         try {
-            json.put("going", true);
-            JSONObject person = new JSONObject();
-            person.put("name", this.person.getName());
-            person.put("url", this.person.resource);
+            JSONObject confirmationObj = new JSONObject();
+            confirmationObj.put("going", true);
+            JSONObject persObj = new JSONObject();
+            persObj.put("url", this.person.resource.toString());
+            confirmationObj.put("person",persObj);
+            json.put("confirmation",confirmationObj);
         } catch (JSONException e) {
             throw new APIException(e);
         }

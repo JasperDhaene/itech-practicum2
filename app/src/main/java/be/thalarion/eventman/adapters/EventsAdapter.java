@@ -1,6 +1,8 @@
 package be.thalarion.eventman.adapters;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -20,6 +23,7 @@ import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowEventContainerFragment;
 import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -59,20 +63,58 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             this.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(((CheckBox) v).isChecked()){
-                        //TODO find out why app crashes at syncModelToNetwork
-                        //variables are for debug purposes.
-                        MainActivity a  = ((MainActivity)v.getContext());
-                        Person p = ((MainActivity)v.getContext()).getAccountManager().getPerson();
+                    if (((CheckBox) v).isChecked()) {
 
-                        try {
-                            event.confirm(p,true);
-                            event.syncModelToNetwork();
-                        } catch (IOException|APIException e) {
-                            e.printStackTrace();
+                        final Person p = ((MainActivity) v.getContext()).getAccountManager().getPerson();
+
+                        if (p == null) {
+                            ((CheckBox) v).setChecked(false);
+                            Toast.makeText(v.getContext(), "You should log in first", Toast.LENGTH_LONG).show();
+                        } else {
+                            final Context context = v.getContext();
+                            new AsyncTask<Void, Void, Exception>() {
+
+                                @Override
+                                protected Exception doInBackground(Void... params) {
+                                    try {
+                                        event.confirm(p, true);
+                                    } catch (IOException | APIException e) {
+                                        return e;
+                                    }
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Exception e) {
+                                    if (e == null) {
+                                        Toast.makeText(context, context.getResources().getText(R.string.info_confirmation_accept), Toast.LENGTH_LONG).show();
+                                    } else ErrorHandler.announce(context, e);
+                                }
+                            }.execute();
                         }
-                    }
+                    }else{//unchecked
+                        final Person p = ((MainActivity) v.getContext()).getAccountManager().getPerson();
+                        final Context context = v.getContext();
+                        new AsyncTask<Void, Void, Exception>() {
 
+                            @Override
+                            protected Exception doInBackground(Void... params) {
+                                try {
+                                    event.confirm(p, false); //TODO: does not remove person. Is DELETE called with confirmation url?
+                                } catch (IOException | APIException e) {
+                                    return e;
+                                }
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Exception e) {
+                                if (e == null) {//TODO: check info_confirmation_decline en vind het gepaste woord ipv 'recline' (terugtrekken)
+                                    Toast.makeText(context, context.getResources().getText(R.string.info_confirmation_decline), Toast.LENGTH_LONG).show();
+                                } else ErrorHandler.announce(context, e);
+                            }
+                        }.execute();
+                    }
                 }
             });
         }
@@ -100,7 +142,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String color;
-        if(dataSet.get(position).getTitle() != null) {
+        if (dataSet.get(position).getTitle() != null) {
             //holder.title.setTextAppearance(context, R.style.Title);
             holder.title.setText(dataSet.get(position).getTitle());
 
@@ -111,11 +153,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
             color = Event.hash("Ev");
         }
-        if(dataSet.get(position).getDescription() != null) {
+        if (dataSet.get(position).getDescription() != null) {
             //holder.description.setTextAppearance(context, R.style.SubTitle);
             holder.description.setText(dataSet.get(position).getDescription());
         } else {
-           // holder.description.setTextAppearance(context, R.style.SubTitleMissing);
+            // holder.description.setTextAppearance(context, R.style.SubTitleMissing);
             holder.description.setText(R.string.error_text_nodescription);
         }
 
@@ -131,7 +173,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        if(dataSet == null) return 0;
+        if (dataSet == null) return 0;
         return dataSet.size();
     }
 
