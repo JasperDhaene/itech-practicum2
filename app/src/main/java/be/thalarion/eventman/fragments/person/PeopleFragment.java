@@ -1,4 +1,4 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.person;
 
 
 import android.graphics.Color;
@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import java.io.IOException;
 import java.util.List;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.fragments.person.EditPersonDialogFragment;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;

@@ -1,4 +1,4 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments;
 
 
 import android.app.Dialog;

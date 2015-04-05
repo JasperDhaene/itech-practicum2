@@ -19,7 +19,7 @@ import java.util.List;
 
 import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.ShowPersonFragment;
+import be.thalarion.eventman.fragments.person.ShowPersonFragment;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 

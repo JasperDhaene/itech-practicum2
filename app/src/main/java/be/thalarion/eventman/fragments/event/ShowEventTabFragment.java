@@ -1,4 +1,4 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.event;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.URL;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
