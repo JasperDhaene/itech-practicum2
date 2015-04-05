@@ -1,32 +1,14 @@
 package be.thalarion.eventman;
 
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import java.io.IOException;
 
 import be.thalarion.eventman.adapters.EventMessagePagerAdapter;
-import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.ErrorHandler;
-import be.thalarion.eventman.models.Event;
-import be.thalarion.eventman.models.Model;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 
 /**

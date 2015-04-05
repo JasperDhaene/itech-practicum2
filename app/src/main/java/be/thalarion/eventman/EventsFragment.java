@@ -1,6 +1,5 @@
 package be.thalarion.eventman;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;

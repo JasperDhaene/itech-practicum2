@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import be.thalarion.eventman.MessageFragment;
 import be.thalarion.eventman.ShowEventTabFragment;
-import be.thalarion.eventman.models.Event;
 
 /**
  * Created by jasper on 04/04/15.
