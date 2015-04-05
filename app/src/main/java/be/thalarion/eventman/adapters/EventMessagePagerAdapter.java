@@ -4,28 +4,30 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.net.URL;
+
 import be.thalarion.eventman.fragments.event.MessageFragment;
 import be.thalarion.eventman.fragments.event.ShowEventTabFragment;
 
 public class EventMessagePagerAdapter extends FragmentPagerAdapter {
 
-    private String event_url;
+    private URL url;
 
-    public EventMessagePagerAdapter(FragmentManager fm,String event_url) {
+    public EventMessagePagerAdapter(FragmentManager fm, URL url) {
         super(fm);
-        this.event_url = event_url;
+        this.url = url;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return ShowEventTabFragment.newInstance(this.event_url);
+                return ShowEventTabFragment.newInstance(this.url);
             case 1:
                 return new MessageFragment();
-
+            default:
+                return null;
         }
-        return null; //unreachable
     }
 
     @Override

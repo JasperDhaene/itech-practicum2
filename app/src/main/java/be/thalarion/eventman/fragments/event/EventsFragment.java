@@ -31,6 +31,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 public class EventsFragment extends android.support.v4.app.Fragment
         implements android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,13 +75,12 @@ public class EventsFragment extends android.support.v4.app.Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_add_event:
-                EditEventDialogFragment f = EditEventDialogFragment.newInstance(null,Model.ACTION.NEW);
+                EditEventDialogFragment f = EditEventDialogFragment.newInstance(null, Model.ACTION.NEW);
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
-                break;
+                return true;
             default:
                 return false;
         }
-        return true;
     }
 
     @Override
@@ -107,7 +107,6 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
             @Override
             protected void onProgressUpdate(Exception... values) {
-                // Use progress updates to report errors instead
                 ErrorHandler.announce(getActivity(), values[0]);
             }
             @Override

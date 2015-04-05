@@ -1,5 +1,6 @@
 package be.thalarion.eventman.models;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -30,11 +31,8 @@ public class Event extends Model {
     public URL confirmationResource, messageResource;
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-    public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
-
+    public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
     public static final SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-
 
     public Event() {
         this.confirmations = new HashMap<>();
@@ -140,14 +138,34 @@ public class Event extends Model {
     public String getTitle() {
         return this.title;
     }
+    public String getFormattedTitle(Context c) {
+        if(this.title == null)
+            return c.getString(R.string.error_text_notitle);
+        return this.title;
+    }
     public String getDescription() {
+        return this.description;
+    }
+    public String getFormattedDescription(Context c) {
+        if(this.description == null)
+            return c.getString(R.string.error_text_nodescription);
         return this.description;
     }
     public Date getStartDate() {
         return this.startDate;
     }
+    public String getFormattedStartDate(Context c, SimpleDateFormat format) {
+        if(this.startDate == null)
+            return c.getString(R.string.error_text_nostartdate);
+        return format.format(this.startDate);
+    }
     public Date getEndDate() {
         return this.endDate;
+    }
+    public String getFormattedEndDate(Context c, SimpleDateFormat format) {
+        if(this.endDate == null)
+            return c.getString(R.string.error_text_noenddate);
+        return format.format(this.endDate);
     }
     public List<Person> getConfirmations() {
         List<Person> people = new ArrayList<>();

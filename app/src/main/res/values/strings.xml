@@ -62,6 +62,7 @@
 
     <!-- Error handling -->
     <string name="error_text">An %s error occurred while processing your request</string>
+    <string name="error_date">Invalid date</string>
     <string name="error_type_io">I/O error</string>
     <string name="error_type_api">API error</string>
     <string name="error_type_unknown">unknown error</string>

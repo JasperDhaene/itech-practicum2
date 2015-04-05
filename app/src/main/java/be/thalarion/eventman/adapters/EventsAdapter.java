@@ -63,51 +63,35 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             this.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final AccountManager am  = ((MainActivity)v.getContext()).getAccountManager();
-                    if(am.isNull()) {
-                        ((CheckBox) v).setChecked(false);
-                        Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_LONG).show();
-                    } else {
-                        if (((CheckBox) v).isChecked()) {
-                            new AsyncTask<Event, Void, Exception>() {
-                                @Override
-                                protected Exception doInBackground(Event... params) {
-                                    try {
-                                        event.confirm(am.getPerson(), true);
-                                    } catch (APIException | IOException e) {
-                                        return e;
-                                    }
-                                    return null;
-                                }
+                final AccountManager am  = ((MainActivity)v.getContext()).getAccountManager();
 
-                                @Override
-                                protected void onPostExecute(Exception e) {
-                                    if (e == null) {
-                                        Toast.makeText(v.getContext(), v.getResources().getText(R.string.info_confirmation_accept), Toast.LENGTH_LONG).show();
-                                    } else ErrorHandler.announce(v.getContext(), e);
-                                }
-                            }.execute(event);
-                        } else {
-                            new AsyncTask<Event, Void, Exception>() {
-                                @Override
-                                protected Exception doInBackground(Event... params) {
-                                    try {
-                                        event.confirm(am.getPerson(), false);
-                                    } catch (APIException | IOException e) {
-                                        return e;
-                                    }
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(Exception e) {
-                                    if (e == null) {
-                                        Toast.makeText(v.getContext(), v.getResources().getText(R.string.info_confirmation_decline), Toast.LENGTH_LONG).show();
-                                    } else ErrorHandler.announce(v.getContext(), e);
-                                }
-                            }.execute(event);
+                if(am.isNull()) {
+                    ((CheckBox) v).setChecked(false);
+                    Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_SHORT).show();
+                } else {
+                    new AsyncTask<Event, Void, Exception>() {
+                        @Override
+                        protected Exception doInBackground(Event... params) {
+                            try {
+                                event.confirm(am.getPerson(), ((CheckBox) v).isChecked());
+                            } catch (APIException | IOException e) {
+                                return e;
+                            }
+                            return null;
                         }
-                    }
+
+                        @Override
+                        protected void onPostExecute(Exception e) {
+                            if (e == null) {
+                                Toast.makeText(v.getContext(),
+                                        (((CheckBox) v).isChecked() ?
+                                                v.getResources().getText(R.string.info_confirmation_accept) :
+                                                v.getResources().getText(R.string.info_confirmation_decline)),
+                                        Toast.LENGTH_LONG).show();
+                            } else ErrorHandler.announce(v.getContext(), e);
+                        }
+                    }.execute(event);
+                }
                 }
             });
         }
@@ -115,8 +99,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
-                    ShowEventContainerFragment.newInstance(this.event.getResource().toString()), //TODO: should i switch to URL approach?
-                    v.getResources().getString(R.string.title_show_event)
+                ShowEventContainerFragment.newInstance(this.event.getResource()),
+                v.getResources().getString(R.string.title_show_event)
             );
         }
     }
@@ -124,7 +108,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     // Create new views (invoked by the layout manager)
     @Override
     public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_event, parent, false);
         ViewHolder vh = new ViewHolder(v);
@@ -134,25 +117,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String color;
-        if (dataSet.get(position).getTitle() != null) {
-            //holder.title.setTextAppearance(context, R.style.Title);
-            holder.title.setText(dataSet.get(position).getTitle());
+        holder.title.setText(dataSet.get(position).getFormattedTitle(this.context));
+        holder.description.setText(dataSet.get(position).getFormattedDescription(this.context));
 
-            color = Event.hash(dataSet.get(position).getTitle());
-        } else {
-            //holder.title.setTextAppearance(context, R.style.TitleMissing);
-            holder.title.setText(R.string.error_text_notitle);
-
-            color = Event.hash("Ev");
-        }
-        if (dataSet.get(position).getDescription() != null) {
-            //holder.description.setTextAppearance(context, R.style.SubTitle);
-            holder.description.setText(dataSet.get(position).getDescription());
-        } else {
-            // holder.description.setTextAppearance(context, R.style.SubTitleMissing);
-            holder.description.setText(R.string.error_text_nodescription);
-        }
+        String color = Event.hash(dataSet.get(position).getFormattedTitle(this.context));
 
         TextDrawable drawable = TextDrawable.builder().buildRect(
                 color,
@@ -161,7 +129,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         holder.avatar.setImageDrawable(drawable);
 
         Person p = ((MainActivity) context).getAccountManager().getPerson();
-
         if(p != null)
             holder.checkBox.setChecked(dataSet.get(position).hasConfirmed(p));
 

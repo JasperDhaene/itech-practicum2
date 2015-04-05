@@ -1,6 +1,5 @@
 package be.thalarion.eventman.fragments.event;
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -8,34 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.net.URL;
+
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.EventMessagePagerAdapter;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ShowEventContainerFragment extends android.support.v4.app.Fragment {
-
 
     private EventMessagePagerAdapter adapter;
     private ViewPager viewPager;
-
-
 
     public ShowEventContainerFragment() {
         // Required empty public constructor
     }
 
-    public static ShowEventContainerFragment newInstance(String event_url) {
-        ShowEventContainerFragment f = new ShowEventContainerFragment();
+    public static ShowEventContainerFragment newInstance(URL url) {
+        ShowEventContainerFragment fragment = new ShowEventContainerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString("event_url",event_url);
+        bundle.putSerializable("url", url);
 
-        f.setArguments(bundle);
+        fragment.setArguments(bundle);
 
-        return f;
+        return fragment;
     }
 
 
@@ -46,10 +40,9 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
         View rootView = inflater.inflate(R.layout.viewpager_event, container, false);
         setHasOptionsMenu(true);
 
-        Bundle data = getArguments();
-
-
-        this.adapter = new EventMessagePagerAdapter(this.getActivity().getSupportFragmentManager(),data.getString("event_url"));
+        this.adapter = new EventMessagePagerAdapter(
+                this.getActivity().getSupportFragmentManager(),
+                (URL) getArguments().getSerializable("url"));
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(adapter);
 
