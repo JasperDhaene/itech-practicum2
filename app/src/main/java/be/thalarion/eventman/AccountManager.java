@@ -37,4 +37,8 @@ public class AccountManager {
     public Person getPerson() {
         return this.person;
     }
+
+    public boolean isNull() {
+        return (this.person == null);
+    }
 }

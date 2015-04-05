@@ -2,7 +2,6 @@ package be.thalarion.eventman.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public Person person;
         public ImageView icon;
 
-        public ViewHolder(final View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.name = ((TextView) itemView.findViewById(R.id.person_list_view_name));
             this.email = ((TextView) itemView.findViewById(R.id.person_list_view_email));
@@ -60,9 +59,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     ((MainActivity) v.getContext()).getAccountManager().setAccount(person);
-                    //TODO
-                    //Toast.makeText(v.getContext(), String.format(getString(R.string.info_text_login), person.getFormattedName(v.getContext())), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(v.getContext(),"Logged in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), String.format(v.getContext().getString(R.string.info_text_sign_in), person.getFormattedName(v.getContext())), Toast.LENGTH_SHORT).show();
                 }
             });
             this.container.setOnClickListener(this);

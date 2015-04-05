@@ -165,4 +165,12 @@ public abstract class Model {
      */
     protected abstract String getCanonicalName();
 
+    @Override
+    public boolean equals(Object o) {
+        Model m = (Model) o;
+        if(m.resource == null || this.resource == null)
+            return false;
+
+        return this.resource.equals(m.resource);
+    }
 }

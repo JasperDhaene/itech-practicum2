@@ -1,5 +1,7 @@
 package be.thalarion.eventman.models;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,8 +25,7 @@ public class Event extends Model {
     private String title, description;
     private Date startDate, endDate;
 
-    // I'd use a Set here, but for some ironic reason you cannot retrieve items from it
-    private Map<Confirmation, Confirmation> confirmations;
+    private Map<URL, Confirmation> confirmations;
     private List<Message> messages;
     public URL confirmationResource, messageResource;
 
@@ -79,6 +80,7 @@ public class Event extends Model {
             if(!json.isNull("end")) this.endDate = this.format.parse(json.getString("end"));
             else this.endDate = null;
 
+            this.confirmations.clear();
             if(!json.isNull("confirmations")) {
                 JSONObject jsonConfirmations = json.getJSONObject("confirmations");
                 if(!jsonConfirmations.isNull("url")) this.confirmationResource = new URL(jsonConfirmations.getString("url"));
@@ -87,7 +89,7 @@ public class Event extends Model {
                     for(int i = 0; i < list.length(); i++) {
                         Confirmation c = new Confirmation(this);
                         c.fromJSON(list.getJSONObject(i));
-                        this.confirmations.put(c, c);
+                        this.confirmations.put(c.getPerson().getResource(), c);
                     }
                 }
             }
@@ -115,8 +117,8 @@ public class Event extends Model {
         try {
             event.put("title", this.title);
             event.put("description", this.description);
-            event.put("start", this.format.format(this.startDate));
-            event.put("end", this.format.format(this.endDate));
+            event.put("start", format.format(this.startDate));
+            event.put("end", format.format(this.endDate));
 
             // Serialization of confirmations is handled in Confirmation.syncModelToNetwork()
         } catch (JSONException e) {
@@ -130,7 +132,7 @@ public class Event extends Model {
         super.syncModelToNetwork();
 
         // Sync confirmations
-        for(Confirmation c: this.confirmations.keySet()) {
+        for(Confirmation c: this.confirmations.values()) {
             c.syncModelToNetwork();
         }
     }
@@ -149,12 +151,15 @@ public class Event extends Model {
     }
     public List<Person> getConfirmations() {
         List<Person> people = new ArrayList<>();
-        for(Confirmation c: this.confirmations.keySet()) {
+        for(Confirmation c: this.confirmations.values()) {
             people.add(c.getPerson());
         }
         return people;
     }
     public List<Message> getMessages() { return this.messages; }
+    public boolean hasConfirmed(Person p) {
+        return this.confirmations.containsKey(p.getResource());
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -169,16 +174,25 @@ public class Event extends Model {
         this.endDate = endDate;
     }
     public void confirm(Person p, boolean going) throws IOException, APIException {
-        if(going && !this.confirmations.containsKey(p)) {
+        if(going) {
+            Log.e("eventman", "Adding confirmation for " + p.getName() + " in list " + this.confirmations.size());
+        } else Log.e("eventman", "Removing confirmation for " + p.getName() + " in list " + this.confirmations.size());
+        if(going && !this.confirmations.containsKey(p.getResource())) {
             // Person has confirmed
             Confirmation c = new Confirmation(p, this);
-            this.confirmations.put(c, null);
-            c.syncModelToNetwork(); // this will call Event.syncModelFromNetwork()
-        } else if(!going && this.confirmations.containsKey(p)) {
+            /**
+             * This will call Event.syncModelFromNetwork() which will
+             * refresh the event's confirmation list to obtain a proper
+             * resource URL. Therefore adding this confirmation to the
+             * list is no long necessary
+             */
+            c.syncModelToNetwork();
+        } else if(!going && this.confirmations.containsKey(p.getResource())) {
             // Person has denied
-            this.confirmations.get(new Confirmation(p, null)).destroy();
-            this.confirmations.remove(p);
+            this.confirmations.get(p.getResource()).destroy();
+            this.confirmations.remove(p.getResource());
         }
+        Log.e("eventman", "New list size: " + this.confirmations.size());
     }
     public void createMessage(Person p, String text) throws IOException, APIException {
         Message m = new Message(this);

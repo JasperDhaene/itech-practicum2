@@ -119,23 +119,29 @@ public class Person extends Model {
      */
     private static String avatarFromString(String key, AVATAR size) {
         int code = 0;
-        for(int i = 0; i < key.length(); i++) {
-            code += key.charAt(i);
-            code %= 196;
-        }
-
         String baseUrl = "http://api.randomuser.me/portraits/";
 
-        switch(size) {
-            case THUMB:
-                baseUrl += "thumb/";
-                break;
-            case MEDIUM:
-                baseUrl += "med/";
-                break;
+        if(key != null) {
+            for (int i = 0; i < key.length(); i++) {
+                code += key.charAt(i);
+                code %= 196;
+            }
+
+            switch (size) {
+                case THUMB:
+                    baseUrl += "thumb/";
+                    break;
+                case MEDIUM:
+                    baseUrl += "med/";
+                    break;
+            }
         }
 
         return baseUrl + (code > 99 ? "wo" : "") + "men/" + (code % 99) + ".jpg";
     }
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

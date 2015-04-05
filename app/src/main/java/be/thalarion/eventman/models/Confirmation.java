@@ -1,5 +1,7 @@
 package be.thalarion.eventman.models;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,13 +54,14 @@ public class Confirmation extends Model {
     @Override
     protected JSONObject toJSON() throws APIException {
         JSONObject json = new JSONObject();
+        JSONObject confirmation = new JSONObject();
         try {
-            JSONObject confirmationObj = new JSONObject();
-            confirmationObj.put("going", true);
-            JSONObject persObj = new JSONObject();
-            persObj.put("url", this.person.resource.toString());
-            confirmationObj.put("person",persObj);
-            json.put("confirmation",confirmationObj);
+            confirmation.put("going", true);
+            JSONObject person = new JSONObject();
+            person.put("name", this.person.getName());
+            person.put("url", this.person.resource);
+            confirmation.put("person", person);
+            json.put("confirmation", confirmation);
         } catch (JSONException e) {
             throw new APIException(e);
         }

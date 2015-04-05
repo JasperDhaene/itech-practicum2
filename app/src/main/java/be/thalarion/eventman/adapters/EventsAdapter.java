@@ -2,8 +2,9 @@ package be.thalarion.eventman.adapters;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
+
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.thalarion.eventman.AccountManager;
 import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowEventContainerFragment;
@@ -62,23 +64,19 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
             this.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked()) {
-
-                        final Person p = ((MainActivity) v.getContext()).getAccountManager().getPerson();
-
-                        if (p == null) {
-                            ((CheckBox) v).setChecked(false);
-                            Toast.makeText(v.getContext(), "You should log in first", Toast.LENGTH_LONG).show();
-                        } else {
-                            final Context context = v.getContext();
-                            new AsyncTask<Void, Void, Exception>() {
-
+                public void onClick(final View v) {
+                    final AccountManager am  = ((MainActivity)v.getContext()).getAccountManager();
+                    if(am.isNull()) {
+                        ((CheckBox) v).setChecked(false);
+                        Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_LONG).show();
+                    } else {
+                        if (((CheckBox) v).isChecked()) {
+                            new AsyncTask<Event, Void, Exception>() {
                                 @Override
-                                protected Exception doInBackground(Void... params) {
+                                protected Exception doInBackground(Event... params) {
                                     try {
-                                        event.confirm(p, true);
-                                    } catch (IOException | APIException e) {
+                                        event.confirm(am.getPerson(), true);
+                                    } catch (APIException | IOException e) {
                                         return e;
                                     }
                                     return null;
@@ -87,33 +85,30 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                                 @Override
                                 protected void onPostExecute(Exception e) {
                                     if (e == null) {
-                                        Toast.makeText(context, context.getResources().getText(R.string.info_confirmation_accept), Toast.LENGTH_LONG).show();
-                                    } else ErrorHandler.announce(context, e);
+                                        Toast.makeText(v.getContext(), v.getResources().getText(R.string.info_confirmation_accept), Toast.LENGTH_LONG).show();
+                                    } else ErrorHandler.announce(v.getContext(), e);
                                 }
-                            }.execute();
+                            }.execute(event);
+                        } else {
+                            new AsyncTask<Event, Void, Exception>() {
+                                @Override
+                                protected Exception doInBackground(Event... params) {
+                                    try {
+                                        event.confirm(am.getPerson(), false);
+                                    } catch (APIException | IOException e) {
+                                        return e;
+                                    }
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Exception e) {
+                                    if (e == null) {
+                                        Toast.makeText(v.getContext(), v.getResources().getText(R.string.info_confirmation_decline), Toast.LENGTH_LONG).show();
+                                    } else ErrorHandler.announce(v.getContext(), e);
+                                }
+                            }.execute(event);
                         }
-                    }else{//unchecked
-                        final Person p = ((MainActivity) v.getContext()).getAccountManager().getPerson();
-                        final Context context = v.getContext();
-                        new AsyncTask<Void, Void, Exception>() {
-
-                            @Override
-                            protected Exception doInBackground(Void... params) {
-                                try {
-                                    event.confirm(p, false); //TODO: does not remove person. Is DELETE called with confirmation url?
-                                } catch (IOException | APIException e) {
-                                    return e;
-                                }
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(Exception e) {
-                                if (e == null) {//TODO: check info_confirmation_decline en vind het gepaste woord ipv 'recline' (terugtrekken)
-                                    Toast.makeText(context, context.getResources().getText(R.string.info_confirmation_decline), Toast.LENGTH_LONG).show();
-                                } else ErrorHandler.announce(context, e);
-                            }
-                        }.execute();
                     }
                 }
             });
@@ -166,6 +161,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                 context.getResources().getColor(Event.colorFromString(color))
         );
         holder.avatar.setImageDrawable(drawable);
+
+        Person p = ((MainActivity) context).getAccountManager().getPerson();
+
+        if(p != null)
+            holder.checkBox.setChecked(dataSet.get(position).hasConfirmed(p));
 
         holder.event = dataSet.get(position);
     }

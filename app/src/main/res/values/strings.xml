@@ -27,9 +27,10 @@
 
     <string name="info_text_edit">Successfully updated attributes</string>
     <string name="info_text_destroy">Successfully deleted object</string>
-    <string name="info_text_login">You are now logged in as %s</string>
+
+    <string name="info_text_sign_in">You are now signed in as %s</string>
     <string name="info_confirmation_accept">Successfully confirmed your attendance to an event</string>
-    <string name="info_confirmation_decline">Successfully reclined your attendance to an event</string>
+    <string name="info_confirmation_decline">Successfully declined your attendance to an event</string>
 
     <string name="title_activity_person">PersonActivity</string>
     <string name="hello_world">Hello world!</string>
@@ -60,9 +61,12 @@
     <string name="email_admin">admin@events.restdesc.org</string>
 
     <!-- Error handling -->
-    <string name="error_unknown">An error occurred while processing your request</string>
-    <string name="error_io">I/O Error</string>
-    <string name="error_api">API Error</string>
+    <string name="error_text">An %s error occurred while processing your request</string>
+    <string name="error_type_io">I/O error</string>
+    <string name="error_type_api">API error</string>
+    <string name="error_type_unknown">unknown error</string>
+
+    <string name="error_not_signed_in">Please sign in first</string>
 
     <string name="title_activity_edit_person">Edit Person</string>
 
