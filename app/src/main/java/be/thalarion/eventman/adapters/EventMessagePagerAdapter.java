@@ -4,9 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import be.thalarion.eventman.MessageFragment;
+import be.thalarion.eventman.MessagesFragment;
 import be.thalarion.eventman.ShowEventTabFragment;
-import be.thalarion.eventman.models.Event;
 
 /**
  * Created by jasper on 04/04/15.
@@ -26,7 +25,7 @@ public class EventMessagePagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return ShowEventTabFragment.newInstance(this.event_url);
             case 1:
-                return new MessageFragment();
+                return MessagesFragment.newInstance(this.event_url);
 
         }
         return null; //unreachable

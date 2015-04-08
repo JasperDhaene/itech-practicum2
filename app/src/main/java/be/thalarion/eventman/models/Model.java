@@ -139,7 +139,7 @@ public abstract class Model {
      * @return
      */
     public boolean same(URL resource) {
-        if(resource == this.resource)
+        if(resource.toString().equals(this.resource.toString()) )
             return true;
 
         return false;
