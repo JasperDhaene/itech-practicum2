@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.net.URL;
 
-import be.thalarion.eventman.MessagesFragment;
+import be.thalarion.eventman.fragments.event.message.MessagesFragment;
 import be.thalarion.eventman.fragments.event.ShowEventTabFragment;
 
 public class EventMessagePagerAdapter extends FragmentPagerAdapter {

@@ -1,6 +1,5 @@
 package be.thalarion.eventman.fragments;
 
-
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
@@ -11,10 +10,6 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TimeDialogFragment extends android.support.v4.app.DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
@@ -27,28 +22,27 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
 
     public static TimeDialogFragment newInstance(EditDialogFragment listener, View v) {
 
-        TimeDialogFragment f = new TimeDialogFragment();
+        TimeDialogFragment fragment = new TimeDialogFragment();
 
-        f.setTimePickerListener(listener);
-        f.setTarget(v);
+        fragment.setTimePickerListener(listener);
+        fragment.setTarget(v);
 
 
-        return f;
+        return fragment;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePicker = new TimePickerDialog(getActivity(), this, hour, minute,
+        TimePickerDialog timePicker = new TimePickerDialog(
+                getActivity(),
+                this,
+                c.get(Calendar.HOUR_OF_DAY),
+                c.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(getActivity()));
 
-
-
         return timePicker;
-
     }
 
     @Override
@@ -65,9 +59,8 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
     }
 
     protected void notifyTimePickerListener(TimePicker view, int hourOfDay, int minute) {
-        if(this.timePickerListener != null) {
-            this.timePickerListener.onTimeSet(view,this.target, hourOfDay, minute);
-        }
+        if(this.timePickerListener != null)
+            this.timePickerListener.onTimeSet(view, this.target, hourOfDay, minute);
     }
 
     public void setTarget(View target) {

@@ -111,7 +111,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
     @Override
     public void onAccountOpening(MaterialAccount materialAccount) {
         if(accountManager.getPerson() != null)
-            setFragmentChild(ShowPersonFragment.newInstance(accountManager.getPerson().getResource().toString()),
+            setFragmentChild(ShowPersonFragment.newInstance(accountManager.getPerson().getResource()),
                     getResources().getString(R.string.title_show_person)
             );
     }

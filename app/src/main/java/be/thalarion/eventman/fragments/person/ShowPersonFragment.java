@@ -41,16 +41,15 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-    public static ShowPersonFragment newInstance(String person_url) {
-        ShowPersonFragment f = new ShowPersonFragment();
+    public static ShowPersonFragment newInstance(URL url) {
+        ShowPersonFragment fragment = new ShowPersonFragment();
 
         Bundle bundle = new Bundle();
+        bundle.putSerializable("url", url);
 
-        bundle.putString("person_url", person_url);
+        fragment.setArguments(bundle);
 
-        f.setArguments(bundle);
-
-        return f;
+        return fragment;
     }
 
     @Override
@@ -71,7 +70,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 Person pers = null;
                 Bundle data = params[0];
                 try {
-                    pers = Cache.find(Person.class, new URL(data.getString("person_url")));
+                    pers = Cache.find(Person.class, (URL) data.getSerializable("url"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -110,7 +109,6 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
             }
         }.execute(getArguments());
 
-
         return rootView;
     }
 
@@ -121,16 +119,15 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_edit_person:
 
                 EditPersonDialogFragment editPersonFrag = EditPersonDialogFragment.newInstance(
-                        this.person.getResource().toString(), Model.ACTION.EDIT);
+                        this.person.getResource(),
+                        Model.ACTION.EDIT);
 
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editPersonFrag, this.getActivity().getResources().getString(R.string.title_edit_person));
-
-                break;
+                return true;
             case R.id.action_discard_person:
                 new AsyncTask<Void, Void, Exception>() {
                     private Context context;
@@ -164,23 +161,13 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
 
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(peopleFrag, this.getActivity().getResources().getString(R.string.title_people));
 
-                break;
+                return true;
             /*case R.id.action_login:
                 ((MainActivity)getActivity()).getAccountManager().setAccount(this.person);
                 Toast.makeText(getActivity(), String.format(getString(R.string.info_text_login), person.getFormattedName(getActivity())), Toast.LENGTH_SHORT).show();
                 break;*/
-            default:
-                return false;
         }
-        return true;
-    }
-
-    private void showToast(String message) {
-
-        Toast mToast = new Toast(this.getActivity());
-        mToast.setText(message);
-        mToast.setDuration(Toast.LENGTH_SHORT);
-        mToast.show();
+        return false;
     }
 
 }

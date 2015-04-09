@@ -1,4 +1,4 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.event.message;
 
 
 import android.content.Context;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.MessagesAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;

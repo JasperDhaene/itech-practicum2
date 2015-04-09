@@ -1,6 +1,5 @@
 package be.thalarion.eventman.fragments.person;
 
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,39 +30,29 @@ import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-
 public class EditPersonDialogFragment extends EditDialogFragment
         implements View.OnClickListener {
 
     private Person person;
-    private EditText field_name, field_email;
-    private TextView field_birthdate;
+    private EditText name, email;
+    private TextView birthDate;
 
     public EditPersonDialogFragment() {
         // Required empty public constructor
     }
 
-    //TODO: als Parcels geen vertraging oplevert, verwijder deze constructor aangezien het geen good practice is
-    public EditPersonDialogFragment(Person person) {
-        this.person = person;
-    }
+    public static EditPersonDialogFragment newInstance(URL url, Model.ACTION action) {
+        EditPersonDialogFragment fragment = new EditPersonDialogFragment();
 
-    public static EditPersonDialogFragment newInstance(String person_url, Model.ACTION action) {
-
-        EditPersonDialogFragment f = new EditPersonDialogFragment();
         Bundle bundle = new Bundle();
-        if (!person_url.equals("")) {
-            bundle.putString("person_url", person_url);
-        }
-
-
+        if(url != null)
+            bundle.putSerializable("url", url);
         bundle.putSerializable("action", action);
 
-        f.setArguments(bundle);
+        fragment.setArguments(bundle);
 
-        return f;
+        return fragment;
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -81,43 +70,35 @@ public class EditPersonDialogFragment extends EditDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_edit_person_dialog, container, false);
 
-        this.field_name = ((EditText) rootView.findViewById(R.id.field_name));
-        this.field_email = ((EditText) rootView.findViewById(R.id.field_email));
-        this.field_birthdate = ((TextView) rootView.findViewById(R.id.field_birth_date));
+        this.name = ((EditText) rootView.findViewById(R.id.field_name));
+        this.email = ((EditText) rootView.findViewById(R.id.field_email));
+        this.birthDate = ((TextView) rootView.findViewById(R.id.field_birth_date));
 
+        final Bundle data = getArguments();
         final Context context = getActivity();
-        new AsyncTask<Bundle, Exception, Person>() {
-            private Bundle data = null;
-
+        new AsyncTask<Void, Exception, Person>() {
             @Override
-            protected Person doInBackground(Bundle... params) {
-                Person pers = null;
-                this.data = params[0];
+            protected Person doInBackground(Void... params) {
                 try {
-                    String s = this.data.getString("person_url");
-                    pers = Cache.find(Person.class, new URL(s));
+                    return Cache.find(Person.class, (URL) data.getSerializable("url"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
+                    return null;
                 }
-                return pers;
             }
 
             @Override
             protected void onPostExecute(Person pers) {
                 person = pers;
-                if (this.data.getSerializable("action") == Model.ACTION.EDIT) {
-                    field_name.setText(person.getName());
-                    field_email.setText(person.getEmail());
+                if (data.getSerializable("action") == Model.ACTION.EDIT) {
+                    name.setText(person.getName());
+                    email.setText(person.getEmail());
 
-                    if (person.getBirthDate() != null) {
-                        field_birthdate.setText(Person.format.format(person.getBirthDate()));
-                    } else {
-                        field_birthdate.setText(Model.DEFAULT_DATE);
-                    }
-                } else if (this.data.getSerializable("action") == Model.ACTION.NEW) {
+                    birthDate.setText(person.getFormattedBirthDate(context));
+
+                } else if (data.getSerializable("action") == Model.ACTION.NEW) {
                     person = new Person();
                 }
             }
@@ -126,10 +107,9 @@ public class EditPersonDialogFragment extends EditDialogFragment
             protected void onProgressUpdate(Exception... values) {
                 ErrorHandler.announce(context, values[0]);
             }
-        }.execute(getArguments());
+        }.execute();
 
-
-        this.field_birthdate.setOnClickListener(this);
+        this.birthDate.setOnClickListener(this);
 
         return rootView;
     }
@@ -138,25 +118,21 @@ public class EditPersonDialogFragment extends EditDialogFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_save:
-                new AsyncTask<Void, Void, Exception>() {
-                    private Context context;
-
+                final Context context = getActivity();
+                new AsyncTask<Void, Exception, Boolean>() {
                     @Override
-                    protected void onPreExecute() {
-                        this.context = getActivity();
-                    }
-
-                    @Override
-                    protected Exception doInBackground(Void... params) {
-                        String name = field_name.getText().toString();
-                        String email = field_email.getText().toString();
+                    protected Boolean doInBackground(Void... params) {
+                        String name = EditPersonDialogFragment.this.name.getText().toString();
+                        String email = EditPersonDialogFragment.this.email.getText().toString();
                         Date birthDate;
                         try {
-                            birthDate = Person.format.parse(field_birthdate.getText().toString());
+                            birthDate = Person.format.parse(EditPersonDialogFragment.this.birthDate.getText().toString());
                         } catch (ParseException e) {
-                            return e; //TODO: what dafuq dit mag hier niet returnn wi. Zet dan een default waarde als datum en print af dat er een fucking error is. Lul.
+                            publishProgress(e);
+                            birthDate = null;
                         }
-                        //new Person has been created if action==ACTION.NEW
+
+                        // TODO: replace this by a refresh method (on swipe?)
                         person.setName(name);
                         person.setEmail(email);
                         person.setBirthDate(birthDate);
@@ -164,16 +140,23 @@ public class EditPersonDialogFragment extends EditDialogFragment
                         try {
                             person.syncModelToNetwork();
                         } catch (IOException | APIException e) {
-                            return e;
+                            publishProgress(e);
+                            return false;
                         }
-                        return null;
+
+                        return true;
+                    }
+
+
+                    @Override
+                    protected void onPostExecute(Boolean success) {
+                        if (success)
+                            Toast.makeText(context, context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    protected void onPostExecute(Exception e) {
-                        if (e == null) {
-                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
-                        } else ErrorHandler.announce(this.context, e);
+                    protected void onProgressUpdate(Exception... values) {
+                        ErrorHandler.announce(context, values[0]);
                     }
                 }.execute();
 
@@ -188,7 +171,8 @@ public class EditPersonDialogFragment extends EditDialogFragment
     }
 
     @Override
-    public void onClick(View v) { // Parameter v stands for the view that was clicked.
+    public void onClick(View v) {
+        // TODO: da fuq ies dies
         if (v.getContentDescription().toString().equals("Date_Start")) {
             DialogFragment f = DateDialogFragment.newInstance(this, v);
 

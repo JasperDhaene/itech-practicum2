@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 
 import be.thalarion.eventman.R;
 
-
-/**
- * Overview layout contains ongoing and future events
- */
 public class OverviewFragment extends android.support.v4.app.Fragment
                             implements android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener {
 
@@ -44,4 +40,5 @@ public class OverviewFragment extends android.support.v4.app.Fragment
             return null;
         }
     }
+
 }

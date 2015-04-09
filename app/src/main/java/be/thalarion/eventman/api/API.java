@@ -82,7 +82,6 @@ public class API {
      * @throws IOException, APIException
      */
     public JSONObject fetch(URL url) throws IOException, APIException {
-        Log.e("eventman", "GET " + url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("GET");
@@ -119,7 +118,6 @@ public class API {
      * @throws IOException, APIException
      */
     public void update(URL url, String data) throws IOException, APIException {
-        Log.e("eventman", "PUT " + url + ": " + data);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("PUT");
@@ -145,7 +143,6 @@ public class API {
      * @throws IOException, APIException
      */
     public JSONObject create(URL url, String data) throws IOException, APIException {
-        Log.e("eventman", "POST " + url + ": " + data);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("POST");
@@ -183,7 +180,6 @@ public class API {
      * @throws IOException, APIException
      */
     public void delete(URL url) throws IOException, APIException {
-        Log.e("eventman", "DELETE " + url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
         conn.setDoOutput(true);

@@ -103,8 +103,8 @@ public class PeopleFragment extends android.support.v4.app.Fragment
                     return Cache.findAll(Person.class);
                 } catch (IOException | APIException e) {
                     publishProgress(e);
+                    return null;
                 }
-                return null;
             }
 
             @Override

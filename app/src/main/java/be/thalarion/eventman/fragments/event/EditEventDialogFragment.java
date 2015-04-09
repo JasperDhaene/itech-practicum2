@@ -29,6 +29,7 @@ import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.fragments.TimeDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
+import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EditEventDialogFragment extends EditDialogFragment
@@ -60,7 +61,7 @@ public class EditEventDialogFragment extends EditDialogFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_cancel);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_cancel);
         //TODO: look into the above.
     }
 
@@ -77,41 +78,39 @@ public class EditEventDialogFragment extends EditDialogFragment
         this.startTime = ((TextView) rootView.findViewById(R.id.field_start_time));
         this.endTime = ((TextView) rootView.findViewById(R.id.field_end_time));
 
-        Bundle data = getArguments();
-        switch((Model.ACTION) data.getSerializable("action")) {
-            case EDIT:
-                final Context context = getActivity();
-                new AsyncTask<Bundle, Exception, Event>(){
-                    @Override
-                    protected Event doInBackground(Bundle... params) {
-                        try {
-                            return Cache.find(Event.class, (URL) params[0].getSerializable("url"));
-                        } catch (IOException | APIException e) {
-                            publishProgress(e);
-                            return null;
-                        }
-                    }
-                    @Override
-                    protected void onProgressUpdate(Exception... e) {
-                        ErrorHandler.announce(context, e[0]);
-                    }
+        final Bundle data = getArguments();
+        final Context context = getActivity();
+        new AsyncTask<Void, Exception, Event>(){
+            @Override
+            protected Event doInBackground(Void... params) {
+                try {
+                    return Cache.find(Event.class, (URL) data.getSerializable("url"));
+                } catch (IOException | APIException e) {
+                    publishProgress(e);
+                    return null;
+                }
+            }
 
-                    @Override
-                    protected void onPostExecute(Event ev) {
-                        event = ev;
-                        title.setText(event.getFormattedTitle(context));
-                        description.setText(event.getFormattedDescription(context));
-                        startDate.setText(event.getFormattedStartDate(context, Event.formatDate));
-                        startTime.setText(event.getFormattedStartDate(context, Event.formatTime));
-                        endDate.setText(event.getFormattedEndDate(context, Event.formatDate));
-                        endTime.setText(event.getFormattedEndDate(context, Event.formatTime));
-                    }
-                }.execute(data);
-                break;
-            case NEW:
-                this.event = new Event();
-                break;
-        }
+            @Override
+            protected void onPostExecute(Event ev) {
+                event = ev;
+                if (data.getSerializable("action") == Model.ACTION.EDIT) {
+                    title.setText(event.getFormattedTitle(context));
+                    description.setText(event.getFormattedDescription(context));
+                    startDate.setText(event.getFormattedStartDate(context, Event.formatDate));
+                    startTime.setText(event.getFormattedStartDate(context, Event.formatTime));
+                    endDate.setText(event.getFormattedEndDate(context, Event.formatDate));
+                    endTime.setText(event.getFormattedEndDate(context, Event.formatTime));
+                } else if (data.getSerializable("action") == Model.ACTION.NEW) {
+                    event = new Event();
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(Exception... e) {
+                ErrorHandler.announce(context, e[0]);
+            }
+        }.execute();
 
         this.startDate.setOnClickListener(this);
         this.endDate.setOnClickListener(this);
@@ -150,13 +149,13 @@ public class EditEventDialogFragment extends EditDialogFragment
                         try {
                             startDateText = Event.format.parse(builderStart.toString());
                         } catch (ParseException e) {
-                            startDateText = new Date();
+                            startDateText = null;
                             publishProgress(e);
                         }
                         try {
                             endDateText = Event.format.parse(builderEnd.toString());
                         } catch (ParseException e) {
-                            endDateText = new Date();
+                            endDateText = null;
                             publishProgress(e);
                         }
 
@@ -185,7 +184,6 @@ public class EditEventDialogFragment extends EditDialogFragment
                     @Override
                     protected void onProgressUpdate(Exception... values) {
                         ErrorHandler.announce(context, values[0]);
-
                     }
                 }.execute();
 
@@ -201,6 +199,7 @@ public class EditEventDialogFragment extends EditDialogFragment
 
     @Override
     public void onClick(View v) {
+        // TODO: da fuq ies dies
         String c = v.getContentDescription().toString();
         if(c.equals("Date_Start") || c.equals("Date_End")){
             DialogFragment f = DateDialogFragment.newInstance(this, v);

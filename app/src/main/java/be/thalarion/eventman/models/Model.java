@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import be.thalarion.eventman.api.API;
@@ -17,8 +18,6 @@ public abstract class Model {
     public static enum ACTION {
         EDIT, NEW
     }
-
-    public static String DEFAULT_DATE = "1970-01-01";
 
     protected URL resource;
 
