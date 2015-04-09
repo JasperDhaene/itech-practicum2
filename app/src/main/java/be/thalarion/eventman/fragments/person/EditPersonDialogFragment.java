@@ -21,12 +21,12 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 
-import be.thalarion.eventman.fragments.DateDialogFragment;
-import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.fragments.DateDialogFragment;
+import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;

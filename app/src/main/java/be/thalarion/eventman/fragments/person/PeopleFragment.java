@@ -22,7 +22,6 @@ import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
-import be.thalarion.eventman.fragments.person.EditPersonDialogFragment;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -42,7 +41,7 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
         // Swipe to refresh
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container);
-        swipeLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
+        swipeLayout.setColorSchemeColors(Color.argb(255,233,30,99),Color.argb(255,63,81,181) );
         swipeLayout.setOnRefreshListener(this);
 
         // People list

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.net.URL;
 
-import be.thalarion.eventman.fragments.event.MessageFragment;
+import be.thalarion.eventman.MessagesFragment;
 import be.thalarion.eventman.fragments.event.ShowEventTabFragment;
 
 public class EventMessagePagerAdapter extends FragmentPagerAdapter {
@@ -24,7 +24,7 @@ public class EventMessagePagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return ShowEventTabFragment.newInstance(this.url);
             case 1:
-                return new MessageFragment();
+                return MessagesFragment.newInstance(this.url);
             default:
                 return null;
         }

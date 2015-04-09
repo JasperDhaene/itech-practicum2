@@ -1,6 +1,5 @@
 package be.thalarion.eventman.fragments.event;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
 
     private EventMessagePagerAdapter adapter;
     private ViewPager viewPager;
+    //final ActionBar actionBar = this.getActivity().getActionBar();
 
     public ShowEventContainerFragment() {
         // Required empty public constructor
@@ -32,6 +32,33 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
         return fragment;
     }
 
+    /*@Override
+    public void onCreate(Bundle savedInstanceState) {
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Create a tab listener that is called when the user changes tabs.
+        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            @Override
+            public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+            }
+
+            @Override
+            public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+            }
+
+            @Override
+            public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+            }
+        };
+
+        actionBar.addTab(actionBar.newTab().setText("Event").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Messages").setTabListener(tabListener));
+
+
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
