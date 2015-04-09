@@ -1,22 +1,14 @@
-package be.thalarion.eventman;
-
+package be.thalarion.eventman.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.view.LayoutInflater;
+import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
-import java.util.Date;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class DateDialogFragment extends android.support.v4.app.DialogFragment
                                                     implements DatePickerDialog.OnDateSetListener {
 
@@ -29,30 +21,32 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
         // Required empty public constructor
     }
 
-    public static DateDialogFragment newInstance(EditDialogFragment listener,View v) {
+    public static DateDialogFragment newInstance(EditDialogFragment listener, View v) {
+        DateDialogFragment fragment = new DateDialogFragment();
 
-        DateDialogFragment f = new DateDialogFragment();
+        fragment.setDatePickerListener(listener);
+        fragment.setTarget(v);
 
-        f.setDatePickerListener(listener);
-        f.setTarget(v);
-
-        return f;
+        return fragment;
     }
 
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // TODO: fill in existing date instead of current date
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(
+                getActivity(),
+                this,
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        notifyDatePickerListener(view,year,monthOfYear,dayOfMonth);
+        notifyDatePickerListener(view, year, monthOfYear, dayOfMonth);
     }
 
     public EditDialogFragment getDatePickerListener() {
@@ -64,16 +58,16 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
     }
 
     protected void notifyDatePickerListener(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        if(this.datePickerListener != null) {
-            this.datePickerListener.onDateSet(view,this.target,year,monthOfYear,dayOfMonth);
-        }
+        if(this.datePickerListener != null)
+            this.datePickerListener.onDateSet(view, this.target, year, monthOfYear, dayOfMonth);
+    }
+
+    public void setTarget(View target) {
+        this.target = target;
     }
 
     public View getTarget() {
         return target;
     }
 
-    public void setTarget(View target) {
-        this.target = target;
-    }
 }

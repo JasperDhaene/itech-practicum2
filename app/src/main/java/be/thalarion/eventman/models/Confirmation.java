@@ -1,12 +1,9 @@
 package be.thalarion.eventman.models;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import be.thalarion.eventman.api.API;

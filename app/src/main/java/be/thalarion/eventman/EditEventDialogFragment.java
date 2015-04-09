@@ -23,6 +23,10 @@ import java.util.Date;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.fragments.DateDialogFragment;
+import be.thalarion.eventman.fragments.EditDialogFragment;
+import be.thalarion.eventman.fragments.TimeDialogFragment;
+import be.thalarion.eventman.fragments.event.EventsFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -184,11 +188,11 @@ public class EditEventDialogFragment extends EditDialogFragment
     public void onClick(View v) { // Parameter v stands for the view that was clicked.
         String c = v.getContentDescription().toString();
         if(c.equals("Date_Start") || c.equals("Date_End")){
-            DialogFragment f = DateDialogFragment.newInstance(this,v);
+            DialogFragment f = DateDialogFragment.newInstance(this, v);
 
             f.show(getActivity().getSupportFragmentManager(), "datePicker");
         }else if(c.equals("Time_Start") || c.equals("Time_End")){
-            DialogFragment f = TimeDialogFragment.newInstance(this,v);
+            DialogFragment f = TimeDialogFragment.newInstance(this, v);
 
             f.show(getActivity().getSupportFragmentManager(), "timePicker");
         }

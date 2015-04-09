@@ -1,11 +1,10 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.event.message;
 
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,14 +18,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.MessagesAdapter;
-import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
-import be.thalarion.eventman.models.Person;
 
 
 public class MessagesFragment extends android.support.v4.app.Fragment
@@ -39,15 +37,15 @@ public class MessagesFragment extends android.support.v4.app.Fragment
         // Required empty public constructor
     }
 
-    public static MessagesFragment newInstance(String event_url){
-        MessagesFragment f = new MessagesFragment();
+    public static MessagesFragment newInstance(URL url){
+        MessagesFragment fragment = new MessagesFragment();
 
         Bundle bundle = new Bundle();
 
-        bundle.putString("event_url",event_url);
-        f.setArguments(bundle);
+        bundle.putSerializable("url", url);
+        fragment.setArguments(bundle);
 
-        return f;
+        return fragment;
     }
 
 
@@ -59,13 +57,12 @@ public class MessagesFragment extends android.support.v4.app.Fragment
 
         final Context context = this.getActivity().getApplicationContext();
         new AsyncTask<Bundle, Exception, Event>() {
-            private Bundle data = null;
             @Override
             protected Event doInBackground(Bundle... params) {
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, new URL(data.getString("event_url")));
+                    event = Cache.find(Event.class, (URL) data.getSerializable("url"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -76,7 +73,6 @@ public class MessagesFragment extends android.support.v4.app.Fragment
             protected void onPostExecute(Event ev) {
                 event = ev;
                 event.getMessages();
-
             }
 
             @Override
@@ -144,7 +140,7 @@ public class MessagesFragment extends android.support.v4.app.Fragment
 
                     if(refreshedEvent!=null){
                         event = refreshedEvent;
-                    }else{
+                    } else {
                         //TODO: find meaningful exception or Toast that says the event from which
                         //TODO: you ask messages has been deleted since the last refresh
                     }

@@ -1,10 +1,8 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.event;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.URL;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
@@ -25,32 +24,26 @@ import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ShowEventTabFragment extends android.support.v4.app.Fragment {
 
     private TextView title, description, startDate, endDate;
     private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
     private Event event;
 
-
     public ShowEventTabFragment() {
         // Required empty public constructor
     }
 
-    public static ShowEventTabFragment newInstance(String event_url) {
-        ShowEventTabFragment f = new ShowEventTabFragment();
+    public static ShowEventTabFragment newInstance(URL url) {
+        ShowEventTabFragment fragment = new ShowEventTabFragment();
 
         Bundle bundle = new Bundle();
 
-        bundle.putString("event_url",event_url);
-        f.setArguments(bundle);
+        bundle.putSerializable("url", url);
+        fragment.setArguments(bundle);
 
-        return f;
+        return fragment;
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,15 +57,15 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
         this.endDate = ((TextView) rootView.findViewById(R.id.event_enddate));
         //TODO: banner invullen
 
-        final Context context = this.getActivity().getApplicationContext();
+        final Context context = this.getActivity();
+
         new AsyncTask<Bundle, Exception, Event>() {
-            private Bundle data = null;
             @Override
             protected Event doInBackground(Bundle... params) {
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, new URL(data.getString("event_url")));
+                    event = Cache.find(Event.class, (URL) data.getSerializable("url"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -80,32 +73,18 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
             }
 
             @Override
-            protected void onPostExecute(Event ev) {
-                event = ev;
-                if(event.getTitle() != null)
-                    title.setText(event.getTitle());
-                else
-                    title.setText(R.string.error_text_notitle);
-
-                if(event.getDescription() != null)
-                    description.setText(event.getDescription());
-                else
-                    title.setText(R.string.error_text_nodescription);
-
-                if(event.getStartDate() != null)
-                    startDate.setText(Event.format.format(event.getStartDate()));
-                else
-                    startDate.setText(R.string.error_text_nostartdate);
-
-                if(event.getEndDate() != null)
-                    endDate.setText(Event.format.format(event.getEndDate()));
-                else
-                    endDate.setText(R.string.error_text_noenddate);
+            protected void onProgressUpdate(Exception... values) {
+                ErrorHandler.announce(context, values[0]);
             }
 
             @Override
-            protected void onProgressUpdate(Exception... values) {
-                ErrorHandler.announce(context, values[0]);
+            protected void onPostExecute(Event ev) {
+                event = ev;
+
+                title.setText(event.getFormattedTitle(context));
+                description.setText(event.getFormattedDescription(context));
+                startDate.setText(event.getFormattedStartDate(context, Event.format));
+                endDate.setText(event.getFormattedEndDate(context, Event.format));
             }
         }.execute(getArguments());
 
@@ -123,25 +102,19 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
         switch(item.getItemId()){
             case R.id.action_edit_event:
 
-                EditEventDialogFragment editEventFrag = EditEventDialogFragment.newInstance(this.event.getResource().toString(), Model.ACTION.EDIT);
-
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editEventFrag,this.getActivity().getResources().getString(R.string.title_edit_event));
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
+                        EditEventDialogFragment.newInstance(this.event.getResource(), Model.ACTION.EDIT),
+                        this.getActivity().getString(R.string.title_edit_event));
 
                 break;
             case R.id.action_discard_event:
+                final Context context = getActivity();
+
                 new AsyncTask<Void, Void, Exception>() {
-                    private Context context;
-
-                    @Override
-                    protected void onPreExecute() {
-                        this.context = getActivity();
-                    }
-
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
                             event.destroy();
-                            // Allow garbage collection
                             event = null;
                         } catch (APIException | IOException e) {
                             return e;
@@ -151,15 +124,15 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
                     @Override
                     protected void onPostExecute(Exception e) {
                         if(e == null) {
-                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else ErrorHandler.announce(this.context, e);
+                            Toast.makeText(context, context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_SHORT).show();
+                        } else ErrorHandler.announce(context, e);
                     }
                 }.execute();
 
-                EventsFragment eventsFrag = new EventsFragment();
-
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(eventsFrag,this.getActivity().getResources().getString(R.string.title_people));
-
+                // TODO: shouldn't this return to EventsFragment?
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
+                        new EventsFragment(),
+                        this.getActivity().getString(R.string.title_people));
                 break;
             default:
                 return false;

@@ -1,7 +1,5 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.event;
 
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,19 +16,19 @@ import android.view.ViewGroup;
 import java.io.IOException;
 import java.util.List;
 
-import be.thalarion.eventman.adapters.PeopleAdapter;
+import be.thalarion.eventman.R;
+import be.thalarion.eventman.adapters.EventsAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
-import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-
 /**
- * People layout contains a list of people
+ * Events layout contains a list of all events
  */
-public class PeopleFragment extends android.support.v4.app.Fragment
+public class EventsFragment extends android.support.v4.app.Fragment
         implements android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener {
 
     @Override
@@ -44,15 +42,16 @@ public class PeopleFragment extends android.support.v4.app.Fragment
         swipeLayout.setColorSchemeColors(Color.argb(255,233,30,99),Color.argb(255,63,81,181) );
         swipeLayout.setOnRefreshListener(this);
 
-        // People list
+        // Event list
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.swipe_list_view);
         recyclerView.setHasFixedSize(false);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        PeopleAdapter adapter = new PeopleAdapter(getActivity());
+        EventsAdapter adapter = new EventsAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+
 
         swipeLayout.post(new Runnable(){
             @Override
@@ -68,27 +67,25 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.people, menu);
+        inflater.inflate(R.menu.events, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
-            case R.id.action_add_person:
-
-                EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(null,Model.ACTION.NEW);
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_person));
-                break;
+            case R.id.action_add_event:
+                EditEventDialogFragment f = EditEventDialogFragment.newInstance(null, Model.ACTION.NEW);
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
+                return true;
             default:
                 return false;
         }
-        return true;
     }
 
     @Override
     public void onRefresh() {
         // onRefresh is called only when the user is explicitly swiping
-        Cache.invalidate(Person.class);
+        Cache.invalidate(Event.class);
         refresh();
     }
 
@@ -96,11 +93,11 @@ public class PeopleFragment extends android.support.v4.app.Fragment
      * refresh - Refresh models from cache
      */
     public void refresh() {
-        new AsyncTask<Void, Exception, List<Person>>() {
+        new AsyncTask<Void, Exception, List<Event>>() {
             @Override
-            protected List<Person> doInBackground(Void... params) {
+            protected List<Event> doInBackground(Void... params) {
                 try {
-                    return Cache.findAll(Person.class);
+                    return Cache.findAll(Event.class);
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -109,12 +106,11 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
             @Override
             protected void onProgressUpdate(Exception... values) {
-                // Use progress updates to report errors instead
                 ErrorHandler.announce(getActivity(), values[0]);
             }
             @Override
-            protected void onPostExecute(List<Person> people) {
-                ((PeopleAdapter) ((RecyclerView) getActivity().findViewById(R.id.swipe_list_view)).getAdapter()).setDataSet(people);
+            protected void onPostExecute(List<Event> events) {
+                ((EventsAdapter) ((RecyclerView) getActivity().findViewById(R.id.swipe_list_view)).getAdapter()).setDataSet(events);
                 ((SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_list_container)).setRefreshing(false);
             }
         }.execute();

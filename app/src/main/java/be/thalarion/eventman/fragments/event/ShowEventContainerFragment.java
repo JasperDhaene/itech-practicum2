@@ -1,61 +1,35 @@
-package be.thalarion.eventman;
+package be.thalarion.eventman.fragments.event;
 
-
-import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import java.net.URL;
 
-import java.io.IOException;
-
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.EventMessagePagerAdapter;
-import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.ErrorHandler;
-import be.thalarion.eventman.models.Event;
-import be.thalarion.eventman.models.Model;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ShowEventContainerFragment extends android.support.v4.app.Fragment {
-
 
     private EventMessagePagerAdapter adapter;
     private ViewPager viewPager;
     //final ActionBar actionBar = this.getActivity().getActionBar();
 
-
-
     public ShowEventContainerFragment() {
         // Required empty public constructor
     }
 
-    public static ShowEventContainerFragment newInstance(String event_url) {
-        ShowEventContainerFragment f = new ShowEventContainerFragment();
+    public static ShowEventContainerFragment newInstance(URL url) {
+        ShowEventContainerFragment fragment = new ShowEventContainerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString("event_url",event_url);
+        bundle.putSerializable("url", url);
 
-        f.setArguments(bundle);
+        fragment.setArguments(bundle);
 
-        return f;
+        return fragment;
     }
 
     /*@Override
@@ -93,10 +67,9 @@ public class ShowEventContainerFragment extends android.support.v4.app.Fragment 
         View rootView = inflater.inflate(R.layout.viewpager_event, container, false);
         setHasOptionsMenu(true);
 
-        Bundle data = getArguments();
-
-
-        this.adapter = new EventMessagePagerAdapter(this.getActivity().getSupportFragmentManager(),data.getString("event_url"));
+        this.adapter = new EventMessagePagerAdapter(
+                this.getActivity().getSupportFragmentManager(),
+                (URL) getArguments().getSerializable("url"));
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(adapter);
 

@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;

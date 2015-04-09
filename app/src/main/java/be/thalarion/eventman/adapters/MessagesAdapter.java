@@ -19,27 +19,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import be.thalarion.eventman.EditMessageDialogFragment;
-import be.thalarion.eventman.EditPersonDialogFragment;
-import be.thalarion.eventman.MainActivity;
-import be.thalarion.eventman.MessagesFragment;
+
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.ShowPersonFragment;
+
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+
+import be.thalarion.eventman.R;
+
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * Created by jasper on 08/04/15.
- */
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
     private List<Message> dataSet;
-    private Context context;
+    private final Context context;
 
     public MessagesAdapter(Context context) {
         this.context = context;

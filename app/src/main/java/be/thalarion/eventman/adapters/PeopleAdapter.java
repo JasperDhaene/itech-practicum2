@@ -19,7 +19,7 @@ import java.util.List;
 
 import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
-import be.thalarion.eventman.ShowPersonFragment;
+import be.thalarion.eventman.fragments.person.ShowPersonFragment;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -69,7 +69,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public void onClick(View v) {
 
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
-                    ShowPersonFragment.newInstance(this.person.getResource().toString()),
+                    ShowPersonFragment.newInstance(this.person.getResource()),
                     v.getResources().getString(R.string.title_show_person)
                     );
         }

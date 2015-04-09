@@ -6,12 +6,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
-import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import be.thalarion.eventman.models.Person;
+import be.thalarion.eventman.fragments.OverviewFragment;
+import be.thalarion.eventman.fragments.event.EventsFragment;
+import be.thalarion.eventman.fragments.person.PeopleFragment;
+import be.thalarion.eventman.fragments.person.ShowPersonFragment;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
@@ -109,7 +111,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
     @Override
     public void onAccountOpening(MaterialAccount materialAccount) {
         if(accountManager.getPerson() != null)
-            setFragmentChild(ShowPersonFragment.newInstance(accountManager.getPerson().getResource().toString()),
+            setFragmentChild(ShowPersonFragment.newInstance(accountManager.getPerson().getResource()),
                     getResources().getString(R.string.title_show_person)
             );
     }
