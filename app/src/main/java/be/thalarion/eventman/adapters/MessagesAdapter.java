@@ -2,6 +2,7 @@ package be.thalarion.eventman.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,21 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.thalarion.eventman.EditMessageDialogFragment;
+import be.thalarion.eventman.EditPersonDialogFragment;
 import be.thalarion.eventman.MainActivity;
+import be.thalarion.eventman.MessagesFragment;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.ShowPersonFragment;
+import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
+import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -48,16 +56,70 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         public TextView text,date;
 
-        public ImageView avatar;
+        public ImageView avatar,iconEdit,iconDiscard;
         public LinearLayout container;
         public Message message;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.text = ((TextView) itemView.findViewById(R.id.message_list_view_text));
             this.avatar = ((ImageView) itemView.findViewById(R.id.message_list_view_avatar));
             this.date = ((TextView) itemView.findViewById(R.id.message_list_view_date));
+            this.iconDiscard = ((ImageView) itemView.findViewById(R.id.list_item_icon_discard));
+            this.iconEdit = ((ImageView) itemView.findViewById(R.id.list_item_icon_edit));
 
+
+            this.iconEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toon een edit dialoog
+
+                    /*EditMessageDialogFragment editMessageFrag = EditMessageDialogFragment.newInstance(
+                            message.getResource().toString(), Model.ACTION.EDIT);*/
+
+                    EditMessageDialogFragment editMessageFrag = new EditMessageDialogFragment(message);
+
+
+                    editMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"editMessage");
+                }
+            });
+
+            this.iconDiscard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AsyncTask<Void, Void, Exception>() {
+                        private Context context;
+
+                        @Override
+                        protected void onPreExecute() {
+                            this.context = iconDiscard.getContext();;
+                        }
+
+                        @Override
+                        protected Exception doInBackground(Void... params) {
+                            try {
+                                message.destroy();
+                                // Allow garbage collection
+                                message = null;
+                            } catch (APIException | IOException e) {
+                                return e;
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Exception e) {
+                            if (e == null) {
+                                Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                                //TODO: Doe een refresh van de messages ??
+
+                            } else ErrorHandler.announce(this.context, e);
+                        }
+                    }.execute();
+
+                }
+            });
         }
 
 

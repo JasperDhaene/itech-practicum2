@@ -123,7 +123,7 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
         switch(item.getItemId()){
             case R.id.action_edit_event:
 
-                EditEventDialogFragment editEventFrag = EditEventDialogFragment.newInstance(this.event, Model.ACTION.EDIT);
+                EditEventDialogFragment editEventFrag = EditEventDialogFragment.newInstance(this.event.getResource().toString(), Model.ACTION.EDIT);
 
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editEventFrag,this.getActivity().getResources().getString(R.string.title_edit_event));
 

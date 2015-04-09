@@ -53,10 +53,6 @@ public class EditPersonDialogFragment extends EditDialogFragment
         // Required empty public constructor
     }
 
-    //TODO: als Parcels geen vertraging oplevert, verwijder deze constructor aangezien het geen good practice is
-    public EditPersonDialogFragment(Person person) {
-        this.person = person;
-    }
 
     public static EditPersonDialogFragment newInstance(String person_url, Model.ACTION action) {
 
