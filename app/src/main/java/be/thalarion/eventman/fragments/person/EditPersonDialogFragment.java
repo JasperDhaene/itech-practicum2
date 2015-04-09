@@ -1,14 +1,14 @@
 package be.thalarion.eventman.fragments.person;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -55,22 +55,30 @@ public class EditPersonDialogFragment extends EditDialogFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_save, menu);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_cancel);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_person_dialog, container, false);
+
+        // ActionBar
+        setHasOptionsMenu(false);
+        final View doneBar = inflater.inflate(R.layout.actionbar_done_cancel, null);
+        doneBar.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { done(); }
+        });
+        doneBar.findViewById(R.id.actionbar_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { cancel(); }
+        });
+        final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setCustomView(doneBar,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         this.name = ((EditText) rootView.findViewById(R.id.field_name));
         this.email = ((EditText) rootView.findViewById(R.id.field_email));
@@ -115,62 +123,6 @@ public class EditPersonDialogFragment extends EditDialogFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_save:
-                final Context context = getActivity();
-                new AsyncTask<Void, Exception, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        String name = EditPersonDialogFragment.this.name.getText().toString();
-                        String email = EditPersonDialogFragment.this.email.getText().toString();
-                        Date birthDate;
-                        try {
-                            birthDate = Person.format.parse(EditPersonDialogFragment.this.birthDate.getText().toString());
-                        } catch (ParseException e) {
-                            publishProgress(e);
-                            birthDate = null;
-                        }
-
-                        // TODO: replace this by a refresh method (on swipe?)
-                        person.setName(name);
-                        person.setEmail(email);
-                        person.setBirthDate(birthDate);
-
-                        try {
-                            person.syncModelToNetwork();
-                        } catch (IOException | APIException e) {
-                            publishProgress(e);
-                            return false;
-                        }
-
-                        return true;
-                    }
-
-
-                    @Override
-                    protected void onPostExecute(Boolean success) {
-                        if (success)
-                            Toast.makeText(context, context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(Exception... values) {
-                        ErrorHandler.announce(context, values[0]);
-                    }
-                }.execute();
-
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new PeopleFragment(), this.getResources().getString(R.string.title_people));
-
-                break;
-
-            default:
-                return false;
-        }
-        return true;
-    }
-
-    @Override
     public void onClick(View v) {
         // TODO: da fuq ies dies
         if (v.getContentDescription().toString().equals("Date_Start")) {
@@ -179,4 +131,54 @@ public class EditPersonDialogFragment extends EditDialogFragment
             f.show(getActivity().getSupportFragmentManager(), "datePicker");
         }
     }
+
+    private void done() {
+        final Context context = getActivity();
+        new AsyncTask<Void, Exception, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                String name = EditPersonDialogFragment.this.name.getText().toString();
+                String email = EditPersonDialogFragment.this.email.getText().toString();
+                Date birthDate;
+                try {
+                    birthDate = Person.format.parse(EditPersonDialogFragment.this.birthDate.getText().toString());
+                } catch (ParseException e) {
+                    publishProgress(e);
+                    birthDate = null;
+                }
+
+                // TODO: replace this by a refresh method (on swipe?)
+                person.setName(name);
+                person.setEmail(email);
+                person.setBirthDate(birthDate);
+
+                try {
+                    person.syncModelToNetwork();
+                } catch (IOException | APIException e) {
+                    publishProgress(e);
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success)
+                    Toast.makeText(context, context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected void onProgressUpdate(Exception... values) {
+                ErrorHandler.announce(context, values[0]);
+            }
+        }.execute();
+        ((MaterialNavigationDrawer) getActivity()).onBackPressed();
+    }
+
+    private void cancel() {
+        ((MaterialNavigationDrawer) getActivity()).onBackPressed();
+    }
+
 }

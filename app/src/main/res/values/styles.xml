@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
+        <item name="toolbarStyle">@style/AppThemeToolbar</item>
     </style>
 
     <style name="Title">
@@ -26,6 +27,13 @@
     </style>
     <style name="SubTitleMissing" parent="SubTitle">
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="ActionBarText">
+        <item name="android:textColor">@color/md_white_1000</item>
+    </style>
+    <style name="AppThemeToolbar" parent="Widget.AppCompat.Toolbar" >
+        <item name="contentInsetStart">0dp</item>
     </style>
 
     <!-- Navigation drawer theme -->

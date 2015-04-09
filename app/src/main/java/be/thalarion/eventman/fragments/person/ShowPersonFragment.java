@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,7 +59,15 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show_person, container, false);
+
+        // ActionBar
         setHasOptionsMenu(true);
+        final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE,
+                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+
 
         this.name = (TextView) rootView.findViewById(R.id.person_name);
         this.email = (TextView) rootView.findViewById(R.id.person_email);
@@ -121,7 +132,6 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_person:
-
                 EditPersonDialogFragment editPersonFrag = EditPersonDialogFragment.newInstance(
                         this.person.getResource(),
                         Model.ACTION.EDIT);
