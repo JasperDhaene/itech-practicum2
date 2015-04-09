@@ -62,14 +62,8 @@ public class EditPersonDialogFragment extends EditDialogFragment
         // ActionBar
         setHasOptionsMenu(false);
         final View doneBar = inflater.inflate(R.layout.actionbar_done_cancel, null);
-        doneBar.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { done(); }
-        });
-        doneBar.findViewById(R.id.actionbar_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { cancel(); }
-        });
+        doneBar.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { done(); } });
+        doneBar.findViewById(R.id.actionbar_cancel).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { cancel(); } });
         final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_CUSTOM,
@@ -174,11 +168,11 @@ public class EditPersonDialogFragment extends EditDialogFragment
                 ErrorHandler.announce(context, values[0]);
             }
         }.execute();
-        ((MaterialNavigationDrawer) getActivity()).onBackPressed();
+        getActivity().onBackPressed();
     }
 
     private void cancel() {
-        ((MaterialNavigationDrawer) getActivity()).onBackPressed();
+        getActivity().onBackPressed();
     }
 
 }

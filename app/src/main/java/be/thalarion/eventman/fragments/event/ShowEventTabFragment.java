@@ -3,6 +3,8 @@ package be.thalarion.eventman.fragments.event;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +51,7 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show_event, container, false);
+
         setHasOptionsMenu(true);
 
         this.title = ((TextView) rootView.findViewById(R.id.event_title));
@@ -101,14 +104,12 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
 
         switch(item.getItemId()){
             case R.id.action_edit_event:
-
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
                         EditEventDialogFragment.newInstance(this.event.getResource(), Model.ACTION.EDIT),
                         this.getActivity().getString(R.string.title_edit_event));
-                break;
+                return true;
             case R.id.action_discard_event:
                 final Context context = getActivity();
-
                 new AsyncTask<Void, Void, Exception>() {
                     @Override
                     protected Exception doInBackground(Void... params) {
@@ -128,15 +129,11 @@ public class ShowEventTabFragment extends android.support.v4.app.Fragment {
                     }
                 }.execute();
 
-                // TODO: shouldn't this return to EventsFragment?
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
-                        new EventsFragment(),
-                        this.getActivity().getString(R.string.title_people));
-                break;
+                getActivity().onBackPressed();
+                return true;
             default:
                 return false;
         }
-        return true;
     }
 
 

@@ -167,17 +167,11 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                     }
                 }.execute();
 
-                PeopleFragment peopleFrag = new PeopleFragment();
-
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(peopleFrag, this.getActivity().getResources().getString(R.string.title_people));
-
+                getActivity().onBackPressed();
                 return true;
-            /*case R.id.action_login:
-                ((MainActivity)getActivity()).getAccountManager().setAccount(this.person);
-                Toast.makeText(getActivity(), String.format(getString(R.string.info_text_login), person.getFormattedName(getActivity())), Toast.LENGTH_SHORT).show();
-                break;*/
+            default:
+                return false;
         }
-        return false;
     }
 
 }

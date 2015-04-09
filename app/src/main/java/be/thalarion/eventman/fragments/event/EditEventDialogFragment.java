@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,20 +57,25 @@ public class EditEventDialogFragment extends EditDialogFragment
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_cancel);
-        //TODO: look into the above.
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_event_dialog, container, false);
+
+        setHasOptionsMenu(false);
+        final View doneBar = inflater.inflate(R.layout.actionbar_done_cancel, null);
+        doneBar.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { done(); } });
+        doneBar.findViewById(R.id.actionbar_cancel).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { cancel(); } });
+        final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setCustomView(doneBar,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         this.title = ((EditText) rootView.findViewById(R.id.field_title));
         this.description = ((EditText) rootView.findViewById(R.id.field_description));
@@ -121,83 +127,6 @@ public class EditEventDialogFragment extends EditDialogFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_save, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_save:
-                final Context context = getActivity();
-                new AsyncTask<Void, Exception, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        Date startDateText = null, endDateText = null;
-                        //TODO: shit's fucked up cause two digits numbers ain't enforced
-                        StringBuilder builderStart = new StringBuilder().append(startDate.getText().toString())
-                                .append("T")
-                                .append(startTime.getText().toString())
-                                .append(".000Z");
-
-                        StringBuilder builderEnd = new StringBuilder().append(endDate.getText().toString())
-                                .append("T")
-                                .append(endTime.getText().toString())
-                                .append(".000Z");
-
-                        // Parse dates and publish an exception on invalid dates
-                        try {
-                            startDateText = Event.format.parse(builderStart.toString());
-                        } catch (ParseException e) {
-                            startDateText = null;
-                            publishProgress(e);
-                        }
-                        try {
-                            endDateText = Event.format.parse(builderEnd.toString());
-                        } catch (ParseException e) {
-                            endDateText = null;
-                            publishProgress(e);
-                        }
-
-                        // TODO: replace this by a refresh method (on swipe?)
-                        event.setTitle(title.getText().toString());
-                        event.setDescription(description.getText().toString());
-                        event.setStartDate(startDateText);
-                        event.setEndDate(endDateText);
-
-                        try {
-                            event.syncModelToNetwork();
-                        } catch (IOException | APIException e) {
-                            publishProgress(e);
-                            return false;
-                        }
-
-                        return true;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean success) {
-                        if (success)
-                            Toast.makeText(context, context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(Exception... values) {
-                        ErrorHandler.announce(context, values[0]);
-                    }
-                }.execute();
-
-                // TODO: shouldn't this return to ShowEventTabFragment?
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
-                        new EventsFragment(),
-                        this.getResources().getString(R.string.title_events));
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         // TODO: da fuq ies dies
         String c = v.getContentDescription().toString();
@@ -211,4 +140,70 @@ public class EditEventDialogFragment extends EditDialogFragment
             f.show(getActivity().getSupportFragmentManager(), "timePicker");
         }
     }
+
+    private void done() {
+        final Context context = getActivity();
+        new AsyncTask<Void, Exception, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                Date startDateText = null, endDateText = null;
+                //TODO: shit's fucked up cause two digits numbers ain't enforced
+                StringBuilder builderStart = new StringBuilder().append(startDate.getText().toString())
+                        .append("T")
+                        .append(startTime.getText().toString())
+                        .append(".000Z");
+
+                StringBuilder builderEnd = new StringBuilder().append(endDate.getText().toString())
+                        .append("T")
+                        .append(endTime.getText().toString())
+                        .append(".000Z");
+
+                // Parse dates and publish an exception on invalid dates
+                try {
+                    startDateText = Event.format.parse(builderStart.toString());
+                } catch (ParseException e) {
+                    startDateText = null;
+                    publishProgress(e);
+                }
+                try {
+                    endDateText = Event.format.parse(builderEnd.toString());
+                } catch (ParseException e) {
+                    endDateText = null;
+                    publishProgress(e);
+                }
+
+                // TODO: replace this by a refresh method (on swipe?)
+                event.setTitle(title.getText().toString());
+                event.setDescription(description.getText().toString());
+                event.setStartDate(startDateText);
+                event.setEndDate(endDateText);
+
+                try {
+                    event.syncModelToNetwork();
+                } catch (IOException | APIException e) {
+                    publishProgress(e);
+                    return false;
+                }
+
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success)
+                    Toast.makeText(context, context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected void onProgressUpdate(Exception... values) {
+                ErrorHandler.announce(context, values[0]);
+            }
+        }.execute();
+        getActivity().onBackPressed();
+    }
+
+    private void cancel() {
+        getActivity().onBackPressed();
+    }
+
 }
