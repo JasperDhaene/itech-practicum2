@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="500dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="8dp">
 
@@ -17,13 +17,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/form_head_entry"
-
         android:textColor="#000000"
         android:hint="@string/hint_message"
         style="@style/Form_component_editText_message"/>
 
     <TextView
         style="@style/Section_Dummy" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/material_pink_500"
+            style="@style/Form_component"
+            android:clickable="true"/>
+
+    </RelativeLayout>
 
 
 

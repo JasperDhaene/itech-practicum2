@@ -8,23 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
 
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
-import be.thalarion.eventman.cache.Cache;
-import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
-import be.thalarion.eventman.models.Person;
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 
 public class EditMessageDialogFragment extends EditDialogFragment {
 
     private Message message;
     private EditText text;
+    private TextView save;
 
     public EditMessageDialogFragment() {
         // Required empty public constructor
@@ -61,7 +62,7 @@ public class EditMessageDialogFragment extends EditDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_edit_message_dialog, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_edit_message_dialog, container, false);
         /*
         final Context context = getActivity();
         new AsyncTask<Bundle, Exception, Message>() {
@@ -99,6 +100,7 @@ public class EditMessageDialogFragment extends EditDialogFragment {
         }.execute(getArguments());*/
 
         this.text = (EditText) rootView.findViewById(R.id.field_message);
+        this.save = (TextView) rootView.findViewById(R.id.save);
 
         Bundle data = null;
         data = this.getArguments();
@@ -108,6 +110,38 @@ public class EditMessageDialogFragment extends EditDialogFragment {
         } else if (data.getSerializable("action") == Model.ACTION.NEW) {
             message = new Message();
         }
+        this.save.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(final View v) {
+                new AsyncTask<Void, Void, Exception>() {
+                    private Context context;
+
+                    @Override
+                    protected void onPreExecute() {
+                        this.context = v.getContext();
+                    }
+
+                    @Override
+                    protected Exception doInBackground(Void... params) {
+                        try {
+                            message.setText(text.getText().toString());
+                            message.syncModelToNetwork();
+                        } catch (APIException | IOException e) {
+                            return e;
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Exception e) {
+                        if (e == null) {
+                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_edit), Toast.LENGTH_LONG).show();
+                            dismiss();
+                        } else ErrorHandler.announce(this.context, e);
+                    }
+                }.execute();
+            }
+        });
 
 
         return rootView;
