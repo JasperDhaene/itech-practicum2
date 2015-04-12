@@ -82,4 +82,5 @@
     <!-- Buttons -->
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="title_activity_event">EventActivity</string>
 </resources>

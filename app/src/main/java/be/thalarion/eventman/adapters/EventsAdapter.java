@@ -23,7 +23,7 @@ import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
-import be.thalarion.eventman.fragments.event.ShowEventContainerFragment;
+import be.thalarion.eventman.fragments.event.EventPagerFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -99,7 +99,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(
-                ShowEventContainerFragment.newInstance(this.event.getResource()),
+                EventPagerFragment.newInstance(this.event.getResource()),
                 v.getResources().getString(R.string.title_show_event)
             );
         }

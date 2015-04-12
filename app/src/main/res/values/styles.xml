@@ -14,9 +14,6 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:ellipsize">end</item>
     </style>
-    <style name="TitleMissing" parent="Title">
-        <item name="android:textStyle">italic</item>
-    </style>
     <style name="SubTitle">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_secondary</item>
@@ -24,9 +21,6 @@
         <item name="android:singleLine">true</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:ellipsize">end</item>
-    </style>
-    <style name="SubTitleMissing" parent="SubTitle">
-        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="ActionBarText">
@@ -43,6 +37,14 @@
         <item name="colorAccent">@color/material_pink_500</item>
         <item name="rippleBackport">true</item>
         <item name="singleAccount">true</item>
+    </style>
+
+    <!-- Tab Pager theme -->
+    <style name="PagerTabStripTheme">
+        <!--<item name="android:textSize">14sp</item>-->
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:background">@color/material_indigo_500</item>
+        <item name="android:textColor">@color/md_white_1000</item>
     </style>
 
     <style name="Component">

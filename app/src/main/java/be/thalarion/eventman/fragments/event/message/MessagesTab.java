@@ -27,18 +27,18 @@ import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 
 
-public class MessagesFragment extends android.support.v4.app.Fragment
+public class MessagesTab extends android.support.v4.app.Fragment
         implements android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener {
 
     private Event event;
 
 
-    public MessagesFragment() {
+    public MessagesTab() {
         // Required empty public constructor
     }
 
-    public static MessagesFragment newInstance(URL url){
-        MessagesFragment fragment = new MessagesFragment();
+    public static MessagesTab newInstance(URL url){
+        MessagesTab fragment = new MessagesTab();
 
         Bundle bundle = new Bundle();
 

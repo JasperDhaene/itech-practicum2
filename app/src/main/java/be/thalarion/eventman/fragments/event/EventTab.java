@@ -3,8 +3,6 @@ package be.thalarion.eventman.fragments.event;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,18 +24,14 @@ import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-public class ShowEventTabFragment extends android.support.v4.app.Fragment {
+public class EventTab extends android.support.v4.app.Fragment {
 
     private TextView title, description, startDate, endDate;
     private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
     private Event event;
 
-    public ShowEventTabFragment() {
-        // Required empty public constructor
-    }
-
-    public static ShowEventTabFragment newInstance(URL url) {
-        ShowEventTabFragment fragment = new ShowEventTabFragment();
+    public static EventTab newInstance(URL url) {
+        EventTab fragment = new EventTab();
 
         Bundle bundle = new Bundle();
 
