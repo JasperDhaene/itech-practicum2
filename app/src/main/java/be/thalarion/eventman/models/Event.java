@@ -8,8 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ public class Event extends Model {
     private String title, description;
     private Date startDate, endDate;
 
-    private Map<URL, Confirmation> confirmations;
+    private Map<URI, Confirmation> confirmations;
     private List<Message> messages;
-    public URL confirmationResource, messageResource;
+    public URI confirmationResource, messageResource;
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
@@ -81,7 +81,7 @@ public class Event extends Model {
             this.confirmations.clear();
             if(!json.isNull("confirmations")) {
                 JSONObject jsonConfirmations = json.getJSONObject("confirmations");
-                if(!jsonConfirmations.isNull("url")) this.confirmationResource = new URL(jsonConfirmations.getString("url"));
+                if(!jsonConfirmations.isNull("url")) this.confirmationResource = new URI(jsonConfirmations.getString("url"));
                 if(!jsonConfirmations.isNull("list")) {
                     JSONArray list = jsonConfirmations.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
@@ -94,7 +94,7 @@ public class Event extends Model {
 
             if(!json.isNull("messages")) {
                 JSONObject jsonMessages = json.getJSONObject("messages");
-                if(!jsonMessages.isNull("url")) this.messageResource = new URL(jsonMessages.getString("url"));
+                if(!jsonMessages.isNull("url")) this.messageResource = new URI(jsonMessages.getString("url"));
                 if(!jsonMessages.isNull("list")) {
                     JSONArray list = jsonMessages.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
@@ -104,7 +104,7 @@ public class Event extends Model {
                     }
                 }
             }
-        } catch (MalformedURLException | JSONException | ParseException e) {
+        } catch (URISyntaxException | JSONException | ParseException e) {
             throw new APIException(e);
         }
     }
@@ -201,7 +201,7 @@ public class Event extends Model {
             /**
              * This will call Event.syncModelFromNetwork() which will
              * refresh the event's confirmation list to obtain a proper
-             * resource URL. Therefore adding this confirmation to the
+             * resource URI. Therefore adding this confirmation to the
              * list is no long necessary
              */
             c.syncModelToNetwork();

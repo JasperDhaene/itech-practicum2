@@ -7,15 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.EventPagerAdapter;
@@ -31,12 +29,11 @@ public class EventPagerFragment extends android.support.v4.app.Fragment {
     private ViewPager viewPager;
     private Event event;
 
-    public static EventPagerFragment newInstance(URL url) {
+    public static EventPagerFragment newInstance(URI uri) {
         EventPagerFragment fragment = new EventPagerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("url", url);
-
+        bundle.putSerializable("uri", uri);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -57,7 +54,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment {
 
         this.pagerAdapter = new EventPagerAdapter(
                 this.getActivity().getSupportFragmentManager(),
-                (URL) getArguments().getSerializable("url"));
+                (URI) getArguments().getSerializable("uri"));
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(pagerAdapter);
 

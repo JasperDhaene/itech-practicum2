@@ -5,9 +5,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import be.thalarion.eventman.api.API;
@@ -19,9 +19,9 @@ public abstract class Model {
         EDIT, NEW
     }
 
-    protected URL resource;
+    protected URI resource;
 
-    public URL getResource() {
+    public URI getResource() {
         return resource;
     }
 
@@ -41,8 +41,8 @@ public abstract class Model {
             );
 
             try {
-                this.resource = new URL(response.getString("url"));
-            } catch (JSONException e) {
+                this.resource = new URI(response.getString("url"));
+            } catch (URISyntaxException | JSONException e) {
                 throw new APIException(e);
             }
         } else {
@@ -58,7 +58,7 @@ public abstract class Model {
      */
     public void syncModelToMemory() throws IOException, APIException {
         if(this.resource == null)
-            throw new APIException("Model must have a resource URL");
+            throw new APIException("Model must have a resource URI");
 
         fromJSON(API.getInstance().fetch(this.resource));
     }
@@ -94,15 +94,15 @@ public abstract class Model {
             for(int i = 0; i < jsonArray.length(); i++) {
                 // GET /{model}/{id}
                 JSONObject jsonObject = API.getInstance().fetch(
-                        new URL(
+                        new URI(
                                 jsonArray.getJSONObject(i).getString("url")
                         ));
                 m = model.newInstance();
-                m.resource = new URL(jsonObject.getString("url"));
+                m.resource = new URI(jsonObject.getString("url"));
                 m.fromJSON(jsonObject);
                 models.add(m);
             }
-        } catch (JSONException | IllegalAccessException | InstantiationException e) {
+        } catch (URISyntaxException | JSONException | IllegalAccessException | InstantiationException e) {
             throw new APIException(e);
         }
 
@@ -116,7 +116,7 @@ public abstract class Model {
      * @throws IOException
      * @throws APIException
      */
-    public static <T extends Model> T find(Class<T> model, URL resource) throws IOException, APIException {
+    public static <T extends Model> T find(Class<T> model, URI resource) throws IOException, APIException {
         T m;
         try {
             // GET /{model}/{id}
@@ -133,11 +133,11 @@ public abstract class Model {
     }
 
     /**
-     * same - Compare a resource URL against a model
+     * same - Compare a resource URI against a model
      * @param resource
      * @return
      */
-    public boolean same(URL resource) {
+    public boolean same(URI resource) {
         if(resource.toString().equals(this.resource.toString()) )
             return true;
 

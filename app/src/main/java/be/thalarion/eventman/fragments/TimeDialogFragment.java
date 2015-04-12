@@ -1,7 +1,6 @@
 package be.thalarion.eventman.fragments;
 
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;

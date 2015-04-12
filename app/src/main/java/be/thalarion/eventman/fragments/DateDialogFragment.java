@@ -2,7 +2,6 @@ package be.thalarion.eventman.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;

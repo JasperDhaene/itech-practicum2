@@ -4,7 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import be.thalarion.eventman.api.API;
 import be.thalarion.eventman.api.APIException;
@@ -35,14 +36,14 @@ public class Confirmation extends Model {
         try {
             if (json.getBoolean("going")) {
                 JSONObject p = json.getJSONObject("person");
-                this.person = Cache.find(Person.class, new URL(p.getString("url")));
-                this.resource = new URL(json.getString("url"));
+                this.person = Cache.find(Person.class, new URI(p.getString("url")));
+                this.resource = new URI(json.getString("url"));
             }
-        } catch (IOException | JSONException e) {
+        } catch (URISyntaxException | IOException | JSONException e) {
             /**
              * Thrown on one of the following errors
-             * - going, person, url is not available
-             * - url cannot be parsed
+             * - going, person, uri is not available
+             * - uri cannot be parsed
              */
             throw new APIException(e);
         }

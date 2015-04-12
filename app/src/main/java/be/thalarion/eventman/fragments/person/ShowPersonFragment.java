@@ -2,11 +2,9 @@ package be.thalarion.eventman.fragments.person;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -23,7 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
@@ -44,11 +42,11 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-    public static ShowPersonFragment newInstance(URL url) {
+    public static ShowPersonFragment newInstance(URI uri) {
         ShowPersonFragment fragment = new ShowPersonFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("url", url);
+        bundle.putSerializable("uri", uri);
 
         fragment.setArguments(bundle);
 
@@ -81,7 +79,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 Person pers = null;
                 Bundle data = params[0];
                 try {
-                    pers = Cache.find(Person.class, (URL) data.getSerializable("url"));
+                    pers = Cache.find(Person.class, (URI) data.getSerializable("uri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }

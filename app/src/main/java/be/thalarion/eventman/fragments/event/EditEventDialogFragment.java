@@ -7,9 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -17,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -30,8 +27,6 @@ import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.fragments.TimeDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
-import be.thalarion.eventman.models.Person;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EditEventDialogFragment extends EditDialogFragment
         implements View.OnClickListener {
@@ -41,16 +36,12 @@ public class EditEventDialogFragment extends EditDialogFragment
 
     private Event event;
 
-    public EditEventDialogFragment() {
-        // Required empty public constructor
-    }
-
-    public static EditEventDialogFragment newInstance(URL url, Model.ACTION action) {
+    public static EditEventDialogFragment newInstance(URI uri, Model.ACTION action) {
         EditEventDialogFragment fragment = new EditEventDialogFragment();
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("action", action);
-        bundle.putSerializable("url", url);
+        bundle.putSerializable("uri", uri);
 
         fragment.setArguments(bundle);
 
@@ -90,7 +81,7 @@ public class EditEventDialogFragment extends EditDialogFragment
             @Override
             protected Event doInBackground(Void... params) {
                 try {
-                    return Cache.find(Event.class, (URL) data.getSerializable("url"));
+                    return Cache.find(Event.class, (URI) data.getSerializable("uri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                     return null;

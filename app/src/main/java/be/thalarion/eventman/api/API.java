@@ -1,7 +1,5 @@
 package be.thalarion.eventman.api;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,14 +9,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class API {
 
-    public static final String API_ROOT_URL = "http://events.restdesc.org/";
+    public static final String API_ROOT_URI = "http://events.restdesc.org/";
 
     /**
      * Singleton fields and methods
@@ -26,14 +24,14 @@ public class API {
     private static API instance;
 
     public static API getInstance() {
-        if (instance == null) init(API_ROOT_URL);
+        if (instance == null) init(API_ROOT_URI);
         return instance;
     }
 
     public static void init(String root) {
         try {
-            instance = new API(new URL(root));
-        } catch (MalformedURLException e) {
+            instance = new API(new URI(root));
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -42,22 +40,22 @@ public class API {
      * Instance fields and methods
      */
 
-    private URL root;
-    // Model URL mapping cache
-    private Map<String, URL> mapping;
+    private URI root;
+    // Model URI mapping cache
+    private Map<String, URI> mapping;
 
-    private API(URL root) {
+    private API(URI root) {
         this.root = root;
     }
 
     /**
-     * resolve - Resolve a resource to a URL
+     * resolve - Resolve a resource to a URI
      *
      * @param resource
-     * @return URL
+     * @return URI
      * @throws IOException, APIException
      */
-    public URL resolve(String resource) throws IOException, APIException {
+    public URI resolve(String resource) throws IOException, APIException {
         if(this.mapping == null) this.mapping = new HashMap<>();
 
         if(this.mapping.containsKey(resource))
@@ -66,10 +64,10 @@ public class API {
         JSONObject json = fetch(root);
 
         try {
-            URL url = new URL(json.getString(resource));
-            this.mapping.put(resource, url);
-            return url;
-        } catch (JSONException e) {
+            URI URI = new URI(json.getString(resource));
+            this.mapping.put(resource, URI);
+            return URI;
+        } catch (URISyntaxException | JSONException e) {
             throw new APIException(e);
         }
     }
@@ -77,12 +75,12 @@ public class API {
     /**
      * fetch - GET a resource
      *
-     * @param url
+     * @param URI
      * @return JSONObject
      * @throws IOException, APIException
      */
-    public JSONObject fetch(URL url) throws IOException, APIException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    public JSONObject fetch(URI URI) throws IOException, APIException {
+        HttpURLConnection conn = (HttpURLConnection) URI.toURL().openConnection();
 
         conn.setRequestMethod("GET");
         conn.addRequestProperty("Accept", "application/json");
@@ -113,12 +111,12 @@ public class API {
     /**
      * update - PUT/PATCH a resource
      *
-     * @param url
+     * @param URI
      * @param data
      * @throws IOException, APIException
      */
-    public void update(URL url, String data) throws IOException, APIException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    public void update(URI URI, String data) throws IOException, APIException {
+        HttpURLConnection conn = (HttpURLConnection) URI.toURL().openConnection();
 
         conn.setRequestMethod("PUT");
         conn.setDoOutput(true);
@@ -128,22 +126,25 @@ public class API {
         bw.write(data);
         bw.close();
 
-        if (conn.getResponseCode() >= 400)
-            throw new APIException(conn.getResponseMessage());
-
-        conn.disconnect();
+        if (conn.getResponseCode() >= 400) {
+            try {
+                throw new APIException(conn.getResponseMessage());
+            } finally {
+                conn.disconnect();
+            }
+        }
     }
 
     /**
      * create - POST a resource
      *
-     * @param url
+     * @param URI
      * @param data
      * @return JSONObject
      * @throws IOException, APIException
      */
-    public JSONObject create(URL url, String data) throws IOException, APIException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    public JSONObject create(URI URI, String data) throws IOException, APIException {
+        HttpURLConnection conn = (HttpURLConnection) URI.toURL().openConnection();
 
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
@@ -176,21 +177,22 @@ public class API {
     /**
      * delete - DELETE a resource
      *
-     * @param url
+     * @param URI
      * @throws IOException, APIException
      */
-    public void delete(URL url) throws IOException, APIException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    public void delete(URI URI) throws IOException, APIException {
+        HttpURLConnection conn = (HttpURLConnection) URI.toURL().openConnection();
         conn.setRequestMethod("DELETE");
         conn.setDoOutput(true);
         conn.addRequestProperty("Content-Type", "application/json");
         conn.connect();
 
-        if (conn.getResponseCode() >= 400)
-            throw new APIException(conn.getResponseMessage());
-
-        conn.disconnect();
-
-
+        if (conn.getResponseCode() >= 400) {
+            try {
+                throw new APIException(conn.getResponseMessage());
+            } finally {
+                conn.disconnect();
+            }
+        }
     }
 }

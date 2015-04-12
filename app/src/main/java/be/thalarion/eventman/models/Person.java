@@ -112,14 +112,14 @@ public class Person extends Model {
         THUMB, MEDIUM, LARGE;
     }
     /**
-     * avatarFromString - Synthesize an avatar URL from a string
+     * avatarFromString - Synthesize an avatar URI from a string
      * @param key
      * @param size
      * @return String
      */
     private static String avatarFromString(String key, AVATAR size) {
         int code = 0;
-        String baseUrl = "http://api.randomuser.me/portraits/";
+        String baseUri = "http://api.randomuser.me/portraits/";
 
         if(key != null) {
             for (int i = 0; i < key.length(); i++) {
@@ -129,15 +129,15 @@ public class Person extends Model {
 
             switch (size) {
                 case THUMB:
-                    baseUrl += "thumb/";
+                    baseUri += "thumb/";
                     break;
                 case MEDIUM:
-                    baseUrl += "med/";
+                    baseUri += "med/";
                     break;
             }
         }
 
-        return baseUrl + (code > 99 ? "wo" : "") + "men/" + (code % 99) + ".jpg";
+        return baseUri + (code > 99 ? "wo" : "") + "men/" + (code % 99) + ".jpg";
     }
 
     @Override

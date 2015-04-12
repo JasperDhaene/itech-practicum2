@@ -16,7 +16,6 @@ import be.thalarion.eventman.fragments.person.PeopleFragment;
 import be.thalarion.eventman.fragments.person.ShowPersonFragment;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
-import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 

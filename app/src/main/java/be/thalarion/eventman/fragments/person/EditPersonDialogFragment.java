@@ -1,13 +1,11 @@
 package be.thalarion.eventman.fragments.person;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -28,7 +26,6 @@ import be.thalarion.eventman.fragments.DateDialogFragment;
 import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EditPersonDialogFragment extends EditDialogFragment
         implements View.OnClickListener {
@@ -41,12 +38,12 @@ public class EditPersonDialogFragment extends EditDialogFragment
         // Required empty public constructor
     }
 
-    public static EditPersonDialogFragment newInstance(URL url, Model.ACTION action) {
+    public static EditPersonDialogFragment newInstance(URI uri, Model.ACTION action) {
         EditPersonDialogFragment fragment = new EditPersonDialogFragment();
 
         Bundle bundle = new Bundle();
-        if(url != null)
-            bundle.putSerializable("url", url);
+        if(uri != null)
+            bundle.putSerializable("uri", uri);
         bundle.putSerializable("action", action);
 
         fragment.setArguments(bundle);
@@ -84,7 +81,7 @@ public class EditPersonDialogFragment extends EditDialogFragment
             @Override
             protected Person doInBackground(Void... params) {
                 try {
-                    return Cache.find(Person.class, (URL) data.getSerializable("url"));
+                    return Cache.find(Person.class, (URI) data.getSerializable("uri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                     return null;

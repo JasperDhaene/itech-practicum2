@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
@@ -30,12 +30,11 @@ public class EventTab extends android.support.v4.app.Fragment {
     private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
     private Event event;
 
-    public static EventTab newInstance(URL url) {
+    public static EventTab newInstance(URI uri) {
         EventTab fragment = new EventTab();
 
         Bundle bundle = new Bundle();
-
-        bundle.putSerializable("url", url);
+        bundle.putSerializable("uri", uri);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -46,6 +45,7 @@ public class EventTab extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show_event, container, false);
 
+        // ActionBar
         setHasOptionsMenu(true);
 
         this.title = ((TextView) rootView.findViewById(R.id.event_title));
@@ -55,14 +55,13 @@ public class EventTab extends android.support.v4.app.Fragment {
         //TODO: banner invullen
 
         final Context context = this.getActivity();
-
         new AsyncTask<Bundle, Exception, Event>() {
             @Override
             protected Event doInBackground(Bundle... params) {
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, (URL) data.getSerializable("url"));
+                    event = Cache.find(Event.class, (URI) data.getSerializable("uri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }

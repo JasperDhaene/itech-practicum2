@@ -4,7 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,9 +45,9 @@ public class Message extends Model {
             if(!json.isNull("text")) this.text = json.getString("text");
             if(!json.isNull("created_at")) this.date = this.format.parse(json.getString("created_at"));
             JSONObject p = json.getJSONObject("person");
-            this.person = Cache.find(Person.class, new URL(p.getString("url")));
-            this.resource = new URL(json.getString("url"));
-        } catch (ParseException | IOException | JSONException e) {
+            this.person = Cache.find(Person.class, new URI(p.getString("url")));
+            this.resource = new URI(json.getString("url"));
+        } catch (URISyntaxException | ParseException | IOException | JSONException e) {
             throw new APIException(e);
         }
     }

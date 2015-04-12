@@ -4,27 +4,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import java.net.URL;
+import java.net.URI;
 
-import be.thalarion.eventman.fragments.event.message.MessagesTab;
 import be.thalarion.eventman.fragments.event.EventTab;
+import be.thalarion.eventman.fragments.event.message.MessagesTab;
 
 public class EventPagerAdapter extends FragmentPagerAdapter {
 
-    private URL url;
+    private URI uri;
 
-    public EventPagerAdapter(FragmentManager fm, URL url) {
+    public EventPagerAdapter(FragmentManager fm, URI uri) {
         super(fm);
-        this.url = url;
+        this.uri = uri;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return EventTab.newInstance(this.url);
+                return EventTab.newInstance(this.uri);
             case 1:
-                return MessagesTab.newInstance(this.url);
+                return MessagesTab.newInstance(this.uri);
             default:
                 return null;
         }

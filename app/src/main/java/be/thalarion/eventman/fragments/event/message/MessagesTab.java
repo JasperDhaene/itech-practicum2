@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 import be.thalarion.eventman.R;
@@ -37,12 +37,11 @@ public class MessagesTab extends android.support.v4.app.Fragment
         // Required empty public constructor
     }
 
-    public static MessagesTab newInstance(URL url){
+    public static MessagesTab newInstance(URI uri){
         MessagesTab fragment = new MessagesTab();
 
         Bundle bundle = new Bundle();
-
-        bundle.putSerializable("url", url);
+        bundle.putSerializable("uri", uri);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -53,6 +52,8 @@ public class MessagesTab extends android.support.v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.swipe_list, container, false);
+
+        // ActionBar
         setHasOptionsMenu(true);
 
         final Context context = this.getActivity().getApplicationContext();
@@ -62,7 +63,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, (URL) data.getSerializable("url"));
+                    event = Cache.find(Event.class, (URI) data.getSerializable("uri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
