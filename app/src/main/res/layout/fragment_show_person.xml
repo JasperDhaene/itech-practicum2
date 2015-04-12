@@ -5,23 +5,20 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <ImageView android:id="@+id/person_avatar"
             android:transitionName="avatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Show_component"
-            />
+            style="@style/Show_component"/>
 
         <TextView
             style="@style/Section_Dummy"/>
 
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/person_name"

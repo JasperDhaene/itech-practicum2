@@ -133,10 +133,9 @@ public class MessagesTab extends android.support.v4.app.Fragment
                     List<Event> eventList = Cache.findAll(Event.class);
                     Event refreshedEvent = null;
                     for(Event ev:eventList){
-                        //search for the refreshed event
-                        if(ev.same(event.getResource())){
+                        // Search for the refreshed event
+                        if(ev.equals(event))
                             refreshedEvent=ev;
-                        }
                     }
 
                     if(refreshedEvent!=null){

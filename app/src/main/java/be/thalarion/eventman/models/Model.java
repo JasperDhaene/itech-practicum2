@@ -133,18 +133,6 @@ public abstract class Model {
     }
 
     /**
-     * same - Compare a resource URI against a model
-     * @param resource
-     * @return
-     */
-    public boolean same(URI resource) {
-        if(resource.toString().equals(this.resource.toString()) )
-            return true;
-
-        return false;
-    }
-
-    /**
      * fromJSON - Deserialize a JSON object to a model
      * @param json
      * @throws APIException

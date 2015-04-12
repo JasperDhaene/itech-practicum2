@@ -19,14 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".EventActivity"
-            android:label="@string/title_activity_event"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="be.thalarion.eventman.MainActivity" />
-        </activity>
     </application>
 
 </manifest>
