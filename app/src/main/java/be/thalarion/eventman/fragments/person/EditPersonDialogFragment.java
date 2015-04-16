@@ -1,6 +1,7 @@
 package be.thalarion.eventman.fragments.person;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -115,8 +116,8 @@ public class EditPersonDialogFragment extends EditDialogFragment
 
     @Override
     public void onClick(View v) {
-        // TODO: da fuq ies dies
-        if (v.getContentDescription().toString().equals("Date_Start")) {
+        Resources resources = this.getActivity().getResources();
+        if (v.getContentDescription().toString().equals(resources.getString(R.string.content_description_date_start))) {
             DialogFragment f = DateDialogFragment.newInstance(this, v);
 
             f.show(getActivity().getSupportFragmentManager(), "datePicker");

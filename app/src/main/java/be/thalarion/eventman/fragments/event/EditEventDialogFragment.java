@@ -120,7 +120,7 @@ public class EditEventDialogFragment extends EditDialogFragment
 
     @Override
     public void onClick(View v) {
-        /*String c = v.getContentDescription().toString();
+        String c = v.getContentDescription().toString();
         Resources resources = this.getActivity().getResources();
         if(c.equals(resources.getString(R.string.content_description_date_start)) || c.equals(resources.getString(R.string.content_description_date_end))){
             DialogFragment f = DateDialogFragment.newInstance(this, v);
@@ -129,15 +129,6 @@ public class EditEventDialogFragment extends EditDialogFragment
         }else if(c.equals(resources.getString(R.string.content_description_time_start)) || c.equals(resources.getString(R.string.content_description_time_end))){
             DialogFragment f = TimeDialogFragment.newInstance(this, v);
 
-            f.show(getActivity().getSupportFragmentManager(), "timePicker");
-        }*/
-        // TODO: da fuq ies dies
-        String c = v.getContentDescription().toString();
-        if(c.equals("Date_Start") || c.equals("Date_End")){
-            DialogFragment f = DateDialogFragment.newInstance(this, v);
-            f.show(getActivity().getSupportFragmentManager(), "datePicker");
-        }else if(c.equals("Time_Start") || c.equals("Time_End")){
-            DialogFragment f = TimeDialogFragment.newInstance(this, v);
             f.show(getActivity().getSupportFragmentManager(), "timePicker");
         }
     }
