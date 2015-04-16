@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,43 +61,6 @@ public class EventPagerFragment extends android.support.v4.app.Fragment {
         this.viewPager.setAdapter(pagerAdapter);
 
         return rootView;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId()){
-            case R.id.action_edit_event:
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
-                        EditEventDialogFragment.newInstance(this.event.getResource(), Model.ACTION.EDIT),
-                        this.getActivity().getString(R.string.title_edit_event));
-                return true;
-            case R.id.action_discard_event:
-                final Context context = getActivity();
-                new AsyncTask<Void, Void, Exception>() {
-                    @Override
-                    protected Exception doInBackground(Void... params) {
-                        try {
-                            event.destroy();
-                            event = null;
-                        } catch (APIException | IOException e) {
-                            return e;
-                        }
-                        return null;
-                    }
-                    @Override
-                    protected void onPostExecute(Exception e) {
-                        if(e == null) {
-                            Toast.makeText(context, context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_SHORT).show();
-                        } else ErrorHandler.announce(context, e);
-                    }
-                }.execute();
-
-                getActivity().onBackPressed();
-                return true;
-            default:
-                return false;
-        }
     }
 
 }

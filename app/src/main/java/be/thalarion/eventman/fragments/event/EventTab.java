@@ -3,6 +3,8 @@ package be.thalarion.eventman.fragments.event;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +49,11 @@ public class EventTab extends android.support.v4.app.Fragment {
 
         // ActionBar
         setHasOptionsMenu(true);
+        final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE,
+                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 
         this.title = ((TextView) rootView.findViewById(R.id.event_title));
         this.description = ((TextView) rootView.findViewById(R.id.event_description));
