@@ -82,7 +82,9 @@ public class EditPersonDialogFragment extends EditDialogFragment
             @Override
             protected Person doInBackground(Void... params) {
                 try {
-                    return Cache.find(Person.class, (URI) data.getSerializable("uri"));
+                    if(data.getSerializable("uri") != null) {
+                        return Cache.find(Person.class, (URI) data.getSerializable("uri"));
+                    }else return null;
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                     return null;
