@@ -1,6 +1,7 @@
 package be.thalarion.eventman.fragments.event.message;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
         implements android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener {
 
     private Event event;
+    private View rootView;
 
 
     public MessagesTab() {
@@ -51,7 +53,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.swipe_list, container, false);
+        this.rootView = inflater.inflate(R.layout.swipe_list, container, false);
 
         // ActionBar
         setHasOptionsMenu(true);
@@ -111,7 +113,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.people, menu); //TODO: verander nog é
+        inflater.inflate(R.menu.events, menu); //TODO: verander nog é
     }
 
 
@@ -141,8 +143,8 @@ public class MessagesTab extends android.support.v4.app.Fragment
                     if(refreshedEvent!=null){
                         event = refreshedEvent;
                     } else {
-                        //TODO: find meaningful exception or Toast that says the event from which
-                        //TODO: you ask messages has been deleted since the last refresh
+                        //TODO: find meaningful exception or Toast that says the event from which \
+                        // you ask messages has been deleted since the last refresh
                     }
 
                     return event.getMessages();
@@ -159,8 +161,8 @@ public class MessagesTab extends android.support.v4.app.Fragment
             }
             @Override
             protected void onPostExecute(List<Message> messages) {
-                ((MessagesAdapter) ((RecyclerView) getActivity().findViewById(R.id.swipe_list_view)).getAdapter()).setDataSet(messages);
-                ((SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_list_container)).setRefreshing(false);
+                ((MessagesAdapter) ((RecyclerView) rootView.findViewById(R.id.swipe_list_view)).getAdapter()).setDataSet(messages);
+                ((SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container)).setRefreshing(false);
             }
         }.execute();
     }
