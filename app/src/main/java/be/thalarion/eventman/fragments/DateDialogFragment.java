@@ -58,7 +58,7 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
 
     protected void notifyDatePickerListener(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         if(this.datePickerListener != null)
-            this.datePickerListener.onDateSet(view, this.target, year, monthOfYear, dayOfMonth);
+            this.datePickerListener.onDateSet(view, this.target, year, monthOfYear + 1, dayOfMonth);
     }
 
     public void setTarget(View target) {
