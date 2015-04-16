@@ -113,7 +113,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events, menu); //TODO: verander nog é
+        //inflater.inflate(R.menu.events, menu); //TODO: verander nog é
     }
 
 

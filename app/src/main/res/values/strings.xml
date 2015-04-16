@@ -79,8 +79,13 @@
     <string name="content_description_date_end">Date_End</string>
     <string name="content_description_time_end">Time_End</string>
 
+
     <!-- Buttons -->
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_event">EventActivity</string>
+
+    <string name="message">Message</string>
+    <string name="hint_message">Enter message</string>
+
 </resources>

@@ -100,6 +100,7 @@ public class EventTab extends android.support.v4.app.Fragment {
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
                         EditEventDialogFragment.newInstance(this.event.getResource(), Model.ACTION.EDIT),
                         this.getActivity().getString(R.string.title_edit_event));
+
                 return true;
             case R.id.action_discard_event:
                 final Context context = getActivity();

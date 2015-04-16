@@ -55,6 +55,7 @@ public class EditEventDialogFragment extends EditDialogFragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_event_dialog, container, false);
 
+        //actionbar
         setHasOptionsMenu(false);
         final View doneBar = inflater.inflate(R.layout.actionbar_done_cancel, null);
         doneBar.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { done(); } });
@@ -82,7 +83,10 @@ public class EditEventDialogFragment extends EditDialogFragment
             @Override
             protected Event doInBackground(Void... params) {
                 try {
-                    return Cache.find(Event.class, (URI) data.getSerializable("uri"));
+                    if(data.getSerializable("uri")!=null)
+                        return Cache.find(Event.class, (URI) data.getSerializable("uri"));
+                    else
+                        return null;
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                     return null;

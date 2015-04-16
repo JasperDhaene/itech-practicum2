@@ -69,11 +69,15 @@
         <item name="android:layout_marginTop">8dp</item>
     </style>
 
+    <!-- EditText -->
     <style name="Form_component_editText" parent="Form_component">
         <item name="android:inputType">textCapWords</item>
     </style>
 
     <style name="Form_component_editText_email" parent="Form_component">
+    </style>
+
+    <style name="Form_component_editText_message" parent="Form_component">
     </style>
 
     <style name="Show_component" parent="Component">
