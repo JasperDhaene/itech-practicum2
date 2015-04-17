@@ -123,20 +123,20 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.person, menu);
+        inflater.inflate(R.menu.edit_discard, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_edit_person:
+            case R.id.action_edit:
                 EditPersonDialogFragment editPersonFrag = EditPersonDialogFragment.newInstance(
                         this.person.getResource(),
                         Model.ACTION.EDIT);
 
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editPersonFrag, this.getActivity().getResources().getString(R.string.title_edit_person));
                 return true;
-            case R.id.action_discard_person:
+            case R.id.action_discard:
                 new AsyncTask<Void, Void, Exception>() {
                     private Context context;
 

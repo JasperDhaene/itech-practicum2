@@ -97,7 +97,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu = menu;
-        inflater.inflate(R.menu.event, menu);
+        inflater.inflate(R.menu.edit_discard, menu);
     }
 
     @Override

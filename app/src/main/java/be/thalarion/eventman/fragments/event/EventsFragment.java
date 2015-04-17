@@ -76,13 +76,13 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events, menu);
+        inflater.inflate(R.menu.add, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
-            case R.id.action_add_event:
+            case R.id.action_add:
                 EditEventDialogFragment f = EditEventDialogFragment.newInstance(null, Model.ACTION.NEW);
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
                 return true;

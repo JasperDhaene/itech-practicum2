@@ -78,13 +78,13 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.people, menu);
+        inflater.inflate(R.menu.add, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
-            case R.id.action_add_person:
+            case R.id.action_add:
 
                 EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(null,Model.ACTION.NEW);
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_person));
