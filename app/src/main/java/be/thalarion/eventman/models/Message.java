@@ -23,12 +23,10 @@ public class Message extends Model {
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    public Message() { }
-
     public Message(Person person, String text, Event event) {
         this.person = person;
         this.text = text;
-        this.date = new Date();
+        this.event = event;
     }
 
     public Message(Event event) { this.event = event; }
@@ -56,11 +54,12 @@ public class Message extends Model {
     protected JSONObject toJSON() throws APIException {
         JSONObject json = new JSONObject();
         try {
-            json.put("text", this.text);
-            json.put("created_at", this.format.format(this.date));
+            JSONObject message = new JSONObject();
+            message.put("text", this.text);
             JSONObject person = new JSONObject();
-            person.put("name", this.person.getName());
             person.put("url", this.person.resource);
+            message.put("person",person);
+            json.put("message",message);
         } catch (JSONException e) {
             throw new APIException(e);
         }
@@ -107,6 +106,9 @@ public class Message extends Model {
     }
     public void setText(String text) {
         this.text = text;
+    }
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
 }

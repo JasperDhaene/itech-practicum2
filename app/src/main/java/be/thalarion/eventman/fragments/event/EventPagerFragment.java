@@ -17,11 +17,13 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.URI;
 
+import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.adapters.EventPagerAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.fragments.event.message.EditMessageDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -102,13 +104,13 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.action_edit_event:
+            case R.id.action_edit:
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
                         EditEventDialogFragment.newInstance(this.event.getResource(), Model.ACTION.EDIT),
                         this.getActivity().getString(R.string.title_edit_event));
 
                 return true;
-            case R.id.action_discard_event:
+            case R.id.action_discard:
                 final Context context = getActivity();
                 new AsyncTask<Void, Void, Exception>() {
                     @Override
@@ -131,6 +133,16 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
 
                 getActivity().onBackPressed();
                 return true;
+            case R.id.action_add:
+                if(! ((MainActivity) getActivity()).getAccountManager().isNull()) {
+                    EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(this.event.getResource(),null, Model.ACTION.NEW);
+
+                    editMessageFragment.show(((MaterialNavigationDrawer) getActivity()).getSupportFragmentManager(), "newMessage");
+                    return true;
+                }else{
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             default:
                 return false;
         }
@@ -153,9 +165,9 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
         this.menu.clear();
         MenuInflater inflater = getActivity().getMenuInflater();
         if(position==1){//The messagesTab does not have an optionsMenu
-            inflater.inflate(R.menu.people, menu);
+            inflater.inflate(R.menu.add, menu);
         }else{
-            inflater.inflate(R.menu.event, menu);
+            inflater.inflate(R.menu.edit_discard, menu);
         }
     }
 }

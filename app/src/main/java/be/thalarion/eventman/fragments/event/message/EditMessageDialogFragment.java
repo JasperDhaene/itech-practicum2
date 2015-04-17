@@ -13,11 +13,15 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.URI;
 
+import be.thalarion.eventman.MainActivity;
 import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.fragments.EditDialogFragment;
+import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
 
@@ -25,32 +29,26 @@ import be.thalarion.eventman.models.Model;
 public class EditMessageDialogFragment extends EditDialogFragment {
 
     private Message message;
+    private Event event;
     private EditText text;
     private TextView save;
 
     public EditMessageDialogFragment() {
         // Required empty public constructor
     }
-    //TODO: first
-    public EditMessageDialogFragment(Message message){
+
+    //TODO: delete in favour of finding messages in Cache
+    public EditMessageDialogFragment(Message message) {
         this.message = message;
-        Bundle bundle = new Bundle();
-
-
-        //always edit for now.
-        bundle.putSerializable("action", Model.ACTION.EDIT);
-        this.setArguments(bundle);
     }
 
-    public static EditMessageDialogFragment newInstance(String url, Model.ACTION action) {
+    public static EditMessageDialogFragment newInstance(URI eventUri,Message message, Model.ACTION action) {
 
-        EditMessageDialogFragment f = new EditMessageDialogFragment();
+        EditMessageDialogFragment f = new EditMessageDialogFragment(message);
         Bundle bundle = new Bundle();
-        /*if (!url.equals("")) {
-            bundle.putString("url",url);
-        }*/
 
-
+        bundle.putSerializable("eventURI", eventUri);
+        //bundle.putSerializable("messageURI", messageUri);
         bundle.putSerializable("action", action);
 
         f.setArguments(bundle);
@@ -64,33 +62,32 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_edit_message_dialog, container, false);
-        /*
+
         final Context context = getActivity();
-        new AsyncTask<Bundle, Exception, Message>() {
+        new AsyncTask<Bundle, Exception, Void>() {
             private Bundle data = null;
 
             @Override
-            protected Message doInBackground(Bundle... params) {
-                Message mess = null;
+            protected Void doInBackground(Bundle... params) {
                 this.data = params[0];
-                try {
-                    // TODO: retrieve message via url
-                    String s = this.data.getString("url");
-                    mess = Cache.find(Message.class, new URL(s));
-
+                try {//TODO: werkt nog niet via URI
+                    /*URI uri = (URI) this.data.getSerializable("messageURI");
+                    message = Cache.find(Message.class, uri);*/
+                    if(this.data.getSerializable("eventURI")!=null) {
+                        event = Cache.find(Event.class, (URI) this.data.getSerializable("eventURI"));
+                    }
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
-                return mess;
+                return null;
             }
 
             @Override
-            protected void onPostExecute(Message mess) {
-                message = mess;
+            protected void onPostExecute(Void param) {
                 if (this.data.getSerializable("action") == Model.ACTION.EDIT) {
-
+                    text.setText(message.getText());
                 } else if (this.data.getSerializable("action") == Model.ACTION.NEW) {
-                    message = new Message();
+                    message = new Message(null,null,event);
                 }
             }
 
@@ -98,19 +95,11 @@ public class EditMessageDialogFragment extends EditDialogFragment {
             protected void onProgressUpdate(Exception... values) {
                 ErrorHandler.announce(context, values[0]);
             }
-        }.execute(getArguments());*/
+        }.execute(getArguments());
 
         this.text = (EditText) rootView.findViewById(R.id.field_message);
         this.save = (TextView) rootView.findViewById(R.id.save);
 
-        Bundle data = null;
-        data = this.getArguments();
-
-        if (data.getSerializable("action") == Model.ACTION.EDIT) {
-            this.text.setText(message.getText());
-        } else if (data.getSerializable("action") == Model.ACTION.NEW) {
-            message = new Message();
-        }
         this.save.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(final View v) {
@@ -125,6 +114,10 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
+                            if(message.getPerson()==null){//new Message
+                                message.setPerson(((MainActivity) getActivity()).getAccountManager().getPerson());
+                            }
+
                             message.setText(text.getText().toString());
                             message.syncModelToNetwork();
                         } catch (APIException | IOException e) {

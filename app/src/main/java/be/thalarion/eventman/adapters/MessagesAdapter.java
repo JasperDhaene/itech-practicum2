@@ -30,6 +30,7 @@ import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.fragments.event.message.MessageDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
+import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -72,15 +73,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             this.iconEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toon een edit dialoog
 
-                    /*EditMessageDialogFragment editMessageFrag = EditMessageDialogFragment.newInstance(
-                            message.getResource().toString(), Model.ACTION.EDIT);*/
+                EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(
+                            null,message, Model.ACTION.EDIT);
 
-                    EditMessageDialogFragment editMessageFrag = new EditMessageDialogFragment(message);
-
-
-                    editMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"editMessage");
+                editMessageFragment.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"editMessage");
                 }
             });
 
