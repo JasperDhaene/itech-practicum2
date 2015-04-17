@@ -31,7 +31,7 @@ public class EditMessageDialogFragment extends EditDialogFragment {
     public EditMessageDialogFragment() {
         // Required empty public constructor
     }
-
+    //TODO: first
     public EditMessageDialogFragment(Message message){
         this.message = message;
         Bundle bundle = new Bundle();

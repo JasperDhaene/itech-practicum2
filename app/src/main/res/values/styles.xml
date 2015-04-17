@@ -78,6 +78,7 @@
     </style>
 
     <style name="Form_component_editText_message" parent="Form_component">
+        <item name="android:inputType">textCapSentences</item>
     </style>
 
     <style name="Show_component" parent="Component">

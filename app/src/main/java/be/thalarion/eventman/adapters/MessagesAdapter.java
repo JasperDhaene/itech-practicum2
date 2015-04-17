@@ -27,12 +27,13 @@ import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 
+import be.thalarion.eventman.fragments.event.message.MessageDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Person;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
+public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder>{
 
     private List<Message> dataSet;
     private final Context context;
@@ -48,7 +49,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView text,date;
 
@@ -116,9 +119,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
                 }
             });
+
+            ((LinearLayout) itemView.findViewById(R.id.list_item_container)).setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View v) {
+            MessageDialogFragment showMessageFrag =  MessageDialogFragment.newInstance(message.getText());
+
+            showMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"showMessage");
+        }
     }
 
     // Create new views (invoked by the layout manager)
