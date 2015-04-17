@@ -32,14 +32,13 @@ public class MessageDialogFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static MessageDialogFragment newInstance(String text) {
+    public static MessageDialogFragment newInstance(String text,String date) {
 
         MessageDialogFragment f = new MessageDialogFragment();
         Bundle bundle = new Bundle();
 
-
-
         bundle.putString("text", text);
+        bundle.putString("date", date);
 
         f.setArguments(bundle);
 
@@ -52,45 +51,10 @@ public class MessageDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_message_dialog, container, false);
-        /*
-        final Context context = getActivity();
-        new AsyncTask<Bundle, Exception, Message>() {
-            private Bundle data = null;
 
-            @Override
-            protected Message doInBackground(Bundle... params) {
-                Message mess = null;
-                this.data = params[0];
-                try {
-                    // TODO: retrieve message via url
-                    String s = this.data.getString("url");
-                    mess = Cache.find(Message.class, new URL(s));
-
-                } catch (IOException | APIException e) {
-                    publishProgress(e);
-                }
-                return mess;
-            }
-
-            @Override
-            protected void onPostExecute(Message mess) {
-                message = mess;
-                if (this.data.getSerializable("action") == Model.ACTION.EDIT) {
-
-                } else if (this.data.getSerializable("action") == Model.ACTION.NEW) {
-                    message = new Message();
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(Exception... values) {
-                ErrorHandler.announce(context, values[0]);
-            }
-        }.execute(getArguments());*/
-
-
-
-        ((TextView) rootView.findViewById(R.id.text)).setText(getArguments().getString("text"));
+        Bundle data = getArguments();
+        ((TextView) rootView.findViewById(R.id.text)).setText(data.getString("text"));
+        ((TextView) rootView.findViewById(R.id.date)).setText(data.getString("date"));
 
         return rootView;
     }

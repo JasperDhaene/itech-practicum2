@@ -23,4 +23,22 @@
     <TextView
         style="@style/Section_Dummy" />
 
+    <TextView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:textColor="#70000000"
+        style="@style/Form_component"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/form_head_entry"
+        android:textColor="#000000"
+        style="@style/Form_component"/>
+
+    <TextView
+        style="@style/Section_Dummy" />
+
 </LinearLayout>

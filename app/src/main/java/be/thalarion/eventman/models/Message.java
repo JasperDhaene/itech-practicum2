@@ -22,6 +22,7 @@ public class Message extends Model {
     private Event event;
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    public static final SimpleDateFormat formatReadable = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public Message(Person person, String text, Event event) {
         this.person = person;

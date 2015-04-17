@@ -123,7 +123,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            MessageDialogFragment showMessageFrag =  MessageDialogFragment.newInstance(message.getText());
+            MessageDialogFragment showMessageFrag =  MessageDialogFragment.newInstance(message.getText(),
+                    message.formatReadable.format(message.getDate()));
 
             showMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"showMessage");
         }
@@ -162,7 +163,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         if(dataSet.get(position).getDate() != null) {
 
-            holder.date.setText(Event.format.format(dataSet.get(position).getDate()).toString());
+            holder.date.setText(Message.formatReadable.format(dataSet.get(position).getDate()).toString());
         }
 
         holder.message = dataSet.get(position);

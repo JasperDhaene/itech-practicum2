@@ -89,5 +89,6 @@
     <string name="hint_message">Enter message</string>
 
     <string name="action_add">Add</string>
+    <string name="date">Created at</string>
 
 </resources>
