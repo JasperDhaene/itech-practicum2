@@ -56,7 +56,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
         this.rootView = inflater.inflate(R.layout.swipe_list, container, false);
 
         // ActionBar
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
 
         final Context context = this.getActivity().getApplicationContext();
         new AsyncTask<Bundle, Exception, Event>() {
@@ -111,10 +111,6 @@ public class MessagesTab extends android.support.v4.app.Fragment
         return rootView;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //inflater.inflate(R.menu.events, menu); //TODO: verander nog é
-    }
 
 
     @Override

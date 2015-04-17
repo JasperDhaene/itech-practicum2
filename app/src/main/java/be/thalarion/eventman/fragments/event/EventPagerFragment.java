@@ -31,6 +31,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     private EventPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private Event event;
+    private Menu menu;
 
     public static EventPagerFragment newInstance(URI uri) {
         EventPagerFragment fragment = new EventPagerFragment();
@@ -93,6 +94,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        this.menu = menu;
         inflater.inflate(R.menu.event, menu);
     }
 
@@ -138,11 +140,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
 
     @Override
     public void onPageSelected(int position) {
-        if(position==1){//The messagesTab does not have an optionsMenu
-            this.setHasOptionsMenu(false);
-        }else{
-            this.setHasOptionsMenu(true);
-        }
+        // Not Needed
     }
 
     @Override
@@ -151,6 +149,13 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // Not Needed
+
+        this.menu.clear();
+        MenuInflater inflater = getActivity().getMenuInflater();
+        if(position==1){//The messagesTab does not have an optionsMenu
+            inflater.inflate(R.menu.people, menu);
+        }else{
+            inflater.inflate(R.menu.event, menu);
+        }
     }
 }
