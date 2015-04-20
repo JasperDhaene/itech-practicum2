@@ -71,6 +71,8 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
         setAccountListener(this);
         setDrawerListener(this);
 
+        setDrawerBackgroundColor(getResources().getColor(R.color.md_white_1000));
+
         this.accountManager = new AccountManager(this);
     }
 
