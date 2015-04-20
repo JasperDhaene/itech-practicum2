@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -33,6 +34,10 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
+
+        String date = ((TextView) target).getText().toString();
+        c.set(Calendar.HOUR,Integer.parseInt(date.substring(0,2)));
+        c.set(Calendar.MINUTE,Integer.parseInt(date.substring(3,5)));
 
         TimePickerDialog timePicker = new TimePickerDialog(
                 getActivity(),

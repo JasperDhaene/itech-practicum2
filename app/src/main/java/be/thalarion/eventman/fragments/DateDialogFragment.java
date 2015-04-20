@@ -2,11 +2,22 @@ package be.thalarion.eventman.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.Calendar;
+import java.util.Date;
+
+import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
+import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.models.Event;
+import be.thalarion.eventman.models.Model;
 
 public class DateDialogFragment extends android.support.v4.app.DialogFragment
                                                     implements DatePickerDialog.OnDateSetListener {
@@ -14,6 +25,7 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
 
     private EditDialogFragment datePickerListener;
     private View target;
+    private Event event;
 
 
     public DateDialogFragment() {
@@ -32,8 +44,15 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // TODO: fill in existing date instead of current date
         final Calendar c = Calendar.getInstance();
+
+        String date = ((TextView) target).getText().toString();
+
+        //date has a guaranteed yyyy-MM-dd format
+        c.set(Integer.parseInt(date.substring(0,4)),
+                Integer.parseInt(date.substring(5,7)),
+                Integer.parseInt(date.substring(8,10))
+        );
 
         return new DatePickerDialog(
                 getActivity(),

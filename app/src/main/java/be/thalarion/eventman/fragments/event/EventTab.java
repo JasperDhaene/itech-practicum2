@@ -31,7 +31,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class EventTab extends android.support.v4.app.Fragment {
 
     private TextView title, description, startDate, endDate;
-    private ImageView banner; //TODO: vul de banner in. Geen idee hoe dit gedaan wordt momenteel.
+    private ImageView banner;
     private Event event;
 
     public static EventTab newInstance(URI uri) {
