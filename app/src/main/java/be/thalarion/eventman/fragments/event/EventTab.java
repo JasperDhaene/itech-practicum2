@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+
 import java.io.IOException;
 import java.net.URI;
 
@@ -59,7 +61,7 @@ public class EventTab extends android.support.v4.app.Fragment {
         this.description = ((TextView) rootView.findViewById(R.id.event_description));
         this.startDate = ((TextView) rootView.findViewById(R.id.event_startdate));
         this.endDate = ((TextView) rootView.findViewById(R.id.event_enddate));
-        //TODO: banner invullen
+        this.banner = ((ImageView) rootView.findViewById(R.id.event_banner));
 
         final Context context = this.getActivity();
         new AsyncTask<Bundle, Exception, Event>() {
@@ -88,6 +90,12 @@ public class EventTab extends android.support.v4.app.Fragment {
                 description.setText(event.getFormattedDescription(context));
                 startDate.setText(event.getFormattedStartDate(context, Event.format));
                 endDate.setText(event.getFormattedEndDate(context, Event.format));
+                String color = Event.hash(event.getFormattedTitle(context));
+                TextDrawable drawable = TextDrawable.builder().buildRect(
+                        color,
+                        context.getResources().getColor(Event.colorFromString(color))
+                );
+                banner.setImageDrawable(drawable);
             }
         }.execute(getArguments());
 
