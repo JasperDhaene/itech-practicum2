@@ -51,9 +51,6 @@ public class MessagesTab extends android.support.v4.app.Fragment
                              Bundle savedInstanceState) {
         this.rootView = inflater.inflate(R.layout.swipe_list, container, false);
 
-        // ActionBar
-        setHasOptionsMenu(false);
-
         final Context context = this.getActivity().getApplicationContext();
         new AsyncTask<Bundle, Exception, Event>() {
             @Override

@@ -54,7 +54,11 @@
     </style>
 
     <!-- EditText -->
-    <style name="Form_component_editText" parent="Form_component">
+    <style name="Form_component_editText_event" parent="Form_component">
+        <item name="android:inputType">textCapSentences</item>
+    </style>
+
+    <style name="Form_component_editText_name" parent="Form_component">
         <item name="android:inputType">textCapWords</item>
     </style>
 

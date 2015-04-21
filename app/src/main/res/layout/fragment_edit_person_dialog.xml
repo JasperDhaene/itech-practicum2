@@ -21,7 +21,7 @@
 
         android:textColor="#000000"
         android:hint="@string/hint_name"
-        style="@style/Form_component_editText"/>
+        style="@style/Form_component_editText_name"/>
 
     <TextView
         style="@style/Section_Dummy" />

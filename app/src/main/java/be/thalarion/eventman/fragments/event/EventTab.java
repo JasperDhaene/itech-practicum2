@@ -35,7 +35,13 @@ public class EventTab extends android.support.v4.app.Fragment {
     private ImageView banner;
     private Event event;
 
+
+    public EventTab(){
+        //Empty constructor
+    }
+
     public static EventTab newInstance(URI eventUri) {
+
         EventTab fragment = new EventTab();
 
         Bundle bundle = new Bundle();
@@ -50,13 +56,7 @@ public class EventTab extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show_event, container, false);
 
-        // ActionBar
-        setHasOptionsMenu(false);
         final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayOptions(
-                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE,
-                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 
         this.title = ((TextView) rootView.findViewById(R.id.event_title));
         this.description = ((TextView) rootView.findViewById(R.id.event_description));
