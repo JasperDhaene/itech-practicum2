@@ -1,7 +1,6 @@
 package be.thalarion.eventman.fragments.event.message;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -10,8 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,16 +31,15 @@ public class MessagesTab extends android.support.v4.app.Fragment
     private Event event;
     private View rootView;
 
-
     public MessagesTab() {
         // Required empty public constructor
     }
 
-    public static MessagesTab newInstance(URI uri){
+    public static MessagesTab newInstance(URI eventUri){
         MessagesTab fragment = new MessagesTab();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("uri", uri);
+        bundle.putSerializable("eventUri", eventUri);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -65,7 +61,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, (URI) data.getSerializable("uri"));
+                    event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -75,7 +71,6 @@ public class MessagesTab extends android.support.v4.app.Fragment
             @Override
             protected void onPostExecute(Event ev) {
                 event = ev;
-                event.getMessages();
             }
 
             @Override
@@ -96,7 +91,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        MessagesAdapter adapter = new MessagesAdapter(getActivity());
+        MessagesAdapter adapter = new MessagesAdapter();
         recyclerView.setAdapter(adapter);
 
         swipeLayout.post(new Runnable(){
@@ -111,8 +106,6 @@ public class MessagesTab extends android.support.v4.app.Fragment
         return rootView;
     }
 
-
-
     @Override
     public void onRefresh() {
         // onRefresh is called only when the user is explicitly swiping
@@ -124,25 +117,12 @@ public class MessagesTab extends android.support.v4.app.Fragment
      * refresh - Refresh models from cache
      */
     public void refresh() {
-        new AsyncTask<Void, Exception, List<Message>>() {
+        new AsyncTask<Bundle, Exception, List<Message>>() {
             @Override
-            protected List<Message> doInBackground(Void... params) {
+            protected List<Message> doInBackground(Bundle... params) {
                 try {
-                    List<Event> eventList = Cache.findAll(Event.class);
-                    Event refreshedEvent = null;
-                    for(Event ev:eventList){
-                        // Search for the refreshed event
-                        if(ev.equals(event))
-                            refreshedEvent=ev;
-                    }
-
-                    if(refreshedEvent!=null){
-                        event = refreshedEvent;
-                    } else {
-                        //TODO: find meaningful exception or Toast that says the event from which \
-                        // you ask messages has been deleted since the last refresh
-                    }
-
+                    // Throws an APIException if the resource isn't available anymore
+                    event = Cache.find(Event.class, (URI) params[0].getSerializable("eventUri"));
                     return event.getMessages();
                 } catch (IOException | APIException e) {
                     publishProgress(e);
@@ -160,6 +140,6 @@ public class MessagesTab extends android.support.v4.app.Fragment
                 ((MessagesAdapter) ((RecyclerView) rootView.findViewById(R.id.swipe_list_view)).getAdapter()).setDataSet(messages);
                 ((SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container)).setRefreshing(false);
             }
-        }.execute();
+        }.execute(getArguments());
     }
 }

@@ -32,19 +32,18 @@ public class MessageDialogFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static MessageDialogFragment newInstance(String text,String date) {
+    public static MessageDialogFragment newInstance(Message message) {
 
         MessageDialogFragment f = new MessageDialogFragment();
         Bundle bundle = new Bundle();
 
-        bundle.putString("text", text);
-        bundle.putString("date", date);
+        bundle.putString("text", message.getText());
+        bundle.putString("date", Message.formatReadable.format(message.getDate()));
 
         f.setArguments(bundle);
 
         return f;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

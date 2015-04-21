@@ -37,18 +37,12 @@ public class EditMessageDialogFragment extends EditDialogFragment {
         // Required empty public constructor
     }
 
-    //TODO: delete in favour of finding messages in Cache
-    public EditMessageDialogFragment(Message message) {
-        this.message = message;
-    }
+    public static EditMessageDialogFragment newInstance(URI messageUri, Model.ACTION action) {
 
-    public static EditMessageDialogFragment newInstance(URI eventUri,Message message, Model.ACTION action) {
-
-        EditMessageDialogFragment f = new EditMessageDialogFragment(message);
+        EditMessageDialogFragment f = new EditMessageDialogFragment();
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable("eventURI", eventUri);
-        //bundle.putSerializable("messageURI", messageUri);
+        bundle.putSerializable("messageURI", messageUri);
         bundle.putSerializable("action", action);
 
         f.setArguments(bundle);
@@ -70,12 +64,12 @@ public class EditMessageDialogFragment extends EditDialogFragment {
             @Override
             protected Void doInBackground(Bundle... params) {
                 this.data = params[0];
-                try {//TODO: werkt nog niet via URI
-                    /*URI uri = (URI) this.data.getSerializable("messageURI");
-                    message = Cache.find(Message.class, uri);*/
-                    if(this.data.getSerializable("eventURI")!=null) {
+                try {
+                    URI uri = (URI) this.data.getSerializable("messageURI");
+                    message = Cache.find(Message.class, uri);
+
+                    if(this.data.getSerializable("eventURI") != null)
                         event = Cache.find(Event.class, (URI) this.data.getSerializable("eventURI"));
-                    }
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -114,9 +108,9 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
-                            if(message.getPerson()==null){//new Message
+                            // New Message
+                            if(message.getPerson() == null)
                                 message.setPerson(((MainActivity) getActivity()).getAccountManager().getPerson());
-                            }
 
                             message.setText(text.getText().toString());
                             message.syncModelToNetwork();
@@ -137,9 +131,7 @@ public class EditMessageDialogFragment extends EditDialogFragment {
             }
         });
 
-
         return rootView;
     }
-
 
 }

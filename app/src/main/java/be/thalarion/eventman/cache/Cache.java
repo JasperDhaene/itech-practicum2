@@ -11,6 +11,12 @@ import java.util.Map;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.models.Model;
 
+/**
+ * Cache - simple cache layer
+ *
+ * The cache layer simply fetches all object concerning a model and keeps them in memory for the duration of
+ * Cacheable.MAX_AGE. Nested caching is not properly supported.
+ */
 public class Cache {
 
     private static Map<URI, Cacheable<? extends Model>> objectCache = new HashMap();

@@ -1,6 +1,8 @@
 package be.thalarion.eventman.fragments.event;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -35,11 +37,11 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     private Event event;
     private Menu menu;
 
-    public static EventPagerFragment newInstance(URI uri) {
+    public static EventPagerFragment newInstance(URI eventUri) {
         EventPagerFragment fragment = new EventPagerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("uri", uri);
+        bundle.putSerializable("eventUri", eventUri);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -60,7 +62,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
 
         this.pagerAdapter = new EventPagerAdapter(
                 this.getActivity().getSupportFragmentManager(),
-                (URI) getArguments().getSerializable("uri"));
+                (URI) getArguments().getSerializable("eventUri"));
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(pagerAdapter);
 
@@ -71,7 +73,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, (URI) data.getSerializable("uri"));
+                    event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -86,6 +88,9 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
             @Override
             protected void onPostExecute(Event ev) {
                 event = ev;
+                viewPager.findViewById(R.id.pager_tab_strip).setBackgroundColor(
+                        context.getResources().getColor(Event.colorFromString(Event.hash(event.getFormattedTitle(context))))
+                );
             }
         }.execute(getArguments());
 
@@ -135,11 +140,11 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                 return true;
             case R.id.action_add:
                 if(! ((MainActivity) getActivity()).getAccountManager().isNull()) {
-                    EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(this.event.getResource(),null, Model.ACTION.NEW);
+                    EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(this.event.getResource(), Model.ACTION.NEW);
 
-                    editMessageFragment.show(((MaterialNavigationDrawer) getActivity()).getSupportFragmentManager(), "newMessage");
+                    editMessageFragment.show(getActivity().getSupportFragmentManager(), "newMessage");
                     return true;
-                }else{
+                } else {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_SHORT).show();
                     return false;
                 }

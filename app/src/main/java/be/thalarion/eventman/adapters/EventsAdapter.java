@@ -58,12 +58,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             this.avatar = ((ImageView) itemView.findViewById(R.id.event_list_view_avatar));
             this.checkBox = ((CheckBox) itemView.findViewById(R.id.list_item_checkbox));
 
-            ((LinearLayout) itemView.findViewById(R.id.list_item_container)).setOnClickListener(this);
+            (itemView.findViewById(R.id.list_item_container)).setOnClickListener(this);
 
             this.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                final AccountManager am  = ((MainActivity)v.getContext()).getAccountManager();
+                final AccountManager am  = ((MainActivity) v.getContext()).getAccountManager();
 
                 if(am.isNull()) {
                     ((CheckBox) v).setChecked(false);
@@ -110,8 +110,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_event, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

@@ -11,20 +11,20 @@ import be.thalarion.eventman.fragments.event.message.MessagesTab;
 
 public class EventPagerAdapter extends FragmentPagerAdapter {
 
-    private URI uri;
+    private URI eventUri;
 
-    public EventPagerAdapter(FragmentManager fm, URI uri) {
+    public EventPagerAdapter(FragmentManager fm, URI eventUri) {
         super(fm);
-        this.uri = uri;
+        this.eventUri = eventUri;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return EventTab.newInstance(this.uri);
+                return EventTab.newInstance(this.eventUri);
             case 1:
-                return MessagesTab.newInstance(this.uri);
+                return MessagesTab.newInstance(this.eventUri);
             default:
                 return null;
         }

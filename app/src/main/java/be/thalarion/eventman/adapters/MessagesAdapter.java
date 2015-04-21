@@ -28,7 +28,6 @@ import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 
 import be.thalarion.eventman.fragments.event.message.MessageDialogFragment;
-import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
@@ -37,10 +36,8 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder>{
 
     private List<Message> dataSet;
-    private final Context context;
 
-    public MessagesAdapter(Context context) {
-        this.context = context;
+    public MessagesAdapter() {
         this.dataSet = new ArrayList<>();
     }
 
@@ -49,14 +46,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView text,date;
+        public TextView text, date;
 
-        public ImageView avatar,iconEdit,iconDiscard;
+        public ImageView avatar, iconEdit, iconDiscard;
         public LinearLayout container;
         public Message message;
 
@@ -75,9 +69,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                 public void onClick(View v) {
 
                 EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(
-                            null,message, Model.ACTION.EDIT);
+                        message.getResource(),
+                        Model.ACTION.EDIT);
 
-                editMessageFragment.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"editMessage");
+                editMessageFragment.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(), "editMessage");
                 }
             });
 
@@ -89,7 +84,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
                         @Override
                         protected void onPreExecute() {
-                            this.context = iconDiscard.getContext();;
+                            this.context = iconDiscard.getContext();
                         }
 
                         @Override
@@ -109,7 +104,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                             if (e == null) {
                                 Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
                                 //TODO: Doe een refresh van de messages ??
-
+                                // Misschien kunnen we hier wel een eventbus gebruiken. Da's SUPER-gemakkelijk
                             } else ErrorHandler.announce(this.context, e);
                         }
                     }.execute();
@@ -117,16 +112,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                 }
             });
 
-            ((LinearLayout) itemView.findViewById(R.id.list_item_container)).setOnClickListener(this);
+            itemView.findViewById(R.id.list_item_container).setOnClickListener(this);
         }
-
 
         @Override
         public void onClick(View v) {
-            MessageDialogFragment showMessageFrag =  MessageDialogFragment.newInstance(message.getText(),
-                    message.formatReadable.format(message.getDate()));
+            MessageDialogFragment showMessageFrag =  MessageDialogFragment.newInstance(message);
 
-            showMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),"showMessage");
+            showMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(), "showMessage");
         }
     }
 
@@ -136,18 +129,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_message, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if(dataSet.get(position).getText() != null) {
-
             holder.text.setText(dataSet.get(position).getText());
         } else {
-
             holder.text.setText(R.string.error_text_noname);
         }
 
@@ -159,10 +149,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                 }
             });
             //TODO:what if person is null?
+            // Kan dit ooit null zijn?
         }
 
         if(dataSet.get(position).getDate() != null) {
-
             holder.date.setText(Message.formatReadable.format(dataSet.get(position).getDate()).toString());
         }
 

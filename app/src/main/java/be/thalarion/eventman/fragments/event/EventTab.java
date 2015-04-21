@@ -1,6 +1,7 @@
 package be.thalarion.eventman.fragments.event;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -34,11 +35,11 @@ public class EventTab extends android.support.v4.app.Fragment {
     private ImageView banner;
     private Event event;
 
-    public static EventTab newInstance(URI uri) {
+    public static EventTab newInstance(URI eventUri) {
         EventTab fragment = new EventTab();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("uri", uri);
+        bundle.putSerializable("eventUri", eventUri);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -70,7 +71,7 @@ public class EventTab extends android.support.v4.app.Fragment {
                 Event event = null;
                 Bundle data = params[0];
                 try {
-                    event = Cache.find(Event.class, (URI) data.getSerializable("uri"));
+                    event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -95,6 +96,7 @@ public class EventTab extends android.support.v4.app.Fragment {
                         color,
                         context.getResources().getColor(Event.colorFromString(color))
                 );
+                actionBar.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(Event.colorFromString(color))));
                 banner.setImageDrawable(drawable);
             }
         }.execute(getArguments());

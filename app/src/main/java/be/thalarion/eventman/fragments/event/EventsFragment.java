@@ -48,7 +48,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
         // Swipe to refresh
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container);
-        swipeLayout.setColorSchemeColors(Color.argb(255,233,30,99),Color.argb(255,63,81,181) );
+        swipeLayout.setColorSchemeColors(Color.argb(255,233,30,99), Color.argb(255,63,81,181) );
         swipeLayout.setOnRefreshListener(this);
 
         // Event list
@@ -60,7 +60,6 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
         EventsAdapter adapter = new EventsAdapter(getActivity());
         recyclerView.setAdapter(adapter);
-
 
         swipeLayout.post(new Runnable(){
             @Override
@@ -84,7 +83,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
         switch(item.getItemId()){
             case R.id.action_add:
                 EditEventDialogFragment f = EditEventDialogFragment.newInstance(null, Model.ACTION.NEW);
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
                 return true;
             default:
                 return false;
