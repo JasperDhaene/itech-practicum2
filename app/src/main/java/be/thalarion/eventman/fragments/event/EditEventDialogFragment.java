@@ -37,12 +37,12 @@ public class EditEventDialogFragment extends EditDialogFragment
 
     private Event event;
 
-    public static EditEventDialogFragment newInstance(URI uri, Model.ACTION action) {
+    public static EditEventDialogFragment newInstance(URI eventUri, Model.ACTION action) {
         EditEventDialogFragment fragment = new EditEventDialogFragment();
 
         Bundle bundle = new Bundle();
+        bundle.putSerializable("eventUri", eventUri);
         bundle.putSerializable("action", action);
-        bundle.putSerializable("uri", uri);
 
         fragment.setArguments(bundle);
 
@@ -83,8 +83,8 @@ public class EditEventDialogFragment extends EditDialogFragment
             @Override
             protected Event doInBackground(Void... params) {
                 try {
-                    if(data.getSerializable("uri")!=null)
-                        return Cache.find(Event.class, (URI) data.getSerializable("uri"));
+                    if(data.getSerializable("eventUri") != null)
+                        return Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                     else
                         return null;
                 } catch (IOException | APIException e) {
@@ -126,11 +126,11 @@ public class EditEventDialogFragment extends EditDialogFragment
     public void onClick(View v) {
         String c = v.getContentDescription().toString();
         Resources resources = this.getActivity().getResources();
-        if(c.equals(resources.getString(R.string.content_description_date_start)) || c.equals(resources.getString(R.string.content_description_date_end))){
+        if (c.equals(resources.getString(R.string.content_description_date_start)) || c.equals(resources.getString(R.string.content_description_date_end))) {
             DialogFragment f = DateDialogFragment.newInstance(this, v);
 
             f.show(getActivity().getSupportFragmentManager(), "datePicker");
-        }else if(c.equals(resources.getString(R.string.content_description_time_start)) || c.equals(resources.getString(R.string.content_description_time_end))){
+        } else if (c.equals(resources.getString(R.string.content_description_time_start)) || c.equals(resources.getString(R.string.content_description_time_end))) {
             DialogFragment f = TimeDialogFragment.newInstance(this, v);
 
             f.show(getActivity().getSupportFragmentManager(), "timePicker");

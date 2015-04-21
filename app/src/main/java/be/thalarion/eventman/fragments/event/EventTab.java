@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -96,7 +97,6 @@ public class EventTab extends android.support.v4.app.Fragment {
                         color,
                         context.getResources().getColor(Event.colorFromString(color))
                 );
-                actionBar.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(Event.colorFromString(color))));
                 banner.setImageDrawable(drawable);
             }
         }.execute(getArguments());

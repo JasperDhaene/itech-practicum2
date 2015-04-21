@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,8 +68,9 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                 ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 
         this.pagerAdapter = new EventPagerAdapter(
-                this.getActivity().getSupportFragmentManager(),
-                (URI) getArguments().getSerializable("eventUri"));
+                getChildFragmentManager(),
+                (URI) getArguments().getSerializable("eventUri"),
+                getActivity());
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(pagerAdapter);
 
@@ -95,9 +97,11 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
             @Override
             protected void onPostExecute(Event ev) {
                 event = ev;
+                int color = Event.colorFromString(Event.hash(event.getFormattedTitle(context)));
                 viewPager.findViewById(R.id.pager_tab_strip).setBackgroundColor(
-                        context.getResources().getColor(Event.colorFromString(Event.hash(event.getFormattedTitle(context))))
+                        context.getResources().getColor(color)
                 );
+                actionBar.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(color)));
             }
         }.execute(getArguments());
 
@@ -160,8 +164,6 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
         }
     }
 
-
-
     @Override
     public void onPageSelected(int position) {
         // Not Needed
@@ -173,6 +175,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        // TODO: kan dit niet in de respectievelijke fragments gestoken worden?
         this.menu.clear();
         MenuInflater inflater = getActivity().getMenuInflater();
         if(position==1){

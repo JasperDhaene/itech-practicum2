@@ -1,21 +1,26 @@
 package be.thalarion.eventman.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.net.URI;
 
+import be.thalarion.eventman.R;
 import be.thalarion.eventman.fragments.event.EventTab;
 import be.thalarion.eventman.fragments.event.message.MessagesTab;
 
 public class EventPagerAdapter extends FragmentPagerAdapter {
 
     private URI eventUri;
+    private Context context;
 
-    public EventPagerAdapter(FragmentManager fm, URI eventUri) {
+    public EventPagerAdapter(FragmentManager fm, URI eventUri, Context context) {
         super(fm);
         this.eventUri = eventUri;
+        this.context = context;
     }
 
     public int getItemPosition(Object object) {
@@ -38,9 +43,9 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Event";
+                return context.getString(R.string.title_event);
             case 1:
-                return "Messages";
+                return context.getString(R.string.title_messages);
             default:
                 return null;
         }

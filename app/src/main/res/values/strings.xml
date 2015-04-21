@@ -4,6 +4,8 @@
     <string name="title_overview">Overview</string>
     <string name="title_events">Events</string>
     <string name="title_people">People</string>
+    <string name="title_event">Event</string>
+    <string name="title_messages">Messages</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
