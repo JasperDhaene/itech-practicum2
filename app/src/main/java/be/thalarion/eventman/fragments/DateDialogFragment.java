@@ -2,22 +2,14 @@ package be.thalarion.eventman.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Calendar;
-import java.util.Date;
 
-import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.ErrorHandler;
-import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.models.Event;
-import be.thalarion.eventman.models.Model;
 
 public class DateDialogFragment extends android.support.v4.app.DialogFragment
                                                     implements DatePickerDialog.OnDateSetListener {

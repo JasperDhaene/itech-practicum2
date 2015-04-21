@@ -1,21 +1,15 @@
 package be.thalarion.eventman.fragments.event;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -27,8 +21,6 @@ import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.models.Event;
-import be.thalarion.eventman.models.Model;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EventTab extends android.support.v4.app.Fragment {
 

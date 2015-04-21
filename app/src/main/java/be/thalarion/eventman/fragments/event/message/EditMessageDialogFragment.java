@@ -4,12 +4,13 @@ package be.thalarion.eventman.fragments.event.message;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
+import be.thalarion.eventman.models.Person;
 
 
 public class EditMessageDialogFragment extends EditDialogFragment {
@@ -31,18 +33,18 @@ public class EditMessageDialogFragment extends EditDialogFragment {
     private Message message;
     private Event event;
     private EditText text;
-    private TextView save;
 
     public EditMessageDialogFragment() {
         // Required empty public constructor
     }
 
-    public static EditMessageDialogFragment newInstance(URI messageUri, Model.ACTION action) {
+    public static EditMessageDialogFragment newInstance(URI messageUri, URI eventUri, Model.ACTION action) {
 
         EditMessageDialogFragment f = new EditMessageDialogFragment();
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable("messageURI", messageUri);
+        bundle.putSerializable("messageUri", messageUri);
+        bundle.putSerializable("eventUri", eventUri);
         bundle.putSerializable("action", action);
 
         f.setArguments(bundle);
@@ -58,18 +60,15 @@ public class EditMessageDialogFragment extends EditDialogFragment {
         final View rootView = inflater.inflate(R.layout.fragment_edit_message_dialog, container, false);
 
         final Context context = getActivity();
-        new AsyncTask<Bundle, Exception, Void>() {
-            private Bundle data = null;
-
+        final Bundle data = getArguments();
+        new AsyncTask<Void, Exception, Void>() {
             @Override
-            protected Void doInBackground(Bundle... params) {
-                this.data = params[0];
+            protected Void doInBackground(Void... params) {
                 try {
-                    URI uri = (URI) this.data.getSerializable("messageURI");
-                    message = Cache.find(Message.class, uri);
-
-                    if(this.data.getSerializable("eventURI") != null)
-                        event = Cache.find(Event.class, (URI) this.data.getSerializable("eventURI"));
+                    event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
+                    Log.e("eventman", ((URI) data.getSerializable("messageUri")).toString());
+                    if (data.getSerializable("action") == Model.ACTION.EDIT)
+                        message = Cache.find(Message.class, (URI) data.getSerializable("messageUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -78,10 +77,10 @@ public class EditMessageDialogFragment extends EditDialogFragment {
 
             @Override
             protected void onPostExecute(Void param) {
-                if (this.data.getSerializable("action") == Model.ACTION.EDIT) {
+                if (data.getSerializable("action") == Model.ACTION.EDIT) {
                     text.setText(message.getText());
-                } else if (this.data.getSerializable("action") == Model.ACTION.NEW) {
-                    message = new Message(null,null,event);
+                } else if (data.getSerializable("action") == Model.ACTION.NEW) {
+                    message = new Message(null, null, event);
                 }
             }
 
@@ -89,12 +88,11 @@ public class EditMessageDialogFragment extends EditDialogFragment {
             protected void onProgressUpdate(Exception... values) {
                 ErrorHandler.announce(context, values[0]);
             }
-        }.execute(getArguments());
+        }.execute();
 
         this.text = (EditText) rootView.findViewById(R.id.field_message);
-        this.save = (TextView) rootView.findViewById(R.id.save);
 
-        this.save.setOnClickListener(new OnClickListener(){
+        rootView.findViewById(R.id.save).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
                 new AsyncTask<Void, Void, Exception>() {

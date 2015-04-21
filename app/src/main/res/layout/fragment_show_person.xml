@@ -8,11 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView android:id="@+id/person_avatar"
-            android:transitionName="avatar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Show_component"/>
+        <ImageView
+            android:id="@+id/person_avatar"
+            android:scaleType="centerCrop"
+            style="@style/Show_event_component_banner"/>
 
         <TextView
             style="@style/Section_Dummy"/>
