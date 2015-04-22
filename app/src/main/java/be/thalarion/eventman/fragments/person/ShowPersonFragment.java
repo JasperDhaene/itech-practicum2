@@ -27,8 +27,11 @@ import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.BusEvent;
+import be.thalarion.eventman.events.PersonBusEvent;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
+import de.greenrobot.event.EventBus;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 
@@ -148,6 +151,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
+                            EventBus.getDefault().post(new PersonBusEvent(person, BusEvent.ACTION.DELETE));
                             person.destroy();
                             // Allow garbage collection
                             person = null;

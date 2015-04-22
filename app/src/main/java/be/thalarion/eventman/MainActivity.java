@@ -103,6 +103,13 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
         // set the indicator for child fragments
         // N.B. call this method AFTER the init() to leave the time to instantiate the ActionBarDrawerToggle
         this.setHomeAsUpIndicator(R.drawable.ic_action_navigation_arrow_back);
+        this.accountManager.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        this.accountManager.onStop();
+        super.onStop();
     }
 
     @Override

@@ -21,8 +21,11 @@ import be.thalarion.eventman.adapters.MessagesAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.EventBusEvent;
+import be.thalarion.eventman.events.MessageBusEvent;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
+import de.greenrobot.event.EventBus;
 
 
 public class MessagesTab extends android.support.v4.app.Fragment
@@ -138,5 +141,21 @@ public class MessagesTab extends android.support.v4.app.Fragment
                 ((SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container)).setRefreshing(false);
             }
         }.execute(getArguments());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEvent(MessageBusEvent event) {
+        onRefresh();
     }
 }

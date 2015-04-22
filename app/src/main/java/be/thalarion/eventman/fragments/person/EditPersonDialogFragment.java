@@ -23,10 +23,14 @@ import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.BusEvent;
+import be.thalarion.eventman.events.EventBusEvent;
+import be.thalarion.eventman.events.PersonBusEvent;
 import be.thalarion.eventman.fragments.DateDialogFragment;
 import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
+import de.greenrobot.event.EventBus;
 
 public class EditPersonDialogFragment extends EditDialogFragment
         implements View.OnClickListener {
@@ -98,7 +102,6 @@ public class EditPersonDialogFragment extends EditDialogFragment
                     email.setText(person.getEmail());
 
                     birthDate.setText(person.getFormattedBirthDate(context));
-
                 } else if (data.getSerializable("action") == Model.ACTION.NEW) {
                     person = new Person();
                 }
@@ -144,6 +147,10 @@ public class EditPersonDialogFragment extends EditDialogFragment
                 person.setName(name);
                 person.setEmail(email);
                 person.setBirthDate(birthDate);
+
+                if (person.getResource() == null)
+                    EventBus.getDefault().post(new PersonBusEvent(person, BusEvent.ACTION.CREATE));
+                else EventBus.getDefault().post(new PersonBusEvent(person, BusEvent.ACTION.UPDATE));
 
                 try {
                     person.syncModelToNetwork();

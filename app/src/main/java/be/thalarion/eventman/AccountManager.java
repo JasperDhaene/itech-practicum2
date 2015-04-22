@@ -6,7 +6,9 @@ import android.view.View;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import be.thalarion.eventman.events.PersonBusEvent;
 import be.thalarion.eventman.models.Person;
+import de.greenrobot.event.EventBus;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class AccountManager {
@@ -40,5 +42,26 @@ public class AccountManager {
 
     public boolean isNull() {
         return (this.person == null);
+    }
+
+    public void onStart() {
+        EventBus.getDefault().register(this);
+    }
+
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEvent(final PersonBusEvent event) {
+        if (this.person == null) return;
+
+        if (this.person.equals(event.model)) {
+            this.activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setAccount((Person) event.model);
+                }
+            });
+        }
     }
 }

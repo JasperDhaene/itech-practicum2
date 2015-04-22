@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import be.thalarion.eventman.events.BusEvent;
+import be.thalarion.eventman.events.MessageBusEvent;
 import be.thalarion.eventman.fragments.event.message.EditMessageDialogFragment;
 
 import be.thalarion.eventman.R;
@@ -31,6 +33,7 @@ import be.thalarion.eventman.fragments.event.message.MessageDialogFragment;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
+import de.greenrobot.event.EventBus;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder>{
@@ -91,6 +94,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                         @Override
                         protected Exception doInBackground(Void... params) {
                             try {
+                                EventBus.getDefault().post(new MessageBusEvent(message, BusEvent.ACTION.DELETE));
                                 message.destroy();
                                 // Allow garbage collection
                                 message = null;
@@ -104,8 +108,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                         protected void onPostExecute(Exception e) {
                             if (e == null) {
                                 Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                                //TODO: Doe een refresh van de messages ??
-                                // Misschien kunnen we hier wel een eventbus gebruiken. Da's SUPER-gemakkelijk
                             } else ErrorHandler.announce(this.context, e);
                         }
                     }.execute();
@@ -164,6 +166,5 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         if(dataSet == null) return 0;
         return dataSet.size();
     }
-
 
 }

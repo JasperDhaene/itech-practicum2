@@ -21,11 +21,15 @@ import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.BusEvent;
+import be.thalarion.eventman.events.EventBusEvent;
+import be.thalarion.eventman.events.MessageBusEvent;
 import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;
+import de.greenrobot.event.EventBus;
 
 
 public class EditMessageDialogFragment extends EditDialogFragment {
@@ -112,8 +116,10 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                     protected Exception doInBackground(Void... params) {
                         try {
                             // New Message
-                            if (message.getPerson() == null)
+                            if (message.getPerson() == null) {
                                 message.setPerson(((MainActivity) getActivity()).getAccountManager().getPerson());
+                                EventBus.getDefault().post(new MessageBusEvent(message, BusEvent.ACTION.CREATE));
+                            } else EventBus.getDefault().post(new MessageBusEvent(message, BusEvent.ACTION.UPDATE));
 
                             message.setText(text.getText().toString());
                             message.syncModelToNetwork();

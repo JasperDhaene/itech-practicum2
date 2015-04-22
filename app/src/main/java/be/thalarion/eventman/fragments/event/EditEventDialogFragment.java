@@ -23,11 +23,14 @@ import be.thalarion.eventman.R;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.BusEvent;
+import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.fragments.DateDialogFragment;
 import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.fragments.TimeDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
+import de.greenrobot.event.EventBus;
 
 public class EditEventDialogFragment extends EditDialogFragment
         implements View.OnClickListener {
@@ -173,6 +176,10 @@ public class EditEventDialogFragment extends EditDialogFragment
                 event.setDescription(description.getText().toString());
                 event.setStartDate(startDateText);
                 event.setEndDate(endDateText);
+
+                if (event.getResource() == null)
+                    EventBus.getDefault().post(new EventBusEvent(event, BusEvent.ACTION.CREATE));
+                else EventBus.getDefault().post(new EventBusEvent(event, BusEvent.ACTION.UPDATE));
 
                 try {
                     event.syncModelToNetwork();

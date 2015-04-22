@@ -23,8 +23,10 @@ import be.thalarion.eventman.adapters.EventsAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
+import de.greenrobot.event.EventBus;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
@@ -122,5 +124,21 @@ public class EventsFragment extends android.support.v4.app.Fragment
                 ((SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_list_container)).setRefreshing(false);
             }
         }.execute();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEvent(EventBusEvent event) {
+        onRefresh();
     }
 }

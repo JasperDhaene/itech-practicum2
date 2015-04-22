@@ -24,9 +24,12 @@ import be.thalarion.eventman.adapters.EventPagerAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
+import be.thalarion.eventman.events.BusEvent;
+import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.fragments.event.message.EditMessageDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Model;
+import de.greenrobot.event.EventBus;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class EventPagerFragment extends android.support.v4.app.Fragment implements ViewPager.OnPageChangeListener {
@@ -130,6 +133,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
+                            EventBus.getDefault().post(new EventBusEvent(event, BusEvent.ACTION.DELETE));
                             event.destroy();
                             event = null;
                         } catch (APIException | IOException e) {
