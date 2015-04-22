@@ -232,10 +232,14 @@ public class Event extends Model {
      * @return
      */
     public static String hash(String key) {
-        String[] split = key.split(" ");
-        if(split.length >= 2) {
-            return split[0].substring(0, 1).toUpperCase() + split[1].substring(0, 1).toLowerCase();
-        } else return split[0].substring(0, 1).toUpperCase();
+        if(!key.equals("")) {
+            String[] split = key.split(" ");
+            if (split.length >= 2) {
+                return split[0].substring(0, 1).toUpperCase() + split[1].substring(0, 1).toLowerCase();
+            } else return split[0].substring(0, 1).toUpperCase();
+        }else{
+            return key;
+        }
     }
 
     private static int[] colors = {
