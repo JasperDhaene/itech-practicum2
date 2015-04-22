@@ -86,7 +86,6 @@ public class Event extends Model {
                     JSONArray list = jsonConfirmations.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
                         if (list.getJSONObject(i).getBoolean("going")) {
-                            Log.e("eventman", "EVENT PERSON: " + list.getJSONObject(i).toString());
                             Confirmation c = new Confirmation(this);
                             c.fromJSON(list.getJSONObject(i));
                             this.confirmations.put(c.getPerson().getResource(), c);
