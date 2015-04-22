@@ -9,7 +9,7 @@
         <ImageView
             android:id="@+id/person_avatar"
             android:scaleType="centerCrop"
-            style="@style/Show_event_component_banner"/>
+            style="@style/Show_component_banner"/>
 
         <TextView
             style="@style/Section_Dummy"/>
@@ -20,15 +20,15 @@
 
             <TextView
                 android:id="@+id/person_name"
-                style="@style/Show_person_component_text_heading"/>
+                style="@style/Show_component_text_primary_person"/>
 
             <TextView
                 android:id="@+id/person_email"
-                style="@style/Show_person_component_text_secondary"/>
+                style="@style/Show_component_text_secondary_person"/>
 
             <TextView
                 android:id="@+id/person_birthdate"
-                style="@style/Show_person_component_text_secondary"/>
+                style="@style/Show_component_text_secondary_person"/>
 
         </LinearLayout>
 

@@ -1,58 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp"
-    style="@style/Fragment_container">
+    style="@style/Dialog_container">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/name"
-        android:textColor="#70000000"
-        style="@style/Edit_component"/>
+        style="@style/Edit_component_text"/>
 
     <EditText
         android:id="@+id/field_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/edit_component_edit_primary"
-
-        android:textColor="#000000"
         android:hint="@string/hint_name"
-        style="@style/Form_component_editText_name"/>
+        style="@style/Edit_component_edit_primary"/>
 
     <TextView
         style="@style/Section_Dummy" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/email"
-        android:textColor="#70000000"
-        style="@style/Edit_component"/>
+        style="@style/Edit_component_text"/>
 
 
     <EditText
         android:id="@+id/field_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/edit_component_edit_secondary"
-
-        android:textColor="#000000"
         android:hint="@string/hint_email"
-        style="@style/Form_component_editText_email"/>
+        style="@style/Edit_component_edit_secondary"/>
 
     <TextView
         style="@style/Section_Dummy" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/birth_date"
-        android:textColor="#70000000"
-        style="@style/Edit_component"/>
+        style="@style/Edit_component_text"/>
 
     <TextView
         android:id="@+id/field_birth_date"

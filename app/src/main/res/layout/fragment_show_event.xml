@@ -8,7 +8,7 @@
 
             <ImageView
                 android:id="@+id/event_banner"
-                style="@style/Show_event_component_banner"/>
+                style="@style/Show_component_banner"/>
 
             <LinearLayout android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -17,22 +17,22 @@
 
                 <TextView
                     android:id="@+id/event_title"
-                    style="@style/Show_event_component_text" />
+                    style="@style/Show_component_text_primary_event" />
 
                 <TextView
                     android:id="@+id/event_description"
-                    style="@style/Show_event_component_description" />
+                    style="@style/Show_component_text_tertiary_event" />
 
                 <TextView
                     style="@style/Section_Dummy"/>
 
                 <TextView
                     android:id="@+id/event_startdate"
-                    style="@style/Show_event_component_date"/>
+                    style="@style/Show_component_text_secondary_event"/>
 
                 <TextView
                     android:id="@+id/event_enddate"
-                    style="@style/Show_event_component_date"/>
+                    style="@style/Show_component_text_secondary_event"/>
 
             </LinearLayout>
 

@@ -22,5 +22,11 @@
     <dimen name="list_item_height">72dp</dimen>
     <dimen name="container_padding">8dp</dimen>
     <dimen name="section_dummy_height">48dp</dimen>
+    <dimen name="dialog_message_width">500dp</dimen>
+
+
+    <dimen name="show_component_header_message">18sp</dimen>
+    <dimen name="show_component_text_message">24sp</dimen>
+
 
 </resources>
