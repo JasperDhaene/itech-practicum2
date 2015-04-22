@@ -9,9 +9,22 @@ import android.widget.TimePicker;
 public abstract class EditDialogFragment extends DialogFragment {
 
     public void onDateSet(DatePicker view, View target, int year, int monthOfYear, int dayOfMonth) {
-        ((TextView) target).setText(
-                new StringBuilder().append(year).append("-")
-                        .append(monthOfYear).append("-").append(dayOfMonth));
+        StringBuilder builder = new StringBuilder().append(year)
+                .append("-");
+        if(monthOfYear<10){
+            builder.append(0)
+                    .append(monthOfYear);
+        }else{
+            builder.append(monthOfYear);
+        }
+        builder.append("-");
+        if(dayOfMonth<10){
+            builder.append(0)
+                    .append(dayOfMonth);
+        }else{
+            builder.append(dayOfMonth);
+        }
+        ((TextView) target).setText(builder);
     }
 
     public void onTimeSet(TimePicker view, View target, int hourOfDay, int minute) {

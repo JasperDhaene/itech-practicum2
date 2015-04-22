@@ -4,7 +4,7 @@
     style="@style/Fragment_container">
 
     <LinearLayout
-        style="@style/Showfragment_inner_container">
+        style="@style/Show_fragment_inner_container">
 
         <ImageView
             android:id="@+id/person_avatar"

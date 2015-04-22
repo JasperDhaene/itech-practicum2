@@ -55,11 +55,16 @@
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
+    <style name="Show_component" parent="Component">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
     <style name="Section_Dummy">
         <item name="android:layout_height">@dimen/section_dummy_height</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <!-- EditPerson/Event -->
     <style name="Edit_component_picker" parent="@android:style/Widget.Holo.Spinner">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
@@ -92,13 +97,11 @@
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
-    <!-- EditText -->
     <style name="Edit_component_text" parent="Edit_component">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
-
 
     <style name="Edit_component_edit" parent="Edit_component">
         <item name="android:inputType">textCapSentences</item>
@@ -115,14 +118,11 @@
         <item name="android:textSize">@dimen/edit_component_edit_secondary</item>
     </style>
 
-    <style name="Showfragment_inner_container">
+    <!-- ShowPerson/Event -->
+    <style name="Show_fragment_inner_container">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="Show_component" parent="Component">
-        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="Show_component_text" parent="Show_component">

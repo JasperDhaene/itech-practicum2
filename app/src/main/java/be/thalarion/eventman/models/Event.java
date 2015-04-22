@@ -247,7 +247,7 @@ public class Event extends Model {
             R.color.md_indigo,
             R.color.md_blue,
             R.color.md_green,
-            R.color.md_lime,
+            R.color.md_teal,
             R.color.md_yellow,
             R.color.md_amber,
             R.color.md_deep_orange

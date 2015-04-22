@@ -146,16 +146,16 @@ public class EditEventDialogFragment extends EditDialogFragment
             @Override
             protected Boolean doInBackground(Void... params) {
                 Date startDateText = null, endDateText = null;
-                //TODO: shit's fucked up cause two digits numbers ain't enforced
+
                 StringBuilder builderStart = new StringBuilder().append(startDate.getText().toString())
                         .append("T")
                         .append(startTime.getText().toString())
-                        .append(".000Z");
+                        .append(":00.000Z");
 
                 StringBuilder builderEnd = new StringBuilder().append(endDate.getText().toString())
                         .append("T")
                         .append(endTime.getText().toString())
-                        .append(".000Z");
+                        .append(":00.000Z");
 
                 // Parse dates and publish an exception on invalid dates
                 try {
