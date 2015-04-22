@@ -48,7 +48,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
         // Swipe to refresh
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_container);
-        swipeLayout.setColorSchemeColors(Color.argb(255,233,30,99), Color.argb(255,63,81,181) );
+        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.material_pink_500), getResources().getColor(R.color.material_indigo_500));
         swipeLayout.setOnRefreshListener(this);
 
         // Event list

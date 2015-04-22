@@ -1,60 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="72dp"
     android:id="@+id/list_item_container"
-    style="@style/List_item_container"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    style="@style/List_item_outer_container">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            style="@style/List_item_inner_container">
 
             <ImageView android:id="@+id/event_list_view_avatar"
                 android:transitionName="avatar"
                 style="@style/List_item_avatar"/>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 style="@style/List_item_content_container">
 
-                <LinearLayout android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/list_item_checkbox"
-                    android:layout_alignParentLeft="true"
+                <LinearLayout
                     style="@style/List_item_text_container">
 
                     <TextView
                         android:id="@+id/event_list_view_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/List_item_text_primary"/>
 
                     <TextView
                         android:id="@+id/event_list_view_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/List_item_text_secondary"/>
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/list_item_icon_container"
+                    style="@style/List_item_icon_container">
 
-                <CheckBox
-                    android:id="@+id/list_item_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    <CheckBox
+                        android:id="@+id/list_item_checkbox"
+                        style="@style/List_item_icon"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
-
+            </RelativeLayout>
 
         </LinearLayout>
 

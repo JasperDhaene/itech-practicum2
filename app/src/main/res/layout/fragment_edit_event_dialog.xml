@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        android:textColor="#70000000"
+        android:textColor="#ff000000"
         style="@style/Form_component"/>
 
     <EditText
@@ -19,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/form_head_entry"
-
         android:textColor="#000000"
         android:hint="@string/hint_title"
         style="@style/Form_component_editText_event"/>

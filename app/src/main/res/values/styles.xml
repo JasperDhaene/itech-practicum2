@@ -118,8 +118,17 @@
     </style>
 
     <!-- List item -->
-    <style name="List_item_container">
+    <style name="List_item_outer_container">
         <item name="android:background">@color/md_white_1000</item>
+        <item name="android:layout_height">@dimen/list_item_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="List_item_inner_container">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="List_item_avatar">
@@ -130,20 +139,27 @@
     </style>
 
     <style name="List_item_content_container">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
-
-
     <style name="List_item_text_container">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">10dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_toLeftOf">@+id/list_item_icon_container</item>
+        <item name="android:layout_alignParentLeft">true</item>
     </style>
 
     <style name="List_item_text">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="List_item_text_primary" parent="List_item_text">
@@ -153,6 +169,21 @@
 
     <style name="List_item_text_secondary" parent="List_item_text">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="List_item_icon_container">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="List_item_icon">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
 
