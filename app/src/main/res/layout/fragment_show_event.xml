@@ -1,12 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="be.thalarion.eventman.EventTab"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="be.thalarion.eventman.fragments.event.EventTab"
     style="@style/Fragment_container">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            style="@style/Showfragment_inner_container">
 
             <ImageView
                 android:id="@+id/event_banner"
@@ -19,14 +17,10 @@
 
                 <TextView
                     android:id="@+id/event_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     style="@style/Show_event_component_text" />
 
                 <TextView
                     android:id="@+id/event_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     style="@style/Show_event_component_description" />
 
                 <TextView
@@ -34,14 +28,10 @@
 
                 <TextView
                     android:id="@+id/event_startdate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     style="@style/Show_event_component_date"/>
 
                 <TextView
                     android:id="@+id/event_enddate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     style="@style/Show_event_component_date"/>
 
             </LinearLayout>

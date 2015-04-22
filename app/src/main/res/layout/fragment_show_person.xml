@@ -1,12 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="be.thalarion.eventman.fragments.person.ShowPersonFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="be.thalarion.eventman.fragments.person.ShowPersonFragment"
     style="@style/Fragment_container">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        style="@style/Showfragment_inner_container">
 
         <ImageView android:id="@+id/person_avatar"
             android:transitionName="avatar"
@@ -23,20 +21,14 @@
 
             <TextView
                 android:id="@+id/person_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Show_person_component_text_heading"/>
 
             <TextView
                 android:id="@+id/person_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Show_person_component_text_secondary"/>
 
             <TextView
                 android:id="@+id/person_birthdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Show_person_component_text_secondary"/>
 
         </LinearLayout>

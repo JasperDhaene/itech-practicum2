@@ -29,6 +29,8 @@
 
     <style name="Fragment_container">
         <item name="android:background">@color/md_white_1000</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="Component">
@@ -70,6 +72,12 @@
         <item name="android:clipToPadding">true</item>
     </style>
 
+    <style name="Showfragment_inner_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <style name="Show_component" parent="Component">
         <item name="android:gravity">center_horizontal</item>
     </style>
@@ -80,6 +88,8 @@
 
     <style name="Show_person_component_text" parent="Show_person_component">
         <item name="android:maxLines">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Show_person_component_text_heading" parent="Show_person_component_text">
@@ -105,6 +115,8 @@
     <style name="Show_event_component_text" parent="Show_event_component">
         <item name="android:textColor">@color/text_normal</item>
         <item name="android:textSize">32sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Show_event_component_description" parent="Show_event_component">
