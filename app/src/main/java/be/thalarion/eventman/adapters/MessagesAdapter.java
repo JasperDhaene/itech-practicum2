@@ -70,6 +70,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
                 EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(
                         message.getResource(),
+                        message.getEvent().getResource(),
                         Model.ACTION.EDIT);
 
                 editMessageFragment.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(), "editMessage");

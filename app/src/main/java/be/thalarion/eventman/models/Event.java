@@ -85,9 +85,11 @@ public class Event extends Model {
                 if(!jsonConfirmations.isNull("list")) {
                     JSONArray list = jsonConfirmations.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
-                        Confirmation c = new Confirmation(this);
-                        c.fromJSON(list.getJSONObject(i));
-                        this.confirmations.put(c.getPerson().getResource(), c);
+                        if (list.getJSONObject(i).getBoolean("going")) {
+                            Confirmation c = new Confirmation(this);
+                            c.fromJSON(list.getJSONObject(i));
+                            this.confirmations.put(c.getPerson().getResource(), c);
+                        }
                     }
                 }
             }

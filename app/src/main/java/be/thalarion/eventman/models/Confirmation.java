@@ -34,11 +34,9 @@ public class Confirmation extends Model {
     @Override
     protected void fromJSON(JSONObject json) throws APIException {
         try {
-            if (json.getBoolean("going")) {
-                JSONObject p = json.getJSONObject("person");
-                this.person = Cache.find(Person.class, new URI(p.getString("url")));
-                this.resource = new URI(json.getString("url"));
-            }
+            JSONObject p = json.getJSONObject("person");
+            this.person = Cache.find(Person.class, new URI(p.getString("url")));
+            this.resource = new URI(json.getString("url"));
         } catch (URISyntaxException | IOException | JSONException e) {
             /**
              * Thrown on one of the following errors

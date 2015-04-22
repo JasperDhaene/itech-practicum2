@@ -42,11 +42,11 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-    public static ShowPersonFragment newInstance(URI uri) {
+    public static ShowPersonFragment newInstance(URI personUri) {
         ShowPersonFragment fragment = new ShowPersonFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("uri", uri);
+        bundle.putSerializable("personUri", personUri);
 
         fragment.setArguments(bundle);
 
@@ -73,13 +73,13 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         this.avatar = (ImageView) rootView.findViewById(R.id.person_avatar);
 
         final Context context = getActivity();
-        new AsyncTask<Bundle, Exception, Person>() {
+        final Bundle data = getArguments();
+        new AsyncTask<Void, Exception, Person>() {
             @Override
-            protected Person doInBackground(Bundle... params) {
+            protected Person doInBackground(Void... params) {
                 Person pers = null;
-                Bundle data = params[0];
                 try {
-                    pers = Cache.find(Person.class, (URI) data.getSerializable("uri"));
+                    pers = Cache.find(Person.class, (URI) data.getSerializable("personUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -116,7 +116,7 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
             protected void onProgressUpdate(Exception... values) {
                 ErrorHandler.announce(context, values[0]);
             }
-        }.execute(getArguments());
+        }.execute();
 
         return rootView;
     }

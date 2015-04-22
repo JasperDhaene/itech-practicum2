@@ -39,12 +39,12 @@ public class EditPersonDialogFragment extends EditDialogFragment
         // Required empty public constructor
     }
 
-    public static EditPersonDialogFragment newInstance(URI uri, Model.ACTION action) {
+    public static EditPersonDialogFragment newInstance(URI personUri, Model.ACTION action) {
         EditPersonDialogFragment fragment = new EditPersonDialogFragment();
 
         Bundle bundle = new Bundle();
-        if(uri != null)
-            bundle.putSerializable("uri", uri);
+        if(personUri != null)
+            bundle.putSerializable("personUri", personUri);
         bundle.putSerializable("action", action);
 
         fragment.setArguments(bundle);
@@ -82,13 +82,12 @@ public class EditPersonDialogFragment extends EditDialogFragment
             @Override
             protected Person doInBackground(Void... params) {
                 try {
-                    if(data.getSerializable("uri") != null) {
-                        return Cache.find(Person.class, (URI) data.getSerializable("uri"));
-                    }else return null;
+                    if (data.getSerializable("personUri") != null)
+                        return Cache.find(Person.class, (URI) data.getSerializable("personUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
-                    return null;
                 }
+                return null;
             }
 
             @Override

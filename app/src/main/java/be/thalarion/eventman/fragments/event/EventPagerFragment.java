@@ -1,14 +1,12 @@
 package be.thalarion.eventman.fragments.event;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -151,7 +149,10 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                 return true;
             case R.id.action_add:
                 if(! ((MainActivity) getActivity()).getAccountManager().isNull()) {
-                    EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(this.event.getResource(), Model.ACTION.NEW);
+                    EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(
+                            null,
+                            this.event.getResource(),
+                            Model.ACTION.NEW);
 
                     editMessageFragment.show(getActivity().getSupportFragmentManager(), "newMessage");
                     return true;
