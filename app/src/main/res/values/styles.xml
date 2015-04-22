@@ -33,44 +33,89 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="Dialog_container">
+        <item name="android:background">@color/md_white_1000</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/container_padding</item>
+    </style>
+
     <style name="Component">
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
     </style>
 
-    <style name="Form_component" parent="Component">
+    <style name="Edit_component" parent="Component">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
     <style name="Section_Dummy">
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">@dimen/section_dummy_height</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="DatePicker" parent="@android:style/Widget.Holo.Spinner">
+    <style name="Edit_component_picker" parent="@android:style/Widget.Holo.Spinner">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Edit_component_picker_date" parent="Edit_component_picker">
+        <item name="android:text">@string/default_date</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="Edit_component_picker_time" parent="Edit_component_picker">
+        <item name="android:text">@string/default_time</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="Edit_component_datepicker_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <!-- EditText -->
-    <style name="Form_component_editText_event" parent="Form_component">
-        <item name="android:inputType">textCapSentences</item>
+    <style name="Edit_component_text" parent="Edit_component">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="Form_component_editText_name" parent="Form_component">
+
+    <style name="Edit_component_edit" parent="Edit_component">
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="Edit_component_edit_primary" parent="Edit_component_edit">
+        <item name="android:textSize">@dimen/edit_component_edit_primary</item>
+    </style>
+
+    <style name="Edit_component_edit_secondary" parent="Edit_component_edit">
+        <item name="android:textSize">@dimen/edit_component_edit_secondary</item>
+    </style>
+
+
+    <style name="Form_component_editText_name" parent="Edit_component">
         <item name="android:inputType">textCapWords</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="Form_component_editText_email" parent="Form_component">
+    <style name="Form_component_editText_email" parent="Edit_component">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="Form_component_editText_message" parent="Form_component">
-        <item name="android:inputType">textCapSentences</item>
-        <item name="android:clipToPadding">true</item>
-    </style>
+
 
     <style name="Showfragment_inner_container">
         <item name="android:layout_width">match_parent</item>
@@ -93,7 +138,7 @@
     </style>
 
     <style name="Show_person_component_text_heading" parent="Show_person_component_text">
-        <item name="android:textColor">@color/text_normal</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">32sp</item>
     </style>
 
@@ -113,7 +158,7 @@
     </style>
 
     <style name="Show_event_component_text" parent="Show_event_component">
-        <item name="android:textColor">@color/text_normal</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">32sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -180,7 +225,7 @@
 
     <style name="List_item_text_primary" parent="List_item_text">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/text_normal</item>
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <style name="List_item_text_secondary" parent="List_item_text">

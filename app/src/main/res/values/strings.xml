@@ -48,7 +48,7 @@
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">Select your birthdate</string>
     <string name="title">Title</string>
-    <string name="hint_title">Enter Event title</string>
+    <string name="hint_title">Enter title</string>
     <string name="description">Description</string>
     <string name="hint_description">Enter description</string>
     <string name="start_date">Start date</string>
@@ -92,5 +92,7 @@
 
     <string name="action_add">Add</string>
     <string name="date">Created at</string>
+    <string name="default_time">12:00</string>
+    <string name="default_date">1970-01-01</string>
 
 </resources>

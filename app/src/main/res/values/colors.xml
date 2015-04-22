@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="text_normal">#212121</color>
+    <color name="text_primary">#212121</color>
     <color name="text_secondary">#ff959595</color>
 
     <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->

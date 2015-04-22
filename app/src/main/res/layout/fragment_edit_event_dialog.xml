@@ -1,124 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp"
-    style="@style/Fragment_container"
-    >
+    style="@style/Dialog_container">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/title"
-        android:textColor="#ff000000"
-        style="@style/Form_component"/>
+        style="@style/Edit_component_text"/>
 
     <EditText
         android:id="@+id/field_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/form_head_entry"
-        android:textColor="#000000"
         android:hint="@string/hint_title"
-        style="@style/Form_component_editText_event"/>
+        style="@style/Edit_component_edit_primary"/>
 
     <TextView
         style="@style/Section_Dummy" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/description"
-        android:textColor="#70000000"
-        style="@style/Form_component"/>
+        style="@style/Edit_component_text"/>
 
 
     <EditText
         android:id="@+id/field_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/customEntry"
-        android:textColor="#000000"
         android:hint="@string/hint_description"
-        style="@style/Form_component_editText_event"/>
+        style="@style/Edit_component_edit_secondary"/>
 
     <TextView
         style="@style/Section_Dummy" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/start_date"
-        android:textColor="#70000000"
-        style="@style/Form_component"/>
+        style="@style/Edit_component_text"/>
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/Edit_component_datepicker_container">
 
         <TextView
             android:id="@+id/field_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DatePicker"
-            android:text="1970-01-01"
-            android:clickable="true"
+            style="@style/Edit_component_picker_date"
             android:layout_toLeftOf="@+id/field_start_time"
             android:layout_alignParentLeft="true"
-            android:contentDescription="@string/content_description_date_start"
-            />
+            android:contentDescription="@string/content_description_date_start"/>
 
         <TextView
             android:id="@+id/field_start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DatePicker"
-            android:text="12:00:00"
-            android:clickable="true"
+            style="@style/Edit_component_picker_time"
+            android:text="@string/default_time"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/content_description_time_start"
-            />
+            android:contentDescription="@string/content_description_time_start"/>
 
     </RelativeLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/end_date"
-        android:textColor="#70000000"
-        style="@style/Form_component"/>
+        style="@style/Edit_component_text"/>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/Edit_component_datepicker_container">
 
         <TextView
             android:id="@+id/field_end_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DatePicker"
-            android:text="1970-01-01"
-            android:clickable="true"
+            style="@style/Edit_component_picker_date"
+            android:text="@string/default_date"
             android:layout_toLeftOf="@+id/field_end_time"
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/content_description_date_end"/>
 
         <TextView
             android:id="@+id/field_end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DatePicker"
-            android:text="12:00:00"
-            android:clickable="true"
+            style="@style/Edit_component_picker_time"
+            android:text="@string/default_time"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/content_description_time_end"
             />
 
     </RelativeLayout>
-
-
-
 
 </LinearLayout>

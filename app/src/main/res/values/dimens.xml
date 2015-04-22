@@ -10,10 +10,9 @@
     <dimen name="avatar_small">40dp</dimen>
     <dimen name="avatar_large">256dp</dimen>
 
-    <!--test of dialog library !-->
     <dimen name="customTitle">14sp</dimen>
-    <dimen name="customEntry">18sp</dimen>
-    <dimen name="form_head_entry">24sp</dimen>
+    <dimen name="edit_component_edit_secondary">18sp</dimen>
+    <dimen name="edit_component_edit_primary">24sp</dimen>
 
     <!-- Preference fragment padding, bottom -->
     <dimen name="preference_fragment_padding_bottom">0dp</dimen>
@@ -21,5 +20,7 @@
     <dimen name="preference_fragment_padding_side">16dp</dimen>
 
     <dimen name="list_item_height">72dp</dimen>
+    <dimen name="container_padding">8dp</dimen>
+    <dimen name="section_dummy_height">48dp</dimen>
 
 </resources>
