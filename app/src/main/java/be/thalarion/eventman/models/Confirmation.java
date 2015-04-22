@@ -101,11 +101,6 @@ public class Confirmation extends Model {
         this.event.syncModelToMemory();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return ((Confirmation) o).person.equals(this.person);
-    }
-
     public Person getPerson() {
         return this.person;
     }

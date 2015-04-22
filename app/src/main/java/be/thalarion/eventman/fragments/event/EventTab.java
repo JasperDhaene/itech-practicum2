@@ -82,8 +82,10 @@ public class EventTab extends android.support.v4.app.Fragment {
 
                 title.setText(event.getFormattedTitle(context));
                 description.setText(event.getFormattedDescription(context));
-                startDate.setText(event.getFormattedStartDate(context, Event.format));
-                endDate.setText(event.getFormattedEndDate(context, Event.format));
+                startDate.setText(event.getFormattedStartDate(context, Event.formatDate) + " " +
+                                    event.getFormattedStartDate(context, Event.formatTime));
+                endDate.setText(event.getFormattedEndDate(context, Event.formatDate) + " " +
+                                    event.getFormattedEndDate(context, Event.formatTime));
                 String color = Event.hash(event.getFormattedTitle(context));
                 TextDrawable drawable = TextDrawable.builder().buildRect(
                         color,

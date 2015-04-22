@@ -149,8 +149,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                     holder.avatar.setImageBitmap(loadedImage);
                 }
             });
-            //TODO:what if person is null?
-            // Kan dit ooit null zijn?
         }
 
         if(dataSet.get(position).getDate() != null) {

@@ -66,9 +66,14 @@ public class EditMessageDialogFragment extends EditDialogFragment {
             protected Void doInBackground(Void... params) {
                 try {
                     event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
-                    Log.e("eventman", ((URI) data.getSerializable("messageUri")).toString());
-                    if (data.getSerializable("action") == Model.ACTION.EDIT)
-                        message = Cache.find(Message.class, (URI) data.getSerializable("messageUri"));
+                    if (data.getSerializable("messageUri") != null)
+                        for (Message m: event.getMessages()) {
+                            if (m.equals((URI) data.getSerializable("messageUri"))) {
+                                Log.e("eventman", "Message found: " + m.getText());
+                                message = m;
+                                break;
+                            }
+                        }
                 } catch (IOException | APIException e) {
                     publishProgress(e);
                 }
@@ -107,7 +112,7 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                     protected Exception doInBackground(Void... params) {
                         try {
                             // New Message
-                            if(message.getPerson() == null)
+                            if (message.getPerson() == null)
                                 message.setPerson(((MainActivity) getActivity()).getAccountManager().getPerson());
 
                             message.setText(text.getText().toString());

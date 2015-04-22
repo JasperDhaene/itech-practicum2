@@ -154,10 +154,17 @@ public abstract class Model {
 
     @Override
     public boolean equals(Object o) {
-        Model m = (Model) o;
-        if(m.resource == null || this.resource == null)
-            return false;
+        if(o == this) return true;
+        if (o == null) return false;
+        if (((Model) o).getResource() == null || this.resource == null) return false;
 
-        return this.resource.equals(m.resource);
+        return (((Model) o).getResource().equals(this.resource));
+    }
+
+    public boolean equals(URI uri) {
+        if(uri == this.resource) return true;
+        if(uri == null || this.resource == null) return false;
+
+        return (uri.equals(this.resource));
     }
 }
