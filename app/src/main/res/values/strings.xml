@@ -31,6 +31,7 @@
     <string name="info_text_destroy">Successfully deleted object</string>
 
     <string name="info_text_sign_in">You are now signed in as %s</string>
+    <string name="info_text_sign_out">You have been signed out</string>
     <string name="info_confirmation_accept">Successfully confirmed your attendance to an event</string>
     <string name="info_confirmation_decline">Successfully declined your attendance to an event</string>
 

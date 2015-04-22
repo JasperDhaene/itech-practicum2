@@ -61,9 +61,9 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
         setDefaultSectionLoaded(0);
 
         MaterialAccount account = new MaterialAccount(getResources(),
-                getString(R.string.name_admin),
-                getString(R.string.email_admin),
-                R.drawable.ic_action_social_people,
+                getString(AccountManager.defaultPerson),
+                getString(AccountManager.defaultEmail),
+                AccountManager.defaultPhoto,
                 R.drawable.material
         );
         addAccount(account);
