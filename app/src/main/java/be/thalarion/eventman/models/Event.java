@@ -85,7 +85,7 @@ public class Event extends Model {
                 if(!jsonConfirmations.isNull("list")) {
                     JSONArray list = jsonConfirmations.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
-                        if (list.getJSONObject(i).getBoolean("going")) {
+                        if (list.getJSONObject(i).get("going") != null) {
                             Confirmation c = new Confirmation(this);
                             c.fromJSON(list.getJSONObject(i));
                             this.confirmations.put(c.getPerson().getResource(), c);
@@ -247,7 +247,7 @@ public class Event extends Model {
             R.color.md_indigo,
             R.color.md_blue,
             R.color.md_green,
-            R.color.md_teal,
+            R.color.md_lime,
             R.color.md_yellow,
             R.color.md_amber,
             R.color.md_deep_orange
