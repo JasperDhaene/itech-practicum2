@@ -7,17 +7,10 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
 
-    <dimen name="avatar_small">40dp</dimen>
-    <dimen name="avatar_large">256dp</dimen>
+    <dimen name="avatar_thumb">40dp</dimen>
 
-    <dimen name="customTitle">14sp</dimen>
     <dimen name="edit_component_edit_secondary">18sp</dimen>
     <dimen name="edit_component_edit_primary">24sp</dimen>
-
-    <!-- Preference fragment padding, bottom -->
-    <dimen name="preference_fragment_padding_bottom">0dp</dimen>
-    <!-- Preference fragment padding, sides -->
-    <dimen name="preference_fragment_padding_side">16dp</dimen>
 
     <dimen name="list_item_height">72dp</dimen>
     <dimen name="container_padding">8dp</dimen>
@@ -27,6 +20,5 @@
 
     <dimen name="show_component_header_message">18sp</dimen>
     <dimen name="show_component_text_message">24sp</dimen>
-
 
 </resources>

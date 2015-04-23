@@ -5,7 +5,7 @@ import be.thalarion.eventman.models.Model;
 public abstract class BusEvent {
 
     public enum ACTION {
-        CREATE, UPDATE, DELETE;
+        CREATE, UPDATE, DELETE
     }
 
     public final Model model;

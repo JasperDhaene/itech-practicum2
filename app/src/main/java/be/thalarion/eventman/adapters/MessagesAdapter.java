@@ -150,7 +150,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         }
 
         if(dataSet.get(position).getDate() != null) {
-            holder.date.setText(Message.formatReadable.format(dataSet.get(position).getDate()).toString());
+            holder.date.setText(Message.formatReadable.format(dataSet.get(position).getDate()));
         }
 
         holder.message = dataSet.get(position);

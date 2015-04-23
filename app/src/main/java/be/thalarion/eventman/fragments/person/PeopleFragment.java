@@ -62,7 +62,7 @@ public class PeopleFragment extends android.support.v4.app.Fragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        PeopleAdapter adapter = new PeopleAdapter(getActivity());
+        PeopleAdapter adapter = new PeopleAdapter();
         recyclerView.setAdapter(adapter);
 
         swipeLayout.post(new Runnable(){

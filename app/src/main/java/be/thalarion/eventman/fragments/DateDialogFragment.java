@@ -3,6 +3,7 @@ package be.thalarion.eventman.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
 
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public @NonNull Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
 
         String date = ((TextView) target).getText().toString();

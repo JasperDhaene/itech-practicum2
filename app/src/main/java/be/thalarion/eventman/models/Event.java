@@ -72,10 +72,10 @@ public class Event extends Model {
             if(!json.isNull("description")) this.description = json.getString("description");
             else this.description = null;
 
-            if(!json.isNull("start")) this.startDate = this.format.parse(json.getString("start"));
+            if(!json.isNull("start")) this.startDate = Event.format.parse(json.getString("start"));
             else this.startDate = null;
 
-            if(!json.isNull("end")) this.endDate = this.format.parse(json.getString("end"));
+            if(!json.isNull("end")) this.endDate = Event.format.parse(json.getString("end"));
             else this.endDate = null;
 
             this.confirmations.clear();

@@ -26,10 +26,8 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
 
     private List<Person> dataSet;
-    private Context context;
 
-    public PeopleAdapter(Context context) {
-        this.context = context;
+    public PeopleAdapter() {
         this.dataSet = new ArrayList<>();
     }
 
@@ -80,8 +78,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_person, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

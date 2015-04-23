@@ -201,8 +201,8 @@
     </style>
 
     <style name="ListItemAvatar">
-        <item name="android:layout_width">@dimen/avatar_small</item>
-        <item name="android:layout_height">@dimen/avatar_small</item>
+        <item name="android:layout_width">@dimen/avatar_thumb</item>
+        <item name="android:layout_height">@dimen/avatar_thumb</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>

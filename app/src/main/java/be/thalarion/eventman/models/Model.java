@@ -154,7 +154,8 @@ public abstract class Model {
 
     @Override
     public boolean equals(Object o) {
-        if(o == this) return true;
+        if (!(o instanceof Model)) return false;
+        if (o == this) return true;
         if (o == null) return false;
         if (((Model) o).getResource() == null || this.resource == null) return false;
 

@@ -35,7 +35,7 @@ public class Cache {
             List<T> models = Model.findAll(model);
             List<URI> uris = new ArrayList<>();
             for(T t: models) {
-                objectCache.put(t.getResource(), new Cacheable<T>(t));
+                objectCache.put(t.getResource(), new Cacheable<>(t));
                 uris.add(t.getResource());
             }
             listCache.put(model, new Cacheable(uris));

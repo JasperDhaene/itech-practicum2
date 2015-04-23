@@ -14,7 +14,7 @@ import be.thalarion.eventman.api.APIException;
 
 public class Person extends Model {
 
-    private String name, email, avatarSmall, avatarLarge;
+    private String name, email;
     private Date birthDate;
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -49,7 +49,7 @@ public class Person extends Model {
             if(!json.isNull("email")) this.email = json.getString("email");
             else this.email = null;
 
-            if(!json.isNull("birth_date")) this.birthDate = this.format.parse(json.getString("birth_date"));
+            if(!json.isNull("birth_date")) this.birthDate = Person.format.parse(json.getString("birth_date"));
             else this.birthDate = null;
 
         } catch (JSONException | ParseException e) {
@@ -63,7 +63,7 @@ public class Person extends Model {
         try {
             person.put("name", this.name);
             person.put("email", this.email);
-            person.put("birth_date", this.format.format(this.birthDate));
+            person.put("birth_date", Person.format.format(this.birthDate));
         } catch (JSONException e) {
             throw new APIException(e);
         }
@@ -92,10 +92,10 @@ public class Person extends Model {
     public String getFormattedBirthDate(Context c) {
         if(this.birthDate == null)
             return c.getString(R.string.error_text_nobirthdate);
-        return this.format.format(this.birthDate);
+        return Person.format.format(this.birthDate);
     }
     public String getAvatar(AVATAR size) {
-        return this.avatarFromString(this.getName(), size);
+        return Person.avatarFromString(this.getName(), size);
     }
 
     public void setName(String name) {
@@ -109,7 +109,7 @@ public class Person extends Model {
     }
 
     public enum AVATAR {
-        THUMB, MEDIUM, LARGE;
+        THUMB, MEDIUM, LARGE
     }
     /**
      * avatarFromString - Synthesize an avatar URI from a string
