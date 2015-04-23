@@ -22,7 +22,7 @@
     <EditText
         android:id="@+id/field_email"
         android:hint="@string/hint_email"
-        style="@style/EditComponentEditSecondary"/>
+        style="@style/EditComponentEditSecondaryEmail"/>
 
     <TextView
         style="@style/SectionDummy" />

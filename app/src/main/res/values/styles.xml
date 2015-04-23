@@ -118,6 +118,10 @@
         <item name="android:textSize">@dimen/edit_component_edit_secondary</item>
     </style>
 
+    <style name="EditComponentEditSecondaryEmail" parent="EditComponentEditSecondary">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
     <!-- ShowPerson/Event -->
     <style name="ShowFragmentInnerContainer">
         <item name="android:layout_width">match_parent</item>
