@@ -2,7 +2,6 @@ package be.thalarion.eventman.fragments.event.message;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +20,6 @@ import be.thalarion.eventman.adapters.MessagesAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
-import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.events.MessageBusEvent;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;

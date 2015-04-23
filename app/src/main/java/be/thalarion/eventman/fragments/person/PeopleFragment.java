@@ -1,7 +1,6 @@
 package be.thalarion.eventman.fragments.person;
 
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,7 +23,6 @@ import be.thalarion.eventman.adapters.PeopleAdapter;
 import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
-import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.events.PersonBusEvent;
 import be.thalarion.eventman.models.Model;
 import be.thalarion.eventman.models.Person;

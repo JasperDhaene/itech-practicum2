@@ -24,7 +24,6 @@ import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.events.BusEvent;
-import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.events.PersonBusEvent;
 import be.thalarion.eventman.fragments.DateDialogFragment;
 import be.thalarion.eventman.fragments.EditDialogFragment;

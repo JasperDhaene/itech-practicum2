@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -22,13 +21,11 @@ import be.thalarion.eventman.api.APIException;
 import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.cache.Cache;
 import be.thalarion.eventman.events.BusEvent;
-import be.thalarion.eventman.events.EventBusEvent;
 import be.thalarion.eventman.events.MessageBusEvent;
 import be.thalarion.eventman.fragments.EditDialogFragment;
 import be.thalarion.eventman.models.Event;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;
-import be.thalarion.eventman.models.Person;
 import de.greenrobot.event.EventBus;
 
 

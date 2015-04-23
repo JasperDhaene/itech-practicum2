@@ -19,16 +19,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import be.thalarion.eventman.R;
+import be.thalarion.eventman.api.APIException;
+import be.thalarion.eventman.api.ErrorHandler;
 import be.thalarion.eventman.events.BusEvent;
 import be.thalarion.eventman.events.MessageBusEvent;
 import be.thalarion.eventman.fragments.event.message.EditMessageDialogFragment;
-
-import be.thalarion.eventman.R;
-
-import be.thalarion.eventman.api.APIException;
-import be.thalarion.eventman.api.ErrorHandler;
-
 import be.thalarion.eventman.fragments.event.message.MessageDialogFragment;
 import be.thalarion.eventman.models.Message;
 import be.thalarion.eventman.models.Model;

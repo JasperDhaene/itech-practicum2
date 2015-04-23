@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +66,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
                 if(am.isNull()) {
                     ((CheckBox) v).setChecked(false);
-                    Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_text_signed_in), Toast.LENGTH_SHORT).show();
                 } else {
                     new AsyncTask<Event, Void, Exception>() {
                         @Override

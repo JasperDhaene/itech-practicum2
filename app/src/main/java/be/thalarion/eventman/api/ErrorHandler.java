@@ -31,7 +31,7 @@ public class ErrorHandler {
                     context.getString(R.string.error_text),
                     context.getString(R.string.error_type_io)), Toast.LENGTH_LONG).show();
         } catch (ParseException err) {
-            Toast.makeText(context, context.getString(R.string.error_date), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(R.string.error_text_date), Toast.LENGTH_LONG).show();
         } catch (Exception err) {
             Toast.makeText(context, String.format(
                     context.getString(R.string.error_text),

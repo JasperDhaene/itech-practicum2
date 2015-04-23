@@ -1,19 +1,16 @@
 package be.thalarion.eventman;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import be.thalarion.eventman.events.BusEvent;
 import be.thalarion.eventman.events.PersonBusEvent;
 import be.thalarion.eventman.models.Person;
 import de.greenrobot.event.EventBus;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 
 public class AccountManager {
 

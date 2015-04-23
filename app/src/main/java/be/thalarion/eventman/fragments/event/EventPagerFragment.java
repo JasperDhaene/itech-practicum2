@@ -161,7 +161,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                     editMessageFragment.show(getActivity().getSupportFragmentManager(), "newMessage");
                     return true;
                 } else {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.error_not_signed_in), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.error_text_signed_in), Toast.LENGTH_SHORT).show();
                     return false;
                 }
             default:

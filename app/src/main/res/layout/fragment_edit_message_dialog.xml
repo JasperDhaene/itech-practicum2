@@ -3,7 +3,7 @@
     style="@style/Dialog_container_message">
 
     <TextView
-        android:text="@string/message"
+        android:text="@string/title_message"
         style="@style/Edit_component_text"/>
 
     <EditText
@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/save"
-            android:text="@string/save"
+            android:text="@string/action_save"
             style="@style/Edit_component_save"/>
 
     </RelativeLayout>

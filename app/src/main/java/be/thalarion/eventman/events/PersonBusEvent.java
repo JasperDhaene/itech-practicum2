@@ -1,7 +1,7 @@
 package be.thalarion.eventman.events;
 
-import be.thalarion.eventman.models.Person;
 import be.thalarion.eventman.models.Model;
+import be.thalarion.eventman.models.Person;
 
 public class PersonBusEvent extends BusEvent {
 

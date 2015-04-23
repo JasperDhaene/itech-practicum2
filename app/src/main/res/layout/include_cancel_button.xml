@@ -29,5 +29,5 @@
         android:drawableLeft="@drawable/ic_action_cancel"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:text="@string/cancel" />
+        android:text="@string/action_cancel" />
 </FrameLayout>

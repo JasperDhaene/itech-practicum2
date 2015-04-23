@@ -10,7 +10,6 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import be.thalarion.eventman.fragments.OverviewFragment;
 import be.thalarion.eventman.fragments.event.EventsFragment;
 import be.thalarion.eventman.fragments.person.PeopleFragment;
 import be.thalarion.eventman.fragments.person.ShowPersonFragment;
@@ -47,9 +46,8 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
         if(mUserLearnedDrawer)
             this.disableLearningPattern();
 
-        addSection(newSection(getResources().getString(R.string.title_overview), R.drawable.ic_action_action_schedule, new OverviewFragment()));
-        addSection(newSection(getResources().getString(R.string.title_events), R.drawable.ic_action_image_nature_people, new EventsFragment()));
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
+        addSection(newSection(getResources().getString(R.string.title_events), R.drawable.ic_action_image_nature_people, new EventsFragment()));
 
         // ImageLoader configuration
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
