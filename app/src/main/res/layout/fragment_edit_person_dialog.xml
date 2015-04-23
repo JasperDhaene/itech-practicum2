@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Dialog_container">
+    style="@style/DialogContainer">
 
     <TextView
         android:text="@string/name"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
     <EditText
         android:id="@+id/field_name"
         android:hint="@string/hint_name"
-        style="@style/Edit_component_edit_primary"/>
+        style="@style/EditComponentEditPrimary"/>
 
     <TextView
-        style="@style/Section_Dummy" />
+        style="@style/SectionDummy" />
 
     <TextView
         android:text="@string/email"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
 
     <EditText
         android:id="@+id/field_email"
         android:hint="@string/hint_email"
-        style="@style/Edit_component_edit_secondary"/>
+        style="@style/EditComponentEditSecondary"/>
 
     <TextView
-        style="@style/Section_Dummy" />
+        style="@style/SectionDummy" />
 
     <TextView
         android:text="@string/birth_date"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
     <TextView
         android:id="@+id/field_birth_date"
-        style="@style/Edit_component_picker_date"
+        style="@style/EditComponentPickerDate"
         android:contentDescription="@string/content_description_date_start"/>
 
 

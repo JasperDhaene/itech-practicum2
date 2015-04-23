@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Dialog_container">
+    style="@style/DialogContainer">
 
     <TextView
         android:text="@string/title"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
     <EditText
         android:id="@+id/field_title"
         android:hint="@string/hint_title"
-        style="@style/Edit_component_edit_primary"/>
+        style="@style/EditComponentEditPrimary"/>
 
     <TextView
-        style="@style/Section_Dummy" />
+        style="@style/SectionDummy" />
 
     <TextView
         android:text="@string/description"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
 
     <EditText
         android:id="@+id/field_description"
         android:hint="@string/hint_description"
-        style="@style/Edit_component_edit_secondary"/>
+        style="@style/EditComponentEditSecondary"/>
 
     <TextView
-        style="@style/Section_Dummy" />
+        style="@style/SectionDummy" />
 
     <TextView
         android:text="@string/start_date"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
 
     <RelativeLayout
-        style="@style/Edit_component_datepicker_container">
+        style="@style/EditComponentDatepickerContainer">
 
         <TextView
             android:id="@+id/field_start_date"
-            style="@style/Edit_component_picker_date"
+            style="@style/EditComponentPickerDate"
             android:layout_toLeftOf="@+id/field_start_time"
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/content_description_date_start"/>
 
         <TextView
             android:id="@+id/field_start_time"
-            style="@style/Edit_component_picker_time"
+            style="@style/EditComponentPickerTime"
             android:text="@string/default_time"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/content_description_time_start"/>
@@ -53,14 +53,14 @@
 
     <TextView
         android:text="@string/end_date"
-        style="@style/Edit_component_text"/>
+        style="@style/EditComponentText"/>
 
     <RelativeLayout
-        style="@style/Edit_component_datepicker_container">
+        style="@style/EditComponentDatepickerContainer">
 
         <TextView
             android:id="@+id/field_end_date"
-            style="@style/Edit_component_picker_date"
+            style="@style/EditComponentPickerDate"
             android:text="@string/default_date"
             android:layout_toLeftOf="@+id/field_end_time"
             android:layout_alignParentLeft="true"
@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/field_end_time"
-            style="@style/Edit_component_picker_time"
+            style="@style/EditComponentPickerTime"
             android:text="@string/default_time"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/content_description_time_end"

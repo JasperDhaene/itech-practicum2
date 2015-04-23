@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_item_container"
-    style="@style/List_item_outer_container">
+    style="@style/ListItemOuterContainer">
 
         <LinearLayout
-            style="@style/List_item_inner_container">
+            style="@style/ListItemInnerContainer">
 
             <ImageView android:id="@+id/event_list_view_avatar"
                 android:transitionName="avatar"
-                style="@style/List_item_avatar"/>
+                style="@style/ListItemAvatar"/>
 
             <RelativeLayout
-                style="@style/List_item_content_container">
+                style="@style/ListItemContentContainer">
 
                 <LinearLayout
-                    style="@style/List_item_text_container">
+                    style="@style/ListItemTextContainer">
 
                     <TextView
                         android:id="@+id/event_list_view_title"
-                        style="@style/List_item_text_primary"/>
+                        style="@style/ListItemTextPrimary"/>
 
                     <TextView
                         android:id="@+id/event_list_view_description"
-                        style="@style/List_item_text_secondary"/>
+                        style="@style/ListItemTextSecondary"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/list_item_icon_container"
-                    style="@style/List_item_icon_container">
+                    style="@style/ListItemIconContainer">
 
                     <CheckBox
                         android:id="@+id/list_item_checkbox"
-                        style="@style/List_item_icon"/>
+                        style="@style/ListItemIcon"/>
 
                 </LinearLayout>
 

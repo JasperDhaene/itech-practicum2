@@ -1,18 +1,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="be.thalarion.eventman.fragments.person.ShowPersonFragment"
-    style="@style/Fragment_container">
+    style="@style/FragmentContainer">
 
     <LinearLayout
-        style="@style/Show_fragment_inner_container">
+        style="@style/ShowFragmentInnerContainer">
 
         <ImageView
             android:id="@+id/person_avatar"
             android:scaleType="centerCrop"
-            style="@style/Show_component_banner"/>
+            style="@style/ShowComponentBanner"/>
 
         <TextView
-            style="@style/Section_Dummy"/>
+            style="@style/SectionDummy"/>
 
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
@@ -20,15 +20,15 @@
 
             <TextView
                 android:id="@+id/person_name"
-                style="@style/Show_component_text_primary_person"/>
+                style="@style/ShowComponentTextPrimaryPerson"/>
 
             <TextView
                 android:id="@+id/person_email"
-                style="@style/Show_component_text_secondary_person"/>
+                style="@style/ShowComponentTextSecondaryPerson"/>
 
             <TextView
                 android:id="@+id/person_birthdate"
-                style="@style/Show_component_text_secondary_person"/>
+                style="@style/ShowComponentTextSecondaryPerson"/>
 
         </LinearLayout>
 

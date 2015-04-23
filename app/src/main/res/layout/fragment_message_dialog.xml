@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Dialog_container_message">
+    style="@style/DialogContainerMessage">
 
     <TextView
         android:text="@string/title_message"
-        style="@style/Show_component_text_header_message"/>
+        style="@style/ShowComponentTextHeaderMessage"/>
 
     <TextView
         android:id="@+id/text"
-        style="@style/Show_component_text_text_message"/>
+        style="@style/ShowComponentTextTextMessage"/>
 
     <TextView
-        style="@style/Section_Dummy" />
+        style="@style/SectionDummy" />
 
     <TextView
-        android:text="@string/date"
-        style="@style/Show_component_text_header_message"/>
+        android:text="@string/text_created_at"
+        style="@style/ShowComponentTextHeaderMessage"/>
 
     <TextView
         android:id="@+id/date"
-        style="@style/Show_component_text_text_message"/>
+        style="@style/ShowComponentTextTextMessage"/>
 
     <TextView
-        style="@style/Section_Dummy" />
+        style="@style/SectionDummy" />
 
 </LinearLayout>

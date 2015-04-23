@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/viewpager_container"
-    style="@style/Fragment_container">
+    style="@style/FragmentContainer">
 
     <android.support.v4.view.PagerTabStrip
         android:id="@+id/pager_tab_strip"
