@@ -1,0 +1,111 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{wallpaper}
+\usepackage{listings}
+\usepackage{amsmath}
+
+\usepackage{xcolor, colortbl}
+\definecolor{ugentblue}{HTML}{164A7C}
+\definecolor{gray}{HTML}{AAAAAA}
+\definecolor{lightgray}{HTML}{FAFAFA}
+\definecolor{grayborder}{HTML}{CCCCCC}
+\definecolor{commentgreen}{HTML}{009900}
+
+% Tables
+\def\arraystretch{1.35}
+\renewcommand{\tabularxcolumn}[1]{>{\small}m{#1}}
+\newcommand{\hcell}[1]{
+	\cellcolor{ugentblue}\color{white}\textbf{#1}
+}
+
+\makeatletter
+\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection}
+\makeatother{}
+
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage[numbered, depth=3]{bookmark}
+
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+\fancyhf{}
+
+\interfootnotelinepenalty=0
+
+% Listings
+\lstset{
+	backgroundcolor=\color{lightgray},
+	basicstyle=\footnotesize,
+	commentstyle=\color{commentgreen},
+	frame=single,
+	keywordstyle=\color{blue},
+	language=Java,
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{gray},
+	rulecolor=\color{black},
+	stepnumber=1,
+	stringstyle=\color{ugentblue},
+	showspaces=false,
+	showstringspaces=false
+}
+
+\begin{document}
+	\begin{titlepage}
+		%% Footer
+		\thispagestyle{fancy}
+		\fancyhf{}
+
+		%% Page
+		\hfill
+		\begin{minipage}[t][0.9\textheight]{0.8\textwidth}
+			\noindent
+			\includegraphics[width=55px]{ugent-blue.png} \\[-1em]
+			\color{ugentblue}
+			\makebox[0pt][l]{\rule{1.3\textwidth}{1pt}}
+			\par
+			\noindent
+			\textbf{\textsf{Internettechnologie}} \textcolor{gray}{\textsf{Academiejaar 2014-2015}}
+			\vfill
+				\noindent
+			{\huge \textsf{Reflectie: web- and native applications}}
+			\vskip\baselineskip
+			\noindent
+			\textsf{\textbf{Jasper D'haene \\
+					Florian Dejonckheere}}
+		\end{minipage}
+	\end{titlepage}
+
+	%%% PAGE STYLE %%%
+	\nopagecolor
+	\renewcommand{\footrulewidth}{0.4pt}
+	\headheight 45pt
+	\ULCornerWallPaper{1}{header.png}
+	\fancyfoot[C]{\thepage}
+
+	%%% DOCUMENT %%%
+	\section*{Native Applications and Their Successor: Web Applications}
+		\noindent De opkomst van de smartphone zorgde voor een revolutie op het vlak van mobiele dataconsumptie. De informatie wordt daarbij verwerkt op een relatief krachtig mobiel toestel die praktisch altijd toegang heeft tot een dataverbinding. Daardoor kan hybride gewisseld worden tussen snellere maar lokale verbindingen zoals Wi-Fi, en tragere, globale GSM-netwerken.\\
+
+		\noindent Applicaties kunnen grofweg opgedeeld worden in twee grote groepen: de \textit{web applications} en de \textit{native applications}. Daarbij is het grootste verschil tussen de twee dat web-applicaties in de regel minder snel zijn, en dus minder geschikt voor rekenintensieve taken. Daarvoor zijn native apps dan wel weer bekwaam.\\
+
+		\noindent Ook voor de ontwikkelaar is het verschil tussen de twee pijnlijk duidelijk. Applicaties die op het web draaien -- \textit{in de cloud} -- zijn op zich gemakkelijker te schrijven vanwege het brede scala aan apparaten waarop deze kunnen draaien, waardoor de codebase relatief klein blijft. Hierbij moet natuurlijk ook de recente \textit{App Runtime for Chrome} genoemd worden, die bepaalde native Android-apps op het Chrome-platform uitvoert.\\
+
+		Deze divergentie van apparaattechnologie brengt natuurlijk ook zijn nadelen mee, met name backwards en forwards compatibiliteit, en een overvloed aan ondersteunde randgevallen. Ook het onderhoud van webapps is eenvoudiger -- er hoeft slechts \'e\'en instantie (op gerepliceerde systemen na) ge\"upgraded worden, in tegenstelling tot uitgebreide en complexe deploymentsystemen zoals \textit{Google Play} en de \textit{Windows Store}.\\
+
+		Native apps hebben dan weer het voordeel van integratie. Deze beschikken over een grotere controle van het systeem, waardoor mogelijkheden zoals toegang tot randapparaten en OS-level functionaliteit mogelijk is. Deze beperking wordt creatief omzeild door het hybride ecosysteem \textit{Firefox OS}, waarbij de user interface \'en alle apps geschreven zijn in HTML, CSS en JavaScript.\\
+
+		\noindent Maar ook grotere systemen -- tablets, laptops en dergelijke -- kunnen profiteren van het verschil. In casu zijn de Google Chromebooks niet meer dan flat clients die webapplicaties draaien, in plaats van de traditionele application stack.\\
+
+		\noindent Uiteindelijk is de keuze van platform afhankelijk van het functionele aspect van de applicatie. Als die onafhankelijk kan of moet draaien -- dus zonder dataverbinding -- kan de native aanpak eerder naar voren geschoven worden. Als men echter een applicatie ontwikkelt die afhankelijk is van een webservice, kan een webarchitectuur een interessantere keuze zijn.
+
+% - Android Chrome runtime
+% - Nadelen web: online (maar ff os), maintenance
+% - Besluit: integratie web- en native apps, maar differentiatie op basis van functie
+
+\end{document}
