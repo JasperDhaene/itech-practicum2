@@ -1,6 +1,5 @@
 package be.thalarion.eventman.adapters;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -84,20 +83,15 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        if(dataSet.get(position).getName() != null) {
-            //holder.name.setTextAppearance(context, R.style.Title);
+        if (dataSet.get(position).getName() != null)
             holder.name.setText(dataSet.get(position).getName());
-        } else {
-            //holder.name.setTextAppearance(context, R.style.TitleMissing);
+        else
             holder.name.setText(R.string.error_text_noname);
-        }
-        if(dataSet.get(position).getEmail() != null) {
-            //holder.email.setTextAppearance(context, R.style.SubTitle);
+
+        if (dataSet.get(position).getEmail() != null)
             holder.email.setText(dataSet.get(position).getEmail());
-        } else {
-            //holder.email.setTextAppearance(context, R.style.SubTitleMissing);
+        else
             holder.email.setText(R.string.error_text_noemail);
-        }
 
         ImageLoader.getInstance().loadImage(dataSet.get(position).getAvatar(Person.AVATAR.THUMB), new SimpleImageLoadingListener() {
             @Override
@@ -112,7 +106,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        if(dataSet == null) return 0;
+        if (dataSet == null) return 0;
         return dataSet.size();
     }
 

@@ -56,9 +56,9 @@ public class API {
      * @throws IOException, APIException
      */
     public URI resolve(String resource) throws IOException, APIException {
-        if(this.mapping == null) this.mapping = new HashMap<>();
+        if (this.mapping == null) this.mapping = new HashMap<>();
 
-        if(this.mapping.containsKey(resource))
+        if (this.mapping.containsKey(resource))
             return this.mapping.get(resource);
 
         JSONObject json = fetch(root);
@@ -93,7 +93,6 @@ public class API {
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder sb = new StringBuilder();
         String line;
-        // I ain't been learning Java just to write C, did I?
         while ((line = br.readLine()) != null) {
             sb.append(line);
         }

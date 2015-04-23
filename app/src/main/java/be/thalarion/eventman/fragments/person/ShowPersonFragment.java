@@ -80,34 +80,33 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
         new AsyncTask<Void, Exception, Person>() {
             @Override
             protected Person doInBackground(Void... params) {
-                Person pers = null;
                 try {
-                    pers = Cache.find(Person.class, (URI) data.getSerializable("personUri"));
+                    return Cache.find(Person.class, (URI) data.getSerializable("personUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
+                    return null;
                 }
-
-                return pers;
             }
+
             @Override
-            protected void onPostExecute(Person pers) {
-                person = pers;
-                if (pers.getName() != null)
+            protected void onPostExecute(Person p) {
+                person = p;
+                if (p.getName() != null)
                     name.setText(person.getName());
                 else
                     name.setText(R.string.error_text_noname);
 
-                if (pers.getEmail() != null)
+                if (p.getEmail() != null)
                     email.setText(person.getEmail());
                 else
                     email.setText(R.string.error_text_noemail);
 
-                if (pers.getBirthDate() != null)
+                if (p.getBirthDate() != null)
                     birthDate.setText(Person.format.format(person.getBirthDate()));
                 else
                     birthDate.setText(R.string.error_text_nobirthdate);
 
-                ImageLoader.getInstance().loadImage(pers.getAvatar(Person.AVATAR.LARGE), new SimpleImageLoadingListener() {
+                ImageLoader.getInstance().loadImage(p.getAvatar(Person.AVATAR.LARGE), new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         avatar.setImageBitmap(loadedImage);
@@ -140,17 +139,12 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(editPersonFrag, this.getActivity().getResources().getString(R.string.title_edit_person));
                 return true;
             case R.id.action_discard:
+                final Context context = getActivity();
                 new AsyncTask<Void, Void, Exception>() {
-                    private Context context;
-
-                    @Override
-                    protected void onPreExecute() {
-                        this.context = getActivity();
-                    }
-
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
+                            // Post deletion event
                             EventBus.getDefault().post(new PersonBusEvent(person, BusEvent.ACTION.DELETE));
                             person.destroy();
                             // Allow garbage collection
@@ -164,8 +158,8 @@ public class ShowPersonFragment extends android.support.v4.app.Fragment {
                     @Override
                     protected void onPostExecute(Exception e) {
                         if (e == null) {
-                            Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                        } else ErrorHandler.announce(this.context, e);
+                            Toast.makeText(context, context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                        } else ErrorHandler.announce(context, e);
                     }
                 }.execute();
 

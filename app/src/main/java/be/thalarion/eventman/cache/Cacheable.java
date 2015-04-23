@@ -8,11 +8,11 @@ public class Cacheable<T> {
     private static final int MAX_AGE = 20;
 
     private T cache;
-    public Date date;
+    private long time;
 
     public Cacheable(T cache) {
         this.cache = cache;
-        this.date = new Date();
+        this.time = new Date().getTime();
     }
 
     public T getCache() {
@@ -20,7 +20,7 @@ public class Cacheable<T> {
     }
 
     public boolean isValid() {
-        return ((new Date().getTime() - this.date.getTime()) < MAX_AGE);
+        return ((new Date().getTime() - this.time) < MAX_AGE);
     }
 
 }

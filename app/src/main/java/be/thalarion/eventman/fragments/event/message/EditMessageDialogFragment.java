@@ -4,7 +4,6 @@ package be.thalarion.eventman.fragments.event.message;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,7 +69,6 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                     if (data.getSerializable("messageUri") != null)
                         for (Message m: event.getMessages()) {
                             if (m.equals((URI) data.getSerializable("messageUri"))) {
-                                Log.e("eventman", "Message found: " + m.getText());
                                 message = m;
                                 break;
                             }
@@ -115,6 +113,7 @@ public class EditMessageDialogFragment extends EditDialogFragment {
                             // New Message
                             if (message.getPerson() == null) {
                                 message.setPerson(((MainActivity) getActivity()).getAccountManager().getPerson());
+                                // Post creation/eletion event
                                 EventBus.getDefault().post(new MessageBusEvent(message, BusEvent.ACTION.CREATE));
                             } else EventBus.getDefault().post(new MessageBusEvent(message, BusEvent.ACTION.UPDATE));
 

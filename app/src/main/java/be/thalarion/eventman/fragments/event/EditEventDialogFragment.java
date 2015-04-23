@@ -58,7 +58,7 @@ public class EditEventDialogFragment extends EditDialogFragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_event_dialog, container, false);
 
-        //actionbar
+        // ActionBar
         setHasOptionsMenu(false);
         final View doneBar = inflater.inflate(R.layout.actionbar_done_cancel, null);
         doneBar.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { done(); } });
@@ -82,11 +82,11 @@ public class EditEventDialogFragment extends EditDialogFragment
 
         final Bundle data = getArguments();
         final Context context = getActivity();
-        new AsyncTask<Void, Exception, Event>(){
+        new AsyncTask<Void, Exception, Event>() {
             @Override
             protected Event doInBackground(Void... params) {
                 try {
-                    if(data.getSerializable("eventUri") != null)
+                    if (data.getSerializable("eventUri") != null)
                         return Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                     else
                         return null;
@@ -145,7 +145,7 @@ public class EditEventDialogFragment extends EditDialogFragment
         new AsyncTask<Void, Exception, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
-                Date startDateText = null, endDateText = null;
+                Date startDateText, endDateText;
 
                 StringBuilder builderStart = new StringBuilder().append(startDate.getText().toString())
                         .append("T")
@@ -171,12 +171,12 @@ public class EditEventDialogFragment extends EditDialogFragment
                     publishProgress(e);
                 }
 
-                // TODO: replace this by a refresh method (on swipe?)
                 event.setTitle(title.getText().toString());
                 event.setDescription(description.getText().toString());
                 event.setStartDate(startDateText);
                 event.setEndDate(endDateText);
 
+                // Post creation/update event
                 if (event.getResource() == null)
                     EventBus.getDefault().post(new EventBusEvent(event, BusEvent.ACTION.CREATE));
                 else EventBus.getDefault().post(new EventBusEvent(event, BusEvent.ACTION.UPDATE));

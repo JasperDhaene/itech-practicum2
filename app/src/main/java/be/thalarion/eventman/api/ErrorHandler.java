@@ -17,7 +17,7 @@ public class ErrorHandler {
      * @param e The exception to handle
      */
     public static void announce(Context context, Exception e) {
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         } else try {

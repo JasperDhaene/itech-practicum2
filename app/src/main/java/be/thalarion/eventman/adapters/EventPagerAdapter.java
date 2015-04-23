@@ -28,7 +28,7 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
+        switch (position) {
             case 0:
                 return EventTab.newInstance(this.eventUri);
             case 1:
@@ -54,4 +54,5 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
+
 }

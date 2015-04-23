@@ -65,7 +65,7 @@ public class PeopleFragment extends android.support.v4.app.Fragment
         PeopleAdapter adapter = new PeopleAdapter();
         recyclerView.setAdapter(adapter);
 
-        swipeLayout.post(new Runnable(){
+        swipeLayout.post(new Runnable() {
             @Override
             public void run() {
                 swipeLayout.setRefreshing(true);
@@ -84,9 +84,8 @@ public class PeopleFragment extends android.support.v4.app.Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch(item.getItemId()) {
             case R.id.action_add:
-
                 EditPersonDialogFragment f = EditPersonDialogFragment.newInstance(null,Model.ACTION.NEW);
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_person));
                 break;
@@ -146,4 +145,5 @@ public class PeopleFragment extends android.support.v4.app.Fragment
     public void onEvent(PersonBusEvent event) {
         onRefresh();
     }
+
 }

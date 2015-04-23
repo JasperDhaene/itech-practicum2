@@ -10,15 +10,11 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-import be.thalarion.eventman.models.Event;
-
 public class DateDialogFragment extends android.support.v4.app.DialogFragment
                                                     implements DatePickerDialog.OnDateSetListener {
 
-
     private EditDialogFragment datePickerListener;
     private View target;
-    private Event event;
 
 
     public DateDialogFragment() {
@@ -41,7 +37,7 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
 
         String date = ((TextView) target).getText().toString();
 
-        //date has a guaranteed yyyy-MM-dd format
+        // Date has a guaranteed yyyy-MM-dd format
         c.set(Integer.parseInt(date.substring(0,4)),
                 Integer.parseInt(date.substring(5,7)),
                 Integer.parseInt(date.substring(8,10))
@@ -60,25 +56,17 @@ public class DateDialogFragment extends android.support.v4.app.DialogFragment
         notifyDatePickerListener(view, year, monthOfYear, dayOfMonth);
     }
 
-    public EditDialogFragment getDatePickerListener() {
-        return this.datePickerListener;
-    }
-
     public void setDatePickerListener(EditDialogFragment listener) {
         this.datePickerListener = listener;
     }
 
     protected void notifyDatePickerListener(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        if(this.datePickerListener != null)
+        if (this.datePickerListener != null)
             this.datePickerListener.onDateSet(view, this.target, year, monthOfYear + 1, dayOfMonth);
     }
 
     public void setTarget(View target) {
         this.target = target;
-    }
-
-    public View getTarget() {
-        return target;
     }
 
 }

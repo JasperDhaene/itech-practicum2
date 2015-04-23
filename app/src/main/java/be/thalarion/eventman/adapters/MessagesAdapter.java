@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +49,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         public TextView text, date;
 
         public ImageView avatar, iconEdit, iconDiscard;
-        public LinearLayout container;
         public Message message;
 
 
@@ -62,7 +60,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             this.iconDiscard = ((ImageView) itemView.findViewById(R.id.list_item_icon_discard));
             this.iconEdit = ((ImageView) itemView.findViewById(R.id.list_item_icon_edit));
 
-
             this.iconEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,24 +69,21 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                         message.getEvent().getResource(),
                         Model.ACTION.EDIT);
 
-                editMessageFragment.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(), "editMessage");
+                editMessageFragment.show(
+                        ((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),
+                        "editMessage");
                 }
             });
 
             this.iconDiscard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    final Context context = iconDiscard.getContext();
                     new AsyncTask<Void, Void, Exception>() {
-                        private Context context;
-
-                        @Override
-                        protected void onPreExecute() {
-                            this.context = iconDiscard.getContext();
-                        }
-
                         @Override
                         protected Exception doInBackground(Void... params) {
                             try {
+                                // Post deletion event
                                 EventBus.getDefault().post(new MessageBusEvent(message, BusEvent.ACTION.DELETE));
                                 message.destroy();
                                 // Allow garbage collection
@@ -103,8 +97,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                         @Override
                         protected void onPostExecute(Exception e) {
                             if (e == null) {
-                                Toast.makeText(this.context, this.context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
-                            } else ErrorHandler.announce(this.context, e);
+                                Toast.makeText(context, context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_LONG).show();
+                            } else ErrorHandler.announce(context, e);
                         }
                     }.execute();
 
@@ -118,7 +112,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         public void onClick(View v) {
             MessageDialogFragment showMessageFrag =  MessageDialogFragment.newInstance(message);
 
-            showMessageFrag.show(((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(), "showMessage");
+            showMessageFrag.show(
+                    ((MaterialNavigationDrawer) v.getContext()).getSupportFragmentManager(),
+                    "showMessage");
         }
     }
 
@@ -134,24 +130,21 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        if(dataSet.get(position).getText() != null) {
+        if (dataSet.get(position).getText() != null)
             holder.text.setText(dataSet.get(position).getText());
-        } else {
+        else
             holder.text.setText(R.string.error_text_noname);
-        }
 
-        if(dataSet.get(position).getPerson() != null) {
+        if (dataSet.get(position).getPerson() != null)
             ImageLoader.getInstance().loadImage(dataSet.get(position).getPerson().getAvatar(Person.AVATAR.THUMB), new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     holder.avatar.setImageBitmap(loadedImage);
                 }
             });
-        }
 
-        if(dataSet.get(position).getDate() != null) {
+        if (dataSet.get(position).getDate() != null)
             holder.date.setText(Message.formatReadable.format(dataSet.get(position).getDate()));
-        }
 
         holder.message = dataSet.get(position);
     }
@@ -159,7 +152,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        if(dataSet == null) return 0;
+        if (dataSet == null) return 0;
         return dataSet.size();
     }
 

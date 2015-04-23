@@ -12,4 +12,5 @@ public class MessageBusEvent extends BusEvent {
     public MessageBusEvent(Message message, ACTION action) {
         super(message, action);
     }
+
 }

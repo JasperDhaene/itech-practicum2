@@ -39,14 +39,14 @@ public class EditPersonDialogFragment extends EditDialogFragment
     private TextView birthDate;
 
     public EditPersonDialogFragment() {
-        // Required empty public constructor
+        // Required empty constructor
     }
 
     public static EditPersonDialogFragment newInstance(URI personUri, Model.ACTION action) {
         EditPersonDialogFragment fragment = new EditPersonDialogFragment();
 
         Bundle bundle = new Bundle();
-        if(personUri != null)
+        if (personUri != null)
             bundle.putSerializable("personUri", personUri);
         bundle.putSerializable("action", action);
 
@@ -94,8 +94,8 @@ public class EditPersonDialogFragment extends EditDialogFragment
             }
 
             @Override
-            protected void onPostExecute(Person pers) {
-                person = pers;
+            protected void onPostExecute(Person p) {
+                person = p;
                 if (data.getSerializable("action") == Model.ACTION.EDIT) {
                     name.setText(person.getName());
                     email.setText(person.getEmail());
@@ -142,11 +142,11 @@ public class EditPersonDialogFragment extends EditDialogFragment
                     birthDate = null;
                 }
 
-                // TODO: replace this by a refresh method (on swipe?)
                 person.setName(name);
                 person.setEmail(email);
                 person.setBirthDate(birthDate);
 
+                // Post creation/deletion event
                 if (person.getResource() == null)
                     EventBus.getDefault().post(new PersonBusEvent(person, BusEvent.ACTION.CREATE));
                 else EventBus.getDefault().post(new PersonBusEvent(person, BusEvent.ACTION.UPDATE));

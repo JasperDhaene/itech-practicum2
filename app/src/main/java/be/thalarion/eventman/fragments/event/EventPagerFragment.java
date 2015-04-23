@@ -40,7 +40,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     private Menu menu;
 
 
-    public EventPagerFragment(){
+    public EventPagerFragment() {
         //Empty constructor
     }
 
@@ -75,19 +75,17 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
         this.viewPager = (ViewPager) rootView.findViewById(R.id.viewpager_container);
         this.viewPager.setAdapter(pagerAdapter);
 
-
-        final Context context = this.getActivity();
-        new AsyncTask<Bundle, Exception, Event>() {
+        final Context context = getActivity();
+        final Bundle data = getArguments();
+        new AsyncTask<Void, Exception, Event>() {
             @Override
-            protected Event doInBackground(Bundle... params) {
-                Event event = null;
-                Bundle data = params[0];
+            protected Event doInBackground(Void... params) {
                 try {
-                    event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
+                    return Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
+                    return null;
                 }
-                return event;
             }
 
             @Override
@@ -104,7 +102,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                 );
                 actionBar.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(color)));
             }
-        }.execute(getArguments());
+        }.execute();
 
         viewPager.setOnPageChangeListener(this);
 
@@ -120,7 +118,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()){
+        switch(item.getItemId()) {
             case R.id.action_edit:
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(
                         EditEventDialogFragment.newInstance(this.event.getResource(), Model.ACTION.EDIT),
@@ -133,6 +131,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                     @Override
                     protected Exception doInBackground(Void... params) {
                         try {
+                            // Post deletion event
                             EventBus.getDefault().post(new EventBusEvent(event, BusEvent.ACTION.DELETE));
                             event.destroy();
                             event = null;
@@ -143,7 +142,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                     }
                     @Override
                     protected void onPostExecute(Exception e) {
-                        if(e == null) {
+                        if (e == null) {
                             Toast.makeText(context, context.getResources().getText(R.string.info_text_destroy), Toast.LENGTH_SHORT).show();
                         } else ErrorHandler.announce(context, e);
                     }
@@ -152,7 +151,7 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
                 getActivity().onBackPressed();
                 return true;
             case R.id.action_add:
-                if(! ((MainActivity) getActivity()).getAccountManager().isNull()) {
+                if (! ((MainActivity) getActivity()).getAccountManager().isNull()) {
                     EditMessageDialogFragment editMessageFragment = EditMessageDialogFragment.newInstance(
                             null,
                             this.event.getResource(),
@@ -170,23 +169,18 @@ public class EventPagerFragment extends android.support.v4.app.Fragment implemen
     }
 
     @Override
-    public void onPageSelected(int position) {
-        // Not Needed
-    }
+    public void onPageSelected(int position) { }
 
     @Override
-    public void onPageScrollStateChanged(int state) {
-        // Not Needed
-    }
+    public void onPageScrollStateChanged(int state) { }
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // TODO: kan dit niet in de respectievelijke fragments gestoken worden?
         this.menu.clear();
         MenuInflater inflater = getActivity().getMenuInflater();
-        if(position==1){
+        if (position == 1)
             inflater.inflate(R.menu.add, menu);
-        }else{
+        else
             inflater.inflate(R.menu.edit_discard, menu);
-        }
     }
 }

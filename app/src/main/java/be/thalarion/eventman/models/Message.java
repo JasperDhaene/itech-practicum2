@@ -43,8 +43,8 @@ public class Message extends Model {
     @Override
     protected void fromJSON(JSONObject json) throws APIException {
         try {
-            if(!json.isNull("text")) this.text = json.getString("text");
-            if(!json.isNull("created_at")) this.date = Message.format.parse(json.getString("created_at"));
+            if (!json.isNull("text")) this.text = json.getString("text");
+            if (!json.isNull("created_at")) this.date = Message.format.parse(json.getString("created_at"));
             JSONObject p = json.getJSONObject("person");
             this.person = Cache.find(Person.class, new URI(p.getString("url")));
             this.resource = new URI(json.getString("url"));

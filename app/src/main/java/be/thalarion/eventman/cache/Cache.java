@@ -31,7 +31,7 @@ public class Cache {
      * @throws APIException
      */
     public static <T extends Model> List<T> findAll(Class<T> model) throws IOException, APIException {
-        if(!listCache.containsKey(model)) {
+        if (!listCache.containsKey(model)) {
             List<T> models = Model.findAll(model);
             List<URI> uris = new ArrayList<>();
             for(T t: models) {
@@ -41,7 +41,7 @@ public class Cache {
             listCache.put(model, new Cacheable(uris));
         }
 
-        if(!listCache.get(model).isValid()) {
+        if (!listCache.get(model).isValid()) {
             invalidate(model);
             return findAll(model);
         }
@@ -63,13 +63,13 @@ public class Cache {
      * @throws APIException
      */
     public static <T extends Model> T find(Class<? extends Model> model, URI resource) throws IOException, APIException {
-        if(!objectCache.containsKey(resource)) {
+        if (!objectCache.containsKey(resource)) {
             objectCache.put(resource, new Cacheable(Model.find(model, resource)));
         }
 
         Cacheable<? extends Model> c = objectCache.get(resource);
 
-        if(!c.isValid()) {
+        if (!c.isValid()) {
             invalidate(resource);
             return find(model, resource);
         }
@@ -82,7 +82,7 @@ public class Cache {
      * @param model
      */
     public static void invalidate(Class<? extends Model> model) {
-        if(listCache.containsKey(model)) {
+        if (listCache.containsKey(model)) {
             for (URI uri : listCache.get(model).getCache()) {
                 invalidate(uri);
             }

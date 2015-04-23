@@ -14,10 +14,6 @@ import be.thalarion.eventman.models.Message;
 
 public class MessageDialogFragment extends DialogFragment {
 
-    private Message message;
-    private TextView text;
-
-
     public MessageDialogFragment() {
         // Required empty public constructor
     }

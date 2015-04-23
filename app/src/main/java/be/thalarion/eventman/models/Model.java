@@ -57,7 +57,7 @@ public abstract class Model {
      * @throws APIException
      */
     public void syncModelToMemory() throws IOException, APIException {
-        if(this.resource == null)
+        if (this.resource == null)
             throw new APIException("Model must have a resource URI");
 
         fromJSON(API.getInstance().fetch(this.resource));
@@ -69,7 +69,7 @@ public abstract class Model {
      * @throws APIException
      */
     public void destroy() throws IOException, APIException {
-        if(this.resource != null)
+        if (this.resource != null)
             API.getInstance().delete(this.resource);
     }
 
@@ -163,8 +163,8 @@ public abstract class Model {
     }
 
     public boolean equals(URI uri) {
-        if(uri == this.resource) return true;
-        if(uri == null || this.resource == null) return false;
+        if (uri == this.resource) return true;
+        if (uri == null || this.resource == null) return false;
 
         return (uri.equals(this.resource));
     }

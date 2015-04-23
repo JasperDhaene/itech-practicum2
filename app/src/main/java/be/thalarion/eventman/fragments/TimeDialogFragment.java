@@ -22,12 +22,10 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
     }
 
     public static TimeDialogFragment newInstance(EditDialogFragment listener, View v) {
-
         TimeDialogFragment fragment = new TimeDialogFragment();
 
         fragment.setTimePickerListener(listener);
         fragment.setTarget(v);
-
 
         return fragment;
     }
@@ -45,7 +43,8 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
                 this,
                 c.get(Calendar.HOUR_OF_DAY),
                 c.get(Calendar.MINUTE),
-                DateFormat.is24HourFormat(getActivity()));
+                DateFormat.is24HourFormat(getActivity())
+        );
     }
 
     @Override
@@ -53,16 +52,12 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
         notifyTimePickerListener(view, hourOfDay, minute);
     }
 
-    public EditDialogFragment getTimePickerListener() {
-        return this.timePickerListener;
-    }
-
     public void setTimePickerListener(EditDialogFragment listener) {
         this.timePickerListener = listener;
     }
 
     protected void notifyTimePickerListener(TimePicker view, int hourOfDay, int minute) {
-        if(this.timePickerListener != null)
+        if (this.timePickerListener != null)
             this.timePickerListener.onTimeSet(view, this.target, hourOfDay, minute);
     }
 
@@ -70,7 +65,4 @@ public class TimeDialogFragment extends android.support.v4.app.DialogFragment
         this.target = target;
     }
 
-    public View getTarget() {
-        return target;
-    }
 }

@@ -36,7 +36,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
         // Required empty public constructor
     }
 
-    public static MessagesTab newInstance(URI eventUri){
+    public static MessagesTab newInstance(URI eventUri) {
         MessagesTab fragment = new MessagesTab();
 
         Bundle bundle = new Bundle();
@@ -92,7 +92,7 @@ public class MessagesTab extends android.support.v4.app.Fragment
         MessagesAdapter adapter = new MessagesAdapter();
         recyclerView.setAdapter(adapter);
 
-        swipeLayout.post(new Runnable(){
+        swipeLayout.post(new Runnable() {
             @Override
             public void run() {
                 swipeLayout.setRefreshing(true);
@@ -156,4 +156,5 @@ public class MessagesTab extends android.support.v4.app.Fragment
     public void onEvent(MessageBusEvent event) {
         onRefresh();
     }
+
 }

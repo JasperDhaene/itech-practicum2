@@ -64,7 +64,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                 public void onClick(final View v) {
                 final AccountManager am  = ((MainActivity) v.getContext()).getAccountManager();
 
-                if(am.isNull()) {
+                if (am.isNull()) {
                     ((CheckBox) v).setChecked(false);
                     Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_text_signed_in), Toast.LENGTH_SHORT).show();
                 } else {
@@ -127,7 +127,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         holder.avatar.setImageDrawable(drawable);
 
         Person p = ((MainActivity) context).getAccountManager().getPerson();
-        if(p != null)
+        if (p != null)
             holder.checkBox.setChecked(dataSet.get(position).hasConfirmed(p));
 
         holder.event = dataSet.get(position);

@@ -43,13 +43,13 @@ public class Person extends Model {
     @Override
     protected void fromJSON(JSONObject json) throws APIException {
         try {
-            if(!json.isNull("name")) this.name = json.getString("name");
+            if (!json.isNull("name")) this.name = json.getString("name");
             else this.name = null;
 
-            if(!json.isNull("email")) this.email = json.getString("email");
+            if (!json.isNull("email")) this.email = json.getString("email");
             else this.email = null;
 
-            if(!json.isNull("birth_date")) this.birthDate = Person.format.parse(json.getString("birth_date"));
+            if (!json.isNull("birth_date")) this.birthDate = Person.format.parse(json.getString("birth_date"));
             else this.birthDate = null;
 
         } catch (JSONException | ParseException e) {
@@ -74,7 +74,7 @@ public class Person extends Model {
         return this.name;
     }
     public String getFormattedName(Context c) {
-        if(this.name == null)
+        if (this.name == null)
             return c.getString(R.string.error_text_noname);
         return this.name;
     }
@@ -82,7 +82,7 @@ public class Person extends Model {
         return this.email;
     }
     public String getFormattedEmail(Context c) {
-        if(this.email == null)
+        if (this.email == null)
             return c.getString(R.string.error_text_noemail);
         return this.email;
     }
@@ -90,7 +90,7 @@ public class Person extends Model {
         return this.birthDate;
     }
     public String getFormattedBirthDate(Context c) {
-        if(this.birthDate == null)
+        if (this.birthDate == null)
             return c.getString(R.string.error_text_nobirthdate);
         return Person.format.format(this.birthDate);
     }
@@ -121,7 +121,7 @@ public class Person extends Model {
         int code = 0;
         String baseUri = "http://api.randomuser.me/portraits/";
 
-        if(key != null) {
+        if (key != null) {
             for (int i = 0; i < key.length(); i++) {
                 code += key.charAt(i);
                 code %= 196;

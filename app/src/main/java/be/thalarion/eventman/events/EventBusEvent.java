@@ -12,4 +12,5 @@ public class EventBusEvent extends BusEvent {
     public EventBusEvent(Event event, ACTION action) {
         super(event, action);
     }
+
 }

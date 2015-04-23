@@ -1,7 +1,6 @@
 package be.thalarion.eventman.models;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +38,6 @@ public class Event extends Model {
         this.messages = new ArrayList<>();
     }
 
-
     /**
      * Event - create a new event
      * @param title
@@ -66,23 +64,23 @@ public class Event extends Model {
     @Override
     protected void fromJSON(JSONObject json) throws APIException {
         try {
-            if(!json.isNull("title")) this.title= json.getString("title");
+            if (!json.isNull("title")) this.title= json.getString("title");
             else this.title = null;
 
-            if(!json.isNull("description")) this.description = json.getString("description");
+            if (!json.isNull("description")) this.description = json.getString("description");
             else this.description = null;
 
-            if(!json.isNull("start")) this.startDate = Event.format.parse(json.getString("start"));
+            if (!json.isNull("start")) this.startDate = Event.format.parse(json.getString("start"));
             else this.startDate = null;
 
-            if(!json.isNull("end")) this.endDate = Event.format.parse(json.getString("end"));
+            if (!json.isNull("end")) this.endDate = Event.format.parse(json.getString("end"));
             else this.endDate = null;
 
             this.confirmations.clear();
-            if(!json.isNull("confirmations")) {
+            if (!json.isNull("confirmations")) {
                 JSONObject jsonConfirmations = json.getJSONObject("confirmations");
-                if(!jsonConfirmations.isNull("url")) this.confirmationResource = new URI(jsonConfirmations.getString("url"));
-                if(!jsonConfirmations.isNull("list")) {
+                if (!jsonConfirmations.isNull("url")) this.confirmationResource = new URI(jsonConfirmations.getString("url"));
+                if (!jsonConfirmations.isNull("list")) {
                     JSONArray list = jsonConfirmations.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
                         if (list.getJSONObject(i).get("going") != null) {
@@ -94,10 +92,10 @@ public class Event extends Model {
                 }
             }
 
-            if(!json.isNull("messages")) {
+            if (!json.isNull("messages")) {
                 JSONObject jsonMessages = json.getJSONObject("messages");
-                if(!jsonMessages.isNull("url")) this.messageResource = new URI(jsonMessages.getString("url"));
-                if(!jsonMessages.isNull("list")) {
+                if (!jsonMessages.isNull("url")) this.messageResource = new URI(jsonMessages.getString("url"));
+                if (!jsonMessages.isNull("list")) {
                     JSONArray list = jsonMessages.getJSONArray("list");
                     for(int i = 0; i < list.length(); i++) {
                         Message m = new Message(this);
@@ -141,7 +139,7 @@ public class Event extends Model {
         return this.title;
     }
     public String getFormattedTitle(Context c) {
-        if(this.title == null)
+        if (this.title == null)
             return c.getString(R.string.error_text_notitle);
         return this.title;
     }
@@ -149,7 +147,7 @@ public class Event extends Model {
         return this.description;
     }
     public String getFormattedDescription(Context c) {
-        if(this.description == null)
+        if (this.description == null)
             return c.getString(R.string.error_text_nodescription);
         return this.description;
     }
@@ -157,7 +155,7 @@ public class Event extends Model {
         return this.startDate;
     }
     public String getFormattedStartDate(Context c, SimpleDateFormat format) {
-        if(this.startDate == null)
+        if (this.startDate == null)
             return c.getString(R.string.error_text_nostartdate);
         return format.format(this.startDate);
     }
@@ -165,7 +163,7 @@ public class Event extends Model {
         return this.endDate;
     }
     public String getFormattedEndDate(Context c, SimpleDateFormat format) {
-        if(this.endDate == null)
+        if (this.endDate == null)
             return c.getString(R.string.error_text_noenddate);
         return format.format(this.endDate);
     }
@@ -194,10 +192,7 @@ public class Event extends Model {
         this.endDate = endDate;
     }
     public void confirm(Person p, boolean going) throws IOException, APIException {
-        if(going) {
-            Log.e("eventman", "Adding confirmation for " + p.getName() + " in list " + this.confirmations.size());
-        } else Log.e("eventman", "Removing confirmation for " + p.getName() + " in list " + this.confirmations.size());
-        if(going && !this.confirmations.containsKey(p.getResource())) {
+        if (going && !this.confirmations.containsKey(p.getResource())) {
             // Person has confirmed
             Confirmation c = new Confirmation(p, this);
             /**
@@ -207,12 +202,11 @@ public class Event extends Model {
              * list is no long necessary
              */
             c.syncModelToNetwork();
-        } else if(!going && this.confirmations.containsKey(p.getResource())) {
+        } else if (!going && this.confirmations.containsKey(p.getResource())) {
             // Person has denied
             this.confirmations.get(p.getResource()).destroy();
             this.confirmations.remove(p.getResource());
         }
-        Log.e("eventman", "New list size: " + this.confirmations.size());
     }
     public void createMessage(Person p, String text) throws IOException, APIException {
         Message m = new Message(this);
@@ -263,7 +257,7 @@ public class Event extends Model {
         if (key.length() == 0) return colors[0];
 
         int code = key.charAt(0);
-        if(key.length() >= 2)
+        if (key.length() >= 2)
             code += key.charAt(1);
 
         code = code % colors.length;

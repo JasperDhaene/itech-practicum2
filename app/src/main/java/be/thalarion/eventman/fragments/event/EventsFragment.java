@@ -62,7 +62,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
         EventsAdapter adapter = new EventsAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
-        swipeLayout.post(new Runnable(){
+        swipeLayout.post(new Runnable() {
             @Override
             public void run() {
                 swipeLayout.setRefreshing(true);
@@ -81,7 +81,7 @@ public class EventsFragment extends android.support.v4.app.Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch(item.getItemId()) {
             case R.id.action_add:
                 EditEventDialogFragment f = EditEventDialogFragment.newInstance(null, Model.ACTION.NEW);
                 ((MaterialNavigationDrawer) getActivity()).setFragmentChild(f, this.getActivity().getResources().getString(R.string.title_edit_event));
@@ -140,4 +140,5 @@ public class EventsFragment extends android.support.v4.app.Fragment
     public void onEvent(EventBusEvent event) {
         onRefresh();
     }
+
 }

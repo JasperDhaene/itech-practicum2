@@ -43,7 +43,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-        if(mUserLearnedDrawer)
+        if (mUserLearnedDrawer)
             this.disableLearningPattern();
 
         addSection(newSection(getResources().getString(R.string.title_people), R.drawable.ic_action_social_people, new PeopleFragment()));
@@ -82,7 +82,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
 
     @Override
     public void onDrawerClosed(View drawerView) {
-        if(!mUserLearnedDrawer) {
+        if (!mUserLearnedDrawer) {
             // The user manually opened the drawer; store this flag to prevent auto-showing
             // the navigation drawer automatically in the future.
             mUserLearnedDrawer = true;
@@ -117,7 +117,7 @@ public class MainActivity extends MaterialNavigationDrawer implements DrawerLayo
 
     @Override
     public void onAccountOpening(MaterialAccount materialAccount) {
-        if(accountManager.getPerson() != null)
+        if (accountManager.getPerson() != null)
             setFragmentChild(ShowPersonFragment.newInstance(accountManager.getPerson().getResource()),
                     getResources().getString(R.string.title_show_person)
             );

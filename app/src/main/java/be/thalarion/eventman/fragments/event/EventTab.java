@@ -3,8 +3,6 @@ package be.thalarion.eventman.fragments.event;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +27,8 @@ public class EventTab extends android.support.v4.app.Fragment {
     private Event event;
 
 
-    public EventTab(){
-        //Empty constructor
+    public EventTab() {
+        // Required empty constructor
     }
 
     public static EventTab newInstance(URI eventUri) {
@@ -49,8 +47,6 @@ public class EventTab extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show_event, container, false);
 
-        final ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-
         this.title = ((TextView) rootView.findViewById(R.id.event_title));
         this.description = ((TextView) rootView.findViewById(R.id.event_description));
         this.startDate = ((TextView) rootView.findViewById(R.id.event_startdate));
@@ -58,17 +54,16 @@ public class EventTab extends android.support.v4.app.Fragment {
         this.banner = ((ImageView) rootView.findViewById(R.id.event_banner));
 
         final Context context = this.getActivity();
-        new AsyncTask<Bundle, Exception, Event>() {
+        final Bundle data = getArguments();
+        new AsyncTask<Void, Exception, Event>() {
             @Override
-            protected Event doInBackground(Bundle... params) {
-                Event event = null;
-                Bundle data = params[0];
+            protected Event doInBackground(Void... params) {
                 try {
-                    event = Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
+                    return Cache.find(Event.class, (URI) data.getSerializable("eventUri"));
                 } catch (IOException | APIException e) {
                     publishProgress(e);
+                    return null;
                 }
-                return event;
             }
 
             @Override
@@ -82,10 +77,13 @@ public class EventTab extends android.support.v4.app.Fragment {
 
                 title.setText(event.getFormattedTitle(context));
                 description.setText(event.getFormattedDescription(context));
+
                 startDate.setText(event.getFormattedStartDate(context, Event.formatDate) + " " +
                                     event.getFormattedStartDate(context, Event.formatTime));
+
                 endDate.setText(event.getFormattedEndDate(context, Event.formatDate) + " " +
                                     event.getFormattedEndDate(context, Event.formatTime));
+
                 String color = Event.hash(event.getFormattedTitle(context));
                 TextDrawable drawable = TextDrawable.builder().buildRect(
                         color,
@@ -93,7 +91,7 @@ public class EventTab extends android.support.v4.app.Fragment {
                 );
                 banner.setImageDrawable(drawable);
             }
-        }.execute(getArguments());
+        }.execute();
 
         return rootView;
     }
